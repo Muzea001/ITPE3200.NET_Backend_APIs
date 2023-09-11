@@ -1,6 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using Oblig1.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ItemDbContext>(options => {
+    options.UseSqlite(
+        builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
+});
+
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+
+app.UseStaticFiles();
+ 
 
 app.Run();
+
+
