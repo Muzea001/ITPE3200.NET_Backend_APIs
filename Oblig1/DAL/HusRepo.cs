@@ -32,6 +32,20 @@ namespace Oblig1.DAL
         }
 
 
+        public async Task<IEnumerable<Hus>?> HentAlleTilgjengelig()
+        {
+            try
+            {
+                return await _db.hus.FromSqlRaw("SELECT* FROM hus WHERE erTilgjengelig=1").ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[HusRepo] hus ToListAsync failet når hentalle ble kallet, error melding : {e}", ex.Message);
+                return null;
+            }
+
+        }
+
         public async Task<Hus> hentHusMedId(int id)
         {
 
@@ -52,7 +66,7 @@ namespace Oblig1.DAL
 
 
 
-        public async Task<bool> lagHus(Hus hus)
+        public async Task<bool> Lag(Hus hus)
         {
             try
             {
@@ -69,7 +83,7 @@ namespace Oblig1.DAL
 
         }
 
-        public async Task<bool> endreHus(Hus hus)
+        public async Task<bool> Endre(Hus hus)
         {
             try
             {

@@ -12,11 +12,17 @@ namespace Oblig1.DAL
             context.Database.EnsureCreated();
             context.Database.EnsureDeleted();
 
+            Bruker bruker = new Bruker() {Id=1,Navn="Petter",Addresse="Osloveien123",Email="Petter@hotmail.com",Fodselsdato=new DateTime(1992,02,02),TelefonNmr=50663211 };
+            Eeier eier = new Eeier() {bruker = bruker, kontoNummer=193265478 };
+
             if (!context.hus.Any())
             {
+
+               
+                        
                 var hus = new List<Hus>
                 {
-                    new Hus {Beskrivelse="Stort og Nyoppusset leilighet", addresse="Osloveien22", areal=200, romAntall=4, erTilgjengelig=false},
+                    new Hus {Beskrivelse="Stort og Nyoppusset leilighet", Addresse="Osloveien22", areal=200, romAntall=4, erTilgjengelig=false, Eeier=eier},
                     new Hus { },
                     new Hus { },
                     new Hus { },
@@ -40,7 +46,7 @@ namespace Oblig1.DAL
                 {
                     new Kunde { },
                     new Kunde { },
-                    new Kunde { Id=1, navn = "Hans", telefonNmr = 20568799 , addresse ="Osloveien 81", fodselsdato = new DateTime(1990,01,01),  email = "Hans0101@Hotmail.com"  }
+                    new Kunde { Id=1, Navn = "Hans", TelefonNmr = 20568799 , Addresse ="Osloveien 81", Fodselsdato = new DateTime(1990,01,01),  Email = "Hans0101@Hotmail.com"  }
                     };
                 context.AddRange(kunder);
                 context.SaveChanges();
@@ -58,7 +64,21 @@ namespace Oblig1.DAL
                 context.AddRange(ordre);
                 context.SaveChanges();
             }
-        }
+        
+
+            if (!context.bruker.Any())
+            {
+
+                var brukere = new List<Bruker>
+                {
+                    new Bruker {Id=1,Navn="Hans Eli",Addresse="Osloveien32", Email="Hans@Hotmail.com",Fodselsdato= new DateTime(1889,03,03), TelefonNmr=98256374},
+                    new Bruker { },
+                    new Bruker { }
+                    };
+                context.AddRange(brukere);
+                context.SaveChanges();
+            }
+}
     }
 }
 
