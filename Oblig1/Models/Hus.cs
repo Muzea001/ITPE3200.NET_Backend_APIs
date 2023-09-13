@@ -8,7 +8,7 @@ namespace Oblig1.Models
         public int husId { get; set; }
 
         [StringLength(400)]
-        public string Beskrivelse { get; set; }
+        public string? Beskrivelse { get; set; }
 
         [Range(0.01,double.MaxValue, ErrorMessage ="areal må være større enn null")]
         public double areal { get; set; }
@@ -21,6 +21,6 @@ namespace Oblig1.Models
 
         public bool erTilgjengelig { get; set; }
 
-        public Eeier Eeier { get; set; }
+        public virtual Eeier Eeier { get; set; }
     }
 }

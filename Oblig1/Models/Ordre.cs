@@ -16,6 +16,8 @@ namespace Oblig1.Models
 
         public int husId { get; set; }
 
+
+
        
 
 

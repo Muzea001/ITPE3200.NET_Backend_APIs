@@ -6,9 +6,11 @@ namespace Oblig1.Models
     {
 
        
-        public Bruker bruker { get; set; }
+        public virtual Bruker bruker { get; set; }
 
         [RegularExpression(@"^\d{11}$")]
+
+        [Key]
         public long kontoNummer { get; set; }    
 
 

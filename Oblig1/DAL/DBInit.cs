@@ -12,6 +12,7 @@ namespace Oblig1.DAL
             context.Database.EnsureCreated();
             context.Database.EnsureDeleted();
 
+
             Bruker bruker = new Bruker() {Id=1,Navn="Petter",Addresse="Osloveien123",Email="Petter@hotmail.com",Fodselsdato=new DateTime(1992,02,02),TelefonNmr=50663211 };
             Eeier eier = new Eeier() {bruker = bruker, kontoNummer=193265478 };
 

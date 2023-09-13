@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oblig1.DAL;
 
@@ -10,9 +11,11 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    partial class ItemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230913210749_nyeMigrasjoner")]
+    partial class nyeMigrasjoner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,6 +51,7 @@ namespace Oblig1.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Beskrivelse")
+                        .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("TEXT");
 

@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Oblig1.DAL;
 using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-
 
 
 builder.Services.AddDbContext<ItemDbContext>(options => {
@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
 });
 
 
-var app = builder.Build();
+
 
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
@@ -26,6 +26,8 @@ loggerConfiguration.Filter.ByExcluding(e => e.Properties.TryGetValue("SourceCont
 
 var logger = loggerConfiguration.CreateLogger();
 builder.Logging.AddSerilog(logger);
+
+var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
