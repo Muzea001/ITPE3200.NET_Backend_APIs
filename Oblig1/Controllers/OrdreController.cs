@@ -9,18 +9,18 @@ namespace Oblig1.Controllers
     public class OrdreController : Controller
     {
         private readonly ILogger _Ordrelogger;
-        private readonly OrdreRepo _ordreRepo;
+        private readonly OrdreInterface _ordreInterface;
 
-        public OrdreController(OrdreRepo ordreRepo, ILogger<OrdreController> logger)
+        public OrdreController(OrdreInterface ordreRepo, ILogger<OrdreController> logger)
         {
-            _ordreRepo = ordreRepo;
+            _ordreInterface = ordreRepo;
             _Ordrelogger = logger;
         }
 
         public async Task<IActionResult> Tabell()
         {
 
-            var liste = await _ordreRepo.HentAlle();
+            var liste = await _ordreInterface.HentAlle();
             if (liste == null)
             {
                 _Ordrelogger.LogError("[OrdreController] ordre liste ikke funnet dersom _ordreRepo.HentAlle");
@@ -33,7 +33,7 @@ namespace Oblig1.Controllers
         [HttpGet]
         public async Task<IActionResult> Endre(int id)
         {
-            var ordre = await _ordreRepo.hentOrdreMedId(id);
+            var ordre = await _ordreInterface.hentOrdreMedId(id);
             if (ordre == null)
             {
                 _Ordrelogger.LogError("[OrdreKontroller] Ordre ikke funnet for denne iden" + id);
@@ -46,7 +46,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _ordreRepo.endreOrdre(ordre);
+                bool OK = await _ordreInterface.endreOrdre(ordre);
                 if (OK)
                 {
                     return RedirectToAction(nameof(Tabell));
@@ -70,7 +70,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _ordreRepo.lagOrdre(ordre);
+                bool OK = await _ordreInterface.lagOrdre(ordre);
                 if (OK)
                 {
                     return RedirectToAction(nameof(Tabell));
@@ -85,7 +85,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> Slett(int id)
         {
-            var ordre = await _ordreRepo.hentOrdreMedId(id);
+            var ordre = await _ordreInterface.hentOrdreMedId(id);
             if (ordre == null)
             {
                 _Ordrelogger.LogError("[OrdreKontroller] Ordre ikke funnet for denne iden", id);
@@ -100,7 +100,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> SlettBekreftet(int id)
         {
-            bool OK = await _ordreRepo.SlettOrdre(id);
+            bool OK = await _ordreInterface.SlettOrdre(id);
             if (!OK)
             {
                 _Ordrelogger.LogError("[OrdreKontroller] sletting av bruker mislyktes for denne iden", id);

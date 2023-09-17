@@ -3,7 +3,7 @@ using Oblig1.Models;
 
 namespace Oblig1.DAL
 {
-    public class KundeRepo
+    public class KundeRepo : KundeInterface
     {
         private readonly ItemDbContext _db;
 
@@ -42,7 +42,7 @@ namespace Oblig1.DAL
             catch (Exception ex)
             {
 
-                _Kundelogger.LogError("[KundeRepo]hent kunde med id" +id + "metoden failet ved innkalling, error melding : {e}", ex.Message);
+                _Kundelogger.LogError("[KundeRepo]hent kunde med id" + id + "metoden failet ved innkalling, error melding : {e}", ex.Message);
                 return null;
 
             }

@@ -8,18 +8,18 @@ namespace Oblig1.Controllers
     public class KundeController : Controller
     {
         private readonly ILogger _Brukerlogger;
-        private readonly KundeRepo _kundeRepo;
+        private readonly KundeInterface _kundeInterface;
 
-        public KundeController(KundeRepo kundeRepo, ILogger<KundeController> logger)
+        public KundeController(KundeInterface Interface, ILogger<KundeController> logger)
         {
-            _kundeRepo = kundeRepo;
+            _kundeInterface = Interface;
             _Brukerlogger = logger;
         }
 
         public async Task<IActionResult> Tabell()
         {
 
-            var liste = await _kundeRepo.HentAlle();
+            var liste = await _kundeInterface.HentAlle();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] bruker liste ikke funnet dersom _brukerRepo.HentAlle");
@@ -32,7 +32,7 @@ namespace Oblig1.Controllers
         [HttpGet]
         public async Task<IActionResult> Endre(int id)
         {
-            var kunde = await _kundeRepo.hentKundeMedId(id);
+            var kunde = await _kundeInterface.hentKundeMedId(id);
             if (kunde == null)
             {
                 _Brukerlogger.LogError("[KundeKontroller] Kunde ikke funnet for denne iden" + id);
@@ -45,7 +45,7 @@ namespace Oblig1.Controllers
         {
             if(ModelState.IsValid)
             {
-                bool OK = await _kundeRepo.endreKunde(kunde);   
+                bool OK = await _kundeInterface.endreKunde(kunde);   
                 if (OK) 
                 {
                     return RedirectToAction(nameof(Tabell));
@@ -69,7 +69,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _kundeRepo.lagKunde(kunde);
+                bool OK = await _kundeInterface.lagKunde(kunde);
                 if (OK)
                 {
                     return RedirectToAction(nameof(Tabell));
@@ -84,7 +84,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> Slett(int id)
         {
-            var kunde = await _kundeRepo.hentKundeMedId(id);
+            var kunde = await _kundeInterface.hentKundeMedId(id);
              if(kunde == null)
             {
                 _Brukerlogger.LogError("[KundeController] kunde ikke funnet for denne iden", id);
@@ -99,7 +99,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> SlettBekreftet(int id)
         {
-            bool OK = await _kundeRepo.SlettKunde(id);
+            bool OK = await _kundeInterface.SlettKunde(id);
             if (!OK)
             {
                 _Brukerlogger.LogError("[BrukerController] sletting av bruker mislyktes for denne iden", id);

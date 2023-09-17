@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
+using Oblig1.Services;
 
 namespace Oblig1.DAL
 {
-    public class BrukerRepo
+    public class BrukerRepo : BrukerInterface
     {
         private readonly ItemDbContext _db;
 
@@ -45,6 +46,10 @@ namespace Oblig1.DAL
             }
 
         }
+
+
+
+
 
         public async Task<IEnumerable<Bruker>?> HentAlleNonAdmins()
         {
@@ -94,6 +99,8 @@ namespace Oblig1.DAL
         }
 
 
+        
+
 
         public async Task<bool> lagBruker(Bruker bruker)
         {
@@ -130,6 +137,9 @@ namespace Oblig1.DAL
             }
         }
 
+
+     
+
         public async Task<bool> Slett(string brukernavn)
         {
             try
@@ -137,7 +147,7 @@ namespace Oblig1.DAL
                 var bruker = await _db.bruker.FindAsync(brukernavn);
                 if (bruker == null)
                 {
-                    _Brukerlogger.LogError("[BrukerRepo] Bruker finnes ikke for dette brukernavnet" +brukernavn);
+                    _Brukerlogger.LogError("[BrukerRepo] Bruker finnes ikke for dette brukernavnet" + brukernavn);
                     return false;
                 }
 

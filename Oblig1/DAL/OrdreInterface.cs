@@ -3,14 +3,14 @@ using Oblig1.Models;
 
 namespace Oblig1.DAL
 {
-    public class OrdreRepo
+    public class OrdreRepo : OrdreInterface
     {
 
         private readonly ItemDbContext _db;
 
-        private readonly ILogger<OrdreRepo> _OrdreLogger;
+        private readonly ILogger<OrdreInterface> _OrdreLogger;
 
-        public OrdreRepo(ItemDbContext db, ILogger<OrdreRepo> logger)
+        public OrdreRepo(ItemDbContext db, ILogger<OrdreInterface> logger)
         {
             _db = db;
             _OrdreLogger = logger;
@@ -43,7 +43,7 @@ namespace Oblig1.DAL
             catch (Exception ex)
             {
 
-               _OrdreLogger.LogError("[OrdreRepo]hent ordre med id" + id + "metoden failet ved innkalling, error melding : {e}", ex.Message);
+                _OrdreLogger.LogError("[OrdreRepo]hent ordre med id" + id + "metoden failet ved innkalling, error melding : {e}", ex.Message);
                 return null;
 
             }

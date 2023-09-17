@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Oblig1.DAL;
 using Oblig1.Models;
+using Oblig1.Services;
 using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
@@ -10,18 +11,20 @@ namespace Oblig1.Controllers
     {
         private readonly ILogger _Brukerlogger;
 
-        private readonly BrukerRepo _brukerRepo;
+        private readonly BrukerInterface _brukerInterface;
 
 
-        public BrukerController(BrukerRepo brukerRepo)
+        public BrukerController(BrukerInterface Interface, ILogger<BrukerController> logger)
         {
-            _brukerRepo = brukerRepo;
-
+            _brukerInterface = Interface;
+            _Brukerlogger= logger;
         }
+
+
 
         public async Task<IActionResult> Tabell()
         {
-            var liste = await _brukerRepo.HentAlle();
+            var liste = await _brukerInterface.HentAlle();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] bruker liste ikke funnet dersom hentAlle() ble kalt");
@@ -37,7 +40,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> EierTabell()
         {
-            var liste = await _brukerRepo.HentAlleEiere();
+            var liste = await _brukerInterface.HentAlleEiere();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] eier liste ikke funnet dersom hentAlle() ble kalt");
@@ -53,7 +56,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> AdminTabell()
         {
-            var liste = await _brukerRepo.HentAlleAdmins();
+            var liste = await _brukerInterface.HentAlleAdmins();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] admin liste ikke funnet dersom AdminTabell() ble kalt");
@@ -69,7 +72,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> NonAdminTabell()
         {
-            var liste = await _brukerRepo.HentAlleNonAdmins();
+            var liste = await _brukerInterface.HentAlleNonAdmins();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] non admin liste ikke funnet dersom AdminTabell() ble kalt");
@@ -95,7 +98,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> endreBruker(string brukernavn)
         {
-            var bruker = await _brukerRepo.hentBrukerMedId(brukernavn);
+            var bruker = await _brukerInterface.hentBrukerMedId(brukernavn);
             if (bruker == null)
             {
                 _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " + brukernavn);
@@ -111,7 +114,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _brukerRepo.endreBruker(bruker);
+                bool OK = await _brukerInterface.endreBruker(bruker);
                 if (OK) {
                     return RedirectToAction(nameof(Tabell));
                 }
@@ -128,7 +131,7 @@ namespace Oblig1.Controllers
         [HttpGet]
         public async Task<IActionResult> slettBruker(string brukernavn)
         {
-            var bruker = await _brukerRepo.hentBrukerMedId(brukernavn);
+            var bruker = await _brukerInterface.hentBrukerMedId(brukernavn);
             if (bruker == null)
             {
                 _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " + brukernavn);
@@ -144,7 +147,7 @@ namespace Oblig1.Controllers
         {
            
        
-                bool OK = await _brukerRepo.Slett(brukernavn);
+                bool OK = await _brukerInterface.Slett(brukernavn);
                 if (!OK)
                 {
                     _Brukerlogger.LogWarning("[BrukerController] sletting av bruker failet" + brukernavn);

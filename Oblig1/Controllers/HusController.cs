@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Oblig1.DAL;
 using Oblig1.Models;
+using Oblig1.Services;
 using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
@@ -9,18 +9,21 @@ namespace Oblig1.Controllers
     {
         private readonly ILogger _Brukerlogger;
 
-        private readonly HusRepo _HusRepo;
+        private readonly HusInterface husInterface;
 
+  
 
-        public HusController(HusRepo husRepo)
+        public HusController(HusInterface Interface, ILogger<HusController> logger)
         {
-            _HusRepo = husRepo;
+            Interface = husInterface;
+            _Brukerlogger = logger; 
+
 
         }
 
         public async Task<IActionResult> Tabell()
         {
-            var liste = await _HusRepo.HentAlle();
+            var liste = await husInterface.hentAlle();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
@@ -36,7 +39,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> tilgjengeligHus()
         {
-            var liste = await _HusRepo.HentAlle();
+            var liste = await husInterface.hentAlle();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
@@ -53,7 +56,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> Oversikt(int id)
         {
-            var hus = await _HusRepo.hentHusMedId(id);
+            var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
                 _Brukerlogger.LogError("[HusController] hus var ikke funnet ved bruk av denne iden : " + id);
@@ -83,7 +86,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> endreHus(int id)
         {
-            var hus = await _HusRepo.hentHusMedId(id);
+            var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
                 _Brukerlogger.LogError("[HusController] hus ikke funnet ved bruke av dette brukernavnet : " + id);
@@ -99,7 +102,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _HusRepo.Endre(hus);
+                bool OK = await husInterface.Endre(hus);
                 if (OK)
                 {
                     return RedirectToAction(nameof(Tabell));
@@ -117,7 +120,7 @@ namespace Oblig1.Controllers
         [HttpGet]
         public async Task<IActionResult> slettHus(int id)
         {
-            var hus = await _HusRepo.hentHusMedId(id);
+            var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
                 _Brukerlogger.LogError("[HusController] bruker ikke funnet ved bruke av dette brukernavnet : " + id);
@@ -132,7 +135,7 @@ namespace Oblig1.Controllers
         {
 
 
-            bool OK = await _HusRepo.Slett(id);
+            bool OK = await husInterface.Slett(id);
             if (!OK)
             {
                 _Brukerlogger.LogWarning("[HusController] sletting av bruker failet" + id);

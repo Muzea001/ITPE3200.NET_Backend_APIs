@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
+using Oblig1.Services;
 using System.Linq.Expressions;
 
 namespace Oblig1.DAL
 {
-    public class HusRepo
+    public class HusRepo : HusInterface
     {
         private readonly ItemDbContext _db;
 
@@ -17,7 +18,7 @@ namespace Oblig1.DAL
         }
 
 
-        public async Task<IEnumerable<Hus>?> HentAlle()
+        public async Task<IEnumerable<Hus>?> hentAlle()
         {
             try
             {

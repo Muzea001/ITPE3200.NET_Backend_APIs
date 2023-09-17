@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Oblig1.DAL;
+using Oblig1.Services;
 using Serilog;
 using Serilog.Events;
 
@@ -13,7 +15,10 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
 
-
+builder.Services.AddScoped<BrukerInterface,BrukerRepo>();
+builder.Services.AddScoped<HusInterface, HusRepo>();
+builder.Services.AddScoped<KundeInterface,KundeRepo>();
+builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
 
 
 var loggerConfiguration = new LoggerConfiguration()
@@ -29,6 +34,7 @@ builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -37,6 +43,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
  
+app.MapDefaultControllerRoute();
 
 app.Run();
 
