@@ -13,10 +13,6 @@ namespace Oblig1.DAL
             context.Database.EnsureCreated();
 
 
-
-            Bruker bruker = new Bruker();
-            Eeier eier = new Eeier() {bruker = bruker, kontoNummer=193265478 };
-
             if (!context.hus.Any())
 
 
@@ -24,7 +20,7 @@ namespace Oblig1.DAL
                         
                 var hus = new List<Hus>
                 {
-                    new Hus {Beskrivelse="Stort og Nyoppusset leilighet", Addresse="Osloveien22", areal=200, romAntall=4, erTilgjengelig=false, Eeier=eier},
+                    new Hus {Beskrivelse="Stort og Nyoppusset leilighet", Addresse="Osloveien22", areal=200, romAntall=4, erTilgjengelig=false},
                     
 
                 };
@@ -50,7 +46,7 @@ namespace Oblig1.DAL
 
                 var ordre = new List<Ordre>
                 {
-                    new Ordre {Dato= new DateTime(2023,11,1) ,husId=1, betaltGjennom="DelBetaling" },
+                    new Ordre { hus = Dato= new DateTime(2023,11,1) , betaltGjennom="DelBetaling" },
                     
                     };
                 context.AddRange(ordre);
@@ -63,7 +59,7 @@ namespace Oblig1.DAL
 
                 var brukere = new List<Bruker>
                 {
-                    new Bruker {Navn="Hans Eli",Addresse="Osloveien32", Email="Hans@Hotmail.com",Fodselsdato= new DateTime(1889,03,03), TelefonNmr=98256374},
+                    new Bruker { }
                    
                     };
                 context.AddRange(brukere);

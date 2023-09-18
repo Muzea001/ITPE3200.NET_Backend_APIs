@@ -12,9 +12,15 @@ namespace Oblig1.Models
 
         [StringLength(200)]
         public string betaltGjennom { get; set; }   
-        public virtual Hus hus { get; set; }    
 
-        public int husId { get; set; }
+        public int husID { get; set; }  
+        public virtual Hus hus { get; set; }
+
+        public int kundeID { get; set; }    
+
+        public virtual Kunde kunde { get; set; }
+
+        
 
 
 
