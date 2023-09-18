@@ -7,6 +7,8 @@ namespace Oblig1.Services
     {
         Task<IEnumerable<Hus>?> hentAlle();
         Task<Hus?> hentHusMedId(int id);
+
+        Task<Hus?> hentAlleMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom);
         Task<bool> Lag(Hus hus);
         Task<bool> Endre(Hus hus);
         Task<bool> Slett(int id);

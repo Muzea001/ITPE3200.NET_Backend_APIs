@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Oblig1.DAL;
@@ -6,6 +7,7 @@ using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ItemDbContextConnection' was not found");
 
 builder.Services.AddControllersWithViews();
 
@@ -14,6 +16,12 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
+
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ItemDbContext>();
+
+builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 builder.Services.AddScoped<BrukerInterface,BrukerRepo>();
 builder.Services.AddScoped<HusInterface, HusRepo>();
@@ -42,6 +50,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+app.UseSession();
+app.UseAuthentication();    
+app.UseAuthorization();
+
+app.UseAuthentication();
+
+app.MapRazorPages();
  
 app.MapDefaultControllerRoute();
 

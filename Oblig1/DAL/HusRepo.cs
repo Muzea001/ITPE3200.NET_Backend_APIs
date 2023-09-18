@@ -47,6 +47,59 @@ namespace Oblig1.DAL
 
         }
 
+        public async Task<IEnumerable<Hus>?> hentAlleFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
+        {
+            try
+            {
+                var sporring = _db.hus.AsQueryable();
+
+                if (!string.IsNullOrEmpty(by))
+                {
+                    sporring = sporring.Where(h => EF.Functions.Like(h.by, $"%{by}%"));
+                }
+
+                if (minPris > 0)
+                {
+                    sporring = sporring.Where(h => h.Pris >= minPris);
+
+                }
+
+                if (maksPris > 0)
+                {
+
+                    sporring = sporring.Where(h => h.Pris >= maksPris);
+
+                }
+                if (minstAreal > 0)
+                {
+                    sporring = sporring.Where(h => h.areal >= minstAreal);
+
+                }
+                if (maksAreal > 0)
+                {
+                    sporring = sporring.Where(h => h.areal >= maksAreal);
+                }
+                if (minstRom > 0)
+                {
+                    sporring = sporring.Where(h => h.Pris >= minstRom);
+                }
+                if (maksRom > 0)
+                {
+                    sporring = sporring.Where(h => h.romAntall >= maksRom);
+                }
+
+
+
+                return await sporring.ToListAsync();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[HomeRepo] home ToListeAsts  is Failed : error melding {e}", e.Message);
+                return null;
+            }
+        }
+
         public async Task<Hus> hentHusMedId(int id)
         {
 
@@ -126,6 +179,11 @@ namespace Oblig1.DAL
 
             }
 
+        }
+
+        public Task<Hus?> hentAlleMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 
 namespace Oblig1.DAL
@@ -19,10 +20,8 @@ namespace Oblig1.DAL
 
         public DbSet <Bruker> bruker { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+
+       
     }
 
     

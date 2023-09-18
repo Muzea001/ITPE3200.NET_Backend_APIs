@@ -7,7 +7,7 @@ namespace Oblig1.Controllers
 {
     public class HusController : Controller
     {
-        private readonly ILogger _Brukerlogger;
+        private readonly ILogger _HusLogger;
 
         private readonly HusInterface husInterface;
 
@@ -16,7 +16,7 @@ namespace Oblig1.Controllers
         public HusController(HusInterface Interface, ILogger<HusController> logger)
         {
             Interface = husInterface;
-            _Brukerlogger = logger; 
+            _HusLogger = logger; 
 
 
         }
@@ -26,7 +26,7 @@ namespace Oblig1.Controllers
             var liste = await husInterface.hentAlle();
             if (liste == null)
             {
-                _Brukerlogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
+                _HusLogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
                 return NotFound("hus liste ikke funnet");
 
             }
@@ -42,7 +42,7 @@ namespace Oblig1.Controllers
             var liste = await husInterface.hentAlle();
             if (liste == null)
             {
-                _Brukerlogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
+                _HusLogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
                 return NotFound("hus liste ikke funnet");
 
             }
@@ -53,13 +53,26 @@ namespace Oblig1.Controllers
 
         }
 
+        public async Task<IActionResult> hentMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
+        {
+            var liste = await husInterface.hentAlleMedFilter( by,minstAreal,maksAreal,minPris, maksPris,  minstRom,maksRom);
+            if(liste==null)
+            {
+                return NotFound("ingenting funnet");
+            }
+
+            var itemListViewModel = new ItemListViewModel(liste, "Tabell");
+            return View(itemListViewModel);
+
+        }
+
 
         public async Task<IActionResult> Oversikt(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
-                _Brukerlogger.LogError("[HusController] hus var ikke funnet ved bruk av denne iden : " + id);
+                _HusLogger.LogError("[HusController] hus var ikke funnet ved bruk av denne iden : " + id);
                 return NotFound("hus var ikke funnet");
             }
 
@@ -89,7 +102,7 @@ namespace Oblig1.Controllers
             var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
-                _Brukerlogger.LogError("[HusController] hus ikke funnet ved bruke av dette brukernavnet : " + id);
+                _HusLogger.LogError("[HusController] hus ikke funnet ved bruke av dette brukernavnet : " + id);
                 return NotFound("hus ikke funnet");
             }
             return View(hus);
@@ -110,7 +123,7 @@ namespace Oblig1.Controllers
 
             }
 
-            _Brukerlogger.LogWarning("[HusController] endring av hus failet" + hus);
+            _HusLogger.LogWarning("[HusController] endring av hus failet" + hus);
             return View(hus);
 
 
@@ -123,7 +136,7 @@ namespace Oblig1.Controllers
             var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
             {
-                _Brukerlogger.LogError("[HusController] bruker ikke funnet ved bruke av dette brukernavnet : " + id);
+                _HusLogger.LogError("[HusController] bruker ikke funnet ved bruke av dette brukernavnet : " + id);
                 return NotFound("hus ikke funnet");
             }
             return View(hus);
@@ -138,7 +151,7 @@ namespace Oblig1.Controllers
             bool OK = await husInterface.Slett(id);
             if (!OK)
             {
-                _Brukerlogger.LogWarning("[HusController] sletting av bruker failet" + id);
+                _HusLogger.LogWarning("[HusController] sletting av bruker failet" + id);
                 return BadRequest("Sletting av hus mislyktes");
             }
             return RedirectToAction($"{nameof(Tabell)}");

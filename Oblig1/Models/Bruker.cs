@@ -1,26 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Oblig1.Models
 {
     public class Bruker : Person
 
     {
-        
-        public Bruker(string navn,DateTime fodselsdato, string addresse, int telefonnummer, string email,string passord, bool erEier, bool erAdmin)
-        :base(navn,fodselsdato,addresse,telefonnummer,email)
+
+        public Bruker() : base() { }
+
+        public Bruker(string navn, DateTime fodselsdato, string addresse, long telefonNmr, string email,string passord, Person person, bool erAdmin, bool erEier ) : base(navn, fodselsdato, addresse, telefonNmr, email)
         {
-            this.Passord = passord;
+
+            this.Passord = passord; 
+            this.erAdmin = erAdmin; 
             this.erEier = erEier;
-            this.erAdmin = erAdmin;
-        
-        
-        
+          
         }
 
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z]).{8,}$")]
-        String Passord { get; set; }
-        bool erAdmin { get; set; }
+        public virtual Person person { get; set; }
 
-        bool erEier { get; set; }
+        [Key]
+        public string Email { get; set; }
+
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z]).{8,}$")]
+        public String Passord { get; set; }
+        public bool erAdmin { get; set; }
+
+        public bool erEier { get; set; }
     }
 }

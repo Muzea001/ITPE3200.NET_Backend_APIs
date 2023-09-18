@@ -9,6 +9,8 @@ namespace Oblig1.ViewModeller
         public IEnumerable<Bruker> Bruker;
         public IEnumerable<Kunde> Kunde;
         public string? CurrentViewName;
+        private Hus liste;
+        private string v;
 
         public ItemListViewModel(IEnumerable<Hus> hus, string? viewNavn)
         {
@@ -35,5 +37,10 @@ namespace Oblig1.ViewModeller
 
         }
 
+        public ItemListViewModel(Hus liste, string v)
+        {
+            this.liste = liste;
+            this.v = v;
+        }
     }
 }
