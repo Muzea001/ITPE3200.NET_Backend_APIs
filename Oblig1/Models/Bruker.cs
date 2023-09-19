@@ -17,11 +17,9 @@ namespace Oblig1.Models
             this.erEier = erEier;
           
         }
-
+        public int personID { get; set; }
+        [ForeignKey("personID")]
         public virtual Person person { get; set; }
-
-        [Key]
-        public string Email { get; set; }
 
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z]).{8,}$")]
         public String Passord { get; set; }

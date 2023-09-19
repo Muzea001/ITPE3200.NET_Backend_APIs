@@ -20,8 +20,10 @@ namespace Oblig1.DAL
 
         public DbSet <Bruker> bruker { get; set; }
 
+        public DbSet<Eier> eier { get; set; }
 
-       
+
+
     }
 
     

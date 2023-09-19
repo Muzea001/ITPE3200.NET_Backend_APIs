@@ -5,7 +5,7 @@ namespace Oblig1.Models
 {
     public class Hus
     {
-
+        [Key]
         public int husId { get; set; }
 
         [StringLength(400)]
@@ -24,8 +24,9 @@ namespace Oblig1.Models
 
         public bool erTilgjengelig { get; set; }
 
-        [ForeignKey("eierID")]
+        
         public int eierID { get; set; }
+        [ForeignKey("eierID")]
         public virtual Eier Eier { get; set; }
 
        

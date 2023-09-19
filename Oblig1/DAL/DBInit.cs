@@ -14,29 +14,41 @@ namespace Oblig1.DAL
             context.Database.EnsureCreated();
 
 
-            if (!context.hus.Any())
+            if (!context.person.Any())
 
 
             {
 
-                var hus = new List<Hus>
+                var person = new List<Person>
                 {
-                    new Hus {husId=6,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",eierID=7,erTilgjengelig=true,Pris=400,romAntall=4 },
+                    new Person {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531 },
 
 
                 };
-                context.AddRange(hus);
+                context.AddRange(person);
                 context.SaveChanges();
 
             }
-            var liste = new List<Ordre>();
+
+            if (!context.bruker.Any())
+            {
+
+                var brukere = new List<Bruker>
+                {
+                   new Bruker {personID=2,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531,Passord="hei123",erAdmin=false,erEier=true,}
+                     };
+
+                context.AddRange(brukere);
+                context.SaveChanges();
+            }
+
             if (!context.kunde.Any())
             {
 
                 var kunder = new List<Kunde>
                 {
 
-                  new Kunde("Mathias", new DateTime(20, 11, 1999), "Osloveien18", 40336208, "Methias99@gmail.com", 1, liste)
+                  new Kunde{personID=3,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999, 5, 8),TelefonNmr=14789531,kundeId=2 }
                 };
 
 
@@ -44,49 +56,59 @@ namespace Oblig1.DAL
                 context.SaveChanges();
             }
 
+            if (!context.eier.Any())
+            {
+
+                var eier = new Eier
+                {
+                    new Eier {personID=4,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999, 5, 8),TelefonNmr=14789531,eierID=1,kontoNummer=11111111111,}
+
+
+                };
+                context.AddRange(eier);
+                context.SaveChanges();
+
+            }
+
+
+
+            if (!context.hus.Any())
+
+
+            {
+
+                var hus = new List<Hus>
+                {
+                    new Hus {husId=1,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4 },
+
+
+                };
+                context.AddRange(hus);
+                context.SaveChanges();
+
+            }
+            
+          
+
             if (!context.ordre.Any())
             {
 
                 var ordre = new List<Ordre>
                 {
                     new Ordre {
-                        ordreId = 3,
+                        ordreId = 1,
                         Dato = DateTime.Now,
                         betaltGjennom = "Kort",
-                        husID = 7,
-                        hus = new Hus { husId = 2,Beskrivelse="Stort og Nyoppusset leilighet", Addresse="Osloveien22", areal=200, romAntall=4, erTilgjengelig=false },
-                        kundeID = 1,
-                        kunde = new Kunde("Mathias", new DateTime(20, 11, 1999), "Osloveien18", 40336208, "Methias99@gmail.com", 1, liste),
+                        husID = 1,
+                        kundeID = 2,
                         }
-                        };
+                };
 
 
                 context.AddRange(ordre);
                 context.SaveChanges();
             };
 
-
-            if (!context.bruker.Any())
-            {
-
-                var brukere = new List<Bruker>
-                {
-                    new Bruker {
-
-                        Navn= "John Doe",
-                        Fodselsdato = new DateTime(1990, 5, 15),
-                        Addresse= "123 Main Street",
-                        TelefonNmr= 5551234567,
-                        Email= "johndoe@example.com",
-                        Passord= "SecurePassword123",
-                        erEier= true,
-                        erAdmin= false
-                        }
-                     };
-
-                context.AddRange(brukere);
-                context.SaveChanges();
-            }
 }
     }
 }

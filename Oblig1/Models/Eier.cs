@@ -17,8 +17,8 @@ namespace Oblig1.Models
 
         public int eierID { get; set; }
 
-        [ForeignKey("Email")]
-        public string Email { get; set; }
+        public int personID { get; set; }
+        [ForeignKey("personID")]
         public virtual Bruker bruker { get; set; }
 
       

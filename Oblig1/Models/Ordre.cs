@@ -1,4 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +11,7 @@ namespace Oblig1.Models
             
         }
 
+        [Key]
         public int ordreId { get; set; }
 
         public DateTime Dato { get; set; }
@@ -22,8 +23,8 @@ namespace Oblig1.Models
         public int husID { get; set; }  
         public virtual Hus hus { get; set; }
         [ForeignKey("eierID")]
-        public int kundeID { get; set; }    
-
+        public int kundeID { get; set; }
+        [ForeignKey("kundeID")]
         public virtual Kunde kunde { get; set; }
 
         
