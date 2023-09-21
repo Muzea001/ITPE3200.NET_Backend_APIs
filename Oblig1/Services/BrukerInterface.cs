@@ -9,8 +9,9 @@ namespace Oblig1.Services
         Task<IEnumerable<Bruker>?> HentAlleAdmins();
         Task<IEnumerable<Bruker>?> HentAlleEiere();
         Task<IEnumerable<Bruker>?> HentAlleNonAdmins();
-        Task<Bruker> hentBrukerMedId(string brukernavn);
+        Task<Bruker> hentBrukerMedId(int brukerid);
         Task<bool> lagBruker(Bruker bruker);
-        Task<bool> Slett(string brukernavn);
+        Task<bool> Slett(int brukerid);
+        Task<bool> EndreBrukerStatus(int brukerId, bool ok);
     }
 }

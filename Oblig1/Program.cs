@@ -1,3 +1,5 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,8 @@ builder.Services.AddScoped<HusInterface, HusRepo>();
 builder.Services.AddScoped<KundeInterface,KundeRepo>();
 builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
 
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
@@ -41,6 +45,10 @@ var logger = loggerConfiguration.CreateLogger();
 builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
+
+
+
+
 
 
 if (app.Environment.IsDevelopment())

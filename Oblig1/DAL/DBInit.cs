@@ -22,6 +22,7 @@ namespace Oblig1.DAL
                 var person = new List<Person>
                 {
                     new Person {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531 },
+                    new Person {personID=2,Navn="Ole",Addresse="Osloveien20",Email="Osloveien20",Fodselsdato= new DateTime(1996,2,8),TelefonNmr=95632164 }
 
 
                 };
@@ -35,7 +36,7 @@ namespace Oblig1.DAL
 
                 var brukere = new List<Bruker>
                 {
-                   new Bruker {personID=2,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531,Passord="hei123",erAdmin=false,erEier=true,}
+                   new Bruker {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531,Passord="hei123",erAdmin=false,erEier=true,}
                      };
 
                 context.AddRange(brukere);
@@ -48,7 +49,7 @@ namespace Oblig1.DAL
                 var kunder = new List<Kunde>
                 {
 
-                  new Kunde{personID=3,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999, 5, 8),TelefonNmr=14789531,kundeId=2 }
+                  new Kunde{personID=2,Navn="Ole",Addresse="Osloveien20",Email="Ole20@gmail.com",Fodselsdato= new DateTime(1996,2,8),TelefonNmr=95632164,kundeId=1 }
                 };
 
 
@@ -61,9 +62,14 @@ namespace Oblig1.DAL
 
                 var eier = new Eier
                 {
-                    new Eier {personID=4,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999, 5, 8),TelefonNmr=14789531,eierID=1,kontoNummer=11111111111,}
-
-
+                    personID = 1,
+                    Navn = "Mathias",
+                    Addresse = "Osloveien18",
+                    Email = "Mathias18@gmail.com",
+                    Fodselsdato = new DateTime(1999, 5, 8),
+                    TelefonNmr = 14789531,
+                    eierID = 1,
+                    kontoNummer = 11111111111
                 };
                 context.AddRange(eier);
                 context.SaveChanges();
@@ -79,7 +85,7 @@ namespace Oblig1.DAL
 
                 var hus = new List<Hus>
                 {
-                    new Hus {husId=1,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4 },
+                    new Hus {husId=1,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, eierID=1 },
 
 
                 };
@@ -100,7 +106,7 @@ namespace Oblig1.DAL
                         Dato = DateTime.Now,
                         betaltGjennom = "Kort",
                         husID = 1,
-                        kundeID = 2,
+                        kundeID = 1,
                         }
                 };
 

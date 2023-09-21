@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 using Oblig1.Services;
+using System.Linq.Expressions;
 
 namespace Oblig1.DAL
 {
@@ -80,12 +82,12 @@ namespace Oblig1.DAL
 
         }
 
-        public async Task<Bruker> hentBrukerMedId(string brukernavn)
+        public async Task<Bruker> hentBrukerMedId(int brukerid)
         {
 
             try
             {
-                return await _db.bruker.FindAsync(brukernavn);
+                return await _db.bruker.FindAsync(brukerid);
 
             }
             catch (Exception ex)
@@ -137,17 +139,41 @@ namespace Oblig1.DAL
             }
         }
 
+        public async Task<bool> EndreBrukerStatus(int brukerId, bool OK ) {
+        
+            try
+            {
+                var bruker = await _db.bruker.FindAsync(brukerId);
+                if (bruker != null)
+                {
+                    bruker.erAdmin = true;
+                    await _db.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch( Exception e)
+            {
+                _Brukerlogger.LogError("[BrukerRepo] feil med gjør bruker til kunde metode, error melding : {e}", e.Message);
+                return false;
+            }
+        }
+
 
      
 
-        public async Task<bool> Slett(string brukernavn)
+        public async Task<bool> Slett(int brukerid)
         {
             try
             {
-                var bruker = await _db.bruker.FindAsync(brukernavn);
+                var bruker = await _db.bruker.FindAsync(brukerid);
                 if (bruker == null)
                 {
-                    _Brukerlogger.LogError("[BrukerRepo] Bruker finnes ikke for dette brukernavnet" + brukernavn);
+                    _Brukerlogger.LogError("[BrukerRepo] Bruker finnes ikke for dette brukernavnet", brukerid);
                     return false;
                 }
 
@@ -161,7 +187,7 @@ namespace Oblig1.DAL
             catch (Exception ex)
             {
 
-                _Brukerlogger.LogError("[BrukerRepo] hus sletting failet for iden angitt, error melding {e}", brukernavn, ex.Message);
+                _Brukerlogger.LogError("[BrukerRepo] hus sletting failet for iden angitt, error melding {e}",brukerid, ex.Message);
                 return false;
 
             }

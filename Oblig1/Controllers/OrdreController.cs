@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Oblig1.DAL;
 using Oblig1.Models;
+using Oblig1.Services;
 using Oblig1.ViewModeller;
 
 
@@ -10,11 +11,15 @@ namespace Oblig1.Controllers
     {
         private readonly ILogger _Ordrelogger;
         private readonly OrdreInterface _ordreInterface;
+        private readonly Kvittering _kvittering;
+        private readonly HusInterface _husInterface;
 
-        public OrdreController(OrdreInterface ordreRepo, ILogger<OrdreController> logger)
+        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering)
         {
-            _ordreInterface = ordreRepo;
+            _ordreInterface = ordreinterface;
             _Ordrelogger = logger;
+            _husInterface = husInterface; ;
+            _kvittering = kvittering;
         }
 
         public async Task<IActionResult> Tabell()
@@ -56,6 +61,7 @@ namespace Oblig1.Controllers
 
             _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
             return View(ordre);
+            
 
 
 
@@ -66,19 +72,26 @@ namespace Oblig1.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Lag(Ordre ordre)
+        public async Task<IActionResult> Lag(Ordre ordre, int husid)
         {
             if (ModelState.IsValid)
             {
+                var hus = await _husInterface.hentHusMedId(husid);
+                if (hus == null) {
+                    return NotFound("hus finnes ikke !");
+                        }
                 bool OK = await _ordreInterface.lagOrdre(ordre);
                 if (OK)
                 {
-                    return RedirectToAction(nameof(Tabell));
+                    var htmlKvittering = "<html><body><p><Kvittinerg Detaljer>.....</p></body></html>";
+                    var pdfKvittering = _kvittering.genererPdfKvittering(htmlKvittering);
+                    var filnavn = "Bestilling kvittering.pdf";
+                    return File(pdfKvittering, filnavn);
 
                 }
             }
-            _Ordrelogger.LogWarning("[KundeController] Kunde laging har failet", ordre);
-            return View(ordre);
+            _Ordrelogger.LogWarning("[OrdreRepo] har failet med å danne en kvittering for denne ordren", ordre);
+            return RedirectToAction("index");
         }
 
         [HttpGet]
@@ -108,6 +121,8 @@ namespace Oblig1.Controllers
             }
             return RedirectToAction(nameof(Tabell));
         }
+
+       
     }
 
 }

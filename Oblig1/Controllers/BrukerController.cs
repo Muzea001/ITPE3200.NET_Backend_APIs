@@ -13,11 +13,14 @@ namespace Oblig1.Controllers
 
         private readonly BrukerInterface _brukerInterface;
 
+        private readonly eierInterface _eierInterface;
 
-        public BrukerController(BrukerInterface Interface, ILogger<BrukerController> logger)
+
+        public BrukerController(BrukerInterface Interface, ILogger<BrukerController> logger, eierInterface eierInterface)
         {
             _brukerInterface = Interface;
-            _Brukerlogger= logger;
+            _Brukerlogger = logger;
+            _eierInterface = eierInterface;
         }
 
 
@@ -40,7 +43,7 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> EierTabell()
         {
-            var liste = await _brukerInterface.HentAlleEiere();
+            var liste = await _eierInterface.HentAlleEiere();
             if (liste == null)
             {
                 _Brukerlogger.LogError("[BrukerController] eier liste ikke funnet dersom hentAlle() ble kalt");
@@ -96,12 +99,12 @@ namespace Oblig1.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> endreBruker(string brukernavn)
+        public async Task<IActionResult> endreBruker(int brukerid)
         {
-            var bruker = await _brukerInterface.hentBrukerMedId(brukernavn);
+            var bruker = await _brukerInterface.hentBrukerMedId(brukerid);
             if (bruker == null)
             {
-                _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " + brukernavn);
+                _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " , brukerid);
                 return NotFound("bruker ikke funnet");
             }
             return View(bruker);    
@@ -128,13 +131,37 @@ namespace Oblig1.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> slettBruker(string brukernavn)
+        [HttpPost]
+
+        public async Task<IActionResult> EndreBrukerStatus(int brukerId, bool nyStatus)
         {
-            var bruker = await _brukerInterface.hentBrukerMedId(brukernavn);
+            try
+            {
+                var OK = await _brukerInterface.EndreBrukerStatus(brukerId, nyStatus);
+
+                if (OK)
+                {
+                    return Ok("Brukerstatus endret."); 
+                }
+                else
+                {
+                    return NotFound("Bruker ikke funnet."); 
+                }
+            }
+            catch (Exception ex)
+            {
+                _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " , brukerId);
+                return NotFound("bruker finnes ikke");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> slettBruker(int brukerid)
+        {
+            var bruker = await _brukerInterface.hentBrukerMedId(brukerid);
             if (bruker == null)
             {
-                _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " + brukernavn);
+                _Brukerlogger.LogError("[BrukerController] bruker ikke funnet ved bruke av dette brukernavnet : " , brukerid);
                 return NotFound("bruker ikke funnet");
             }
             return View(bruker);
@@ -143,14 +170,14 @@ namespace Oblig1.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> slettBrukerBekreftet(string brukernavn)
+        public async Task<IActionResult> slettBrukerBekreftet(int brukerid)
         {
            
        
-                bool OK = await _brukerInterface.Slett(brukernavn);
+                bool OK = await _brukerInterface.Slett(brukerid);
                 if (!OK)
                 {
-                    _Brukerlogger.LogWarning("[BrukerController] sletting av bruker failet" + brukernavn);
+                    _Brukerlogger.LogWarning("[BrukerController] sletting av bruker failet" , brukerid);
                     return BadRequest("Sletting av bruker mislyktes");
                 }
                 return RedirectToAction($"{nameof(Tabell)}");   
