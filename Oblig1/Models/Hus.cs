@@ -29,6 +29,12 @@ namespace Oblig1.Models
         [ForeignKey("eierID")]
         public virtual Eier Eier { get; set; }
 
+        public string bildeURL { get; set; }    
+
+        public bool harParkering { get; set; }  
+
+        public bool erMoblert { get; set; }
+
        
     }
 }
