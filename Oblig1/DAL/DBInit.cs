@@ -85,7 +85,7 @@ namespace Oblig1.DAL
 
                 var hus = new List<Hus>
                 {
-                    new Hus {husId=1,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, erMoblert=true, harParkering=false, eierID=1 },
+                    new Hus {husId=1,Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, erMoblert=true, harParkering=false, eierID=1, bildeURL = "" },
 
 
                 };
