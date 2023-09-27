@@ -8,27 +8,30 @@ using Oblig1.Services;
 using Serilog;
 using Serilog.Events;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ItemDbContextConnection' was not found");
 
-builder.Services.AddControllersWithViews();
 
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
 
-
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ItemDbContext>();
+
+builder.Services.AddScoped<BrukerInterface, BrukerRepo>();
+builder.Services.AddScoped<HusInterface, HusRepo>();
+builder.Services.AddScoped<KundeInterface, KundeRepo>();
+builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
+
 
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
-builder.Services.AddScoped<BrukerInterface,BrukerRepo>();
-builder.Services.AddScoped<HusInterface, HusRepo>();
-builder.Services.AddScoped<KundeInterface,KundeRepo>();
-builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
 
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 

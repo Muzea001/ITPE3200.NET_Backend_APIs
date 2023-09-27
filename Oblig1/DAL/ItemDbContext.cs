@@ -4,7 +4,7 @@ using Oblig1.Models;
 
 namespace Oblig1.DAL
 {
-    public class ItemDbContext : DbContext
+    public class ItemDbContext : IdentityDbContext
 
     {
         public ItemDbContext(DbContextOptions<ItemDbContext> options) : base(options)
@@ -23,6 +23,10 @@ namespace Oblig1.DAL
         public DbSet<Eier> eier { get; set; }
 
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
 
     }
 

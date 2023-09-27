@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
@@ -96,6 +97,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
+        [Authorize]
 
         public async Task<IActionResult> endreHus(int id)
         {
@@ -111,6 +113,7 @@ namespace Oblig1.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> endreHus(Hus hus)
         {
             if (ModelState.IsValid)
@@ -131,6 +134,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> slettHus(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -144,6 +148,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> slettHusBekreftet(int id)
         {
 

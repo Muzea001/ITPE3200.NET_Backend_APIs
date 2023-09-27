@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
@@ -36,6 +37,7 @@ namespace Oblig1.Controllers
             return View(ItemListViewModel);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Endre(int id)
         {
             var ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -47,6 +49,8 @@ namespace Oblig1.Controllers
             return View(ordre);
         }
 
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EndreBekreftet(Ordre ordre)
         {
             if (ModelState.IsValid)
@@ -68,10 +72,12 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create() { return View(); }
 
 
         [HttpPost]
+       
         public async Task<IActionResult> Lag(Ordre ordre, int husid)
         {
             if (ModelState.IsValid)
@@ -95,7 +101,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-
+        [Authorize]
         public async Task<IActionResult> Slett(int id)
         {
             var ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -110,7 +116,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public async Task<IActionResult> SlettBekreftet(int id)
         {
             bool OK = await _ordreInterface.SlettOrdre(id);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oblig1.DAL;
 using Oblig1.Models;
@@ -23,8 +24,8 @@ namespace Oblig1.Controllers
             _eierInterface = eierInterface;
         }
 
-
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Tabell()
         {
             var liste = await _brukerInterface.HentAlle();
@@ -40,7 +41,8 @@ namespace Oblig1.Controllers
             return View(itemListViewModel);
 
         }
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> EierTabell()
         {
             var liste = await _eierInterface.HentAlleEiere();
@@ -56,7 +58,8 @@ namespace Oblig1.Controllers
             return View(itemListViewModel);
 
         }
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> AdminTabell()
         {
             var liste = await _brukerInterface.HentAlleAdmins();
@@ -72,7 +75,8 @@ namespace Oblig1.Controllers
             return View(itemListViewModel);
 
         }
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> NonAdminTabell()
         {
             var liste = await _brukerInterface.HentAlleNonAdmins();
@@ -98,7 +102,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
-
+        [Authorize]
         public async Task<IActionResult> endreBruker(int brukerid)
         {
             var bruker = await _brukerInterface.hentBrukerMedId(brukerid);
@@ -113,6 +117,7 @@ namespace Oblig1.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> endreBruker(Bruker bruker)
         {
             if (ModelState.IsValid)
@@ -132,7 +137,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public async Task<IActionResult> EndreBrukerStatus(int brukerId, bool nyStatus)
         {
             try
@@ -156,6 +161,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> slettBruker(int brukerid)
         {
             var bruker = await _brukerInterface.hentBrukerMedId(brukerid);
@@ -169,7 +175,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public async Task<IActionResult> slettBrukerBekreftet(int brukerid)
         {
            
