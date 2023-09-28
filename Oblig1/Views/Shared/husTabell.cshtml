@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Oblig1.Models.Hus>
+
+<div class="container">
+    <table class='table table-striped'>
+        <tr>
+            <th>Id</th>
+            <th>EierId</th>
+            <th>Pris</th>
+            <th>Beskrivelse</th>
+            <th>Tilgjengelighet</th>
+            <th>Bilde</th>
+            <th>Adresse</th>
+            <th>By</th>
+            <th>Areal</th>
+            <th>romAntall</th>
+            <th>erMøblert</th>
+            <th>harParkering</th>
+            <th></th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+            <td>@item.husId</td> 
+            <td>@item.eierID</td> 
+            <td>@item.Pris.ToString("0.00 NOK")</td>
+            <td>@item.Beskrivelse</td>
+            <td>@item.erTilgjengelig</td> 
+            <td>
+                <img src="@item.bildeURL" alt="Item Image" style="max-width: 80px; max-height: 80px;" />
+                
+            </td>
+            <td>@item.Addresse</td> 
+            <td>@item.by</td> 
+            <td>@item.areal</td> 
+            <td>@item.romAntall</td> 
+            <td>@item.erMoblert</td> 
+            <td>@item.harParkering</td> 
+            <td></td> 
+            <td>
+                <a asp-action="EndreHus" asp-route-id="@item.husId">Oppdater</a> 
+                <a asp-action="SlettHus" asp-route-id="@item.husId">Slett</a> 
+                </td>
+            </tr>
+        }
+    </table>
+    <p>
+        <a class="btn btn-secondary"
+           asp-controller="Hus"
+           asp-action="lagHus">Lag nytt Hus</a>
+    </p>
+</div>

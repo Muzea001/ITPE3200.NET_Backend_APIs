@@ -4,18 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Oblig1.Models
 {
-    public class Kunde : Person
+    public class Kunde
     {
 
-        public Kunde() : base() { }
-        public Kunde(string navn, DateTime fodselsdato, string addresse, int telefonNmr, string email,int kundeid, List<Ordre> ordreliste) : base(navn, fodselsdato, addresse, telefonNmr, email)
-        {
-            this.kundeId = kundeid; 
-            this.ordreListe = ordreliste;   
-        }
-
-    
+        public Kunde() { }
+       
         public int kundeId { get; set; }
+
+        public  virtual Person Person { get; set; }
 
         public virtual List<Ordre> ordreListe { get; set; }
 

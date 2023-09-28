@@ -1,10 +1,11 @@
-﻿@model Oblig1.ViewModeller.ItemListViewModel
+﻿@model ItemListViewModel
 
-
+<h1>List Houses (@Model.CurrentViewName View)</h1>
+<a href="/Item/Table">Table View</a>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model.Hus)
+    @foreach (var hus in Model.Hus)
     {
-        <h1>@item.Addresse</h1>
+        <partial name="_ItemCard" model="hus" />
     }
 </div>

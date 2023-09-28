@@ -24,7 +24,7 @@ namespace Oblig1.DAL
                 var person = new List<Person>
                 {
                     new Person {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531 },
-                    new Person {personID=2, Navn="Olav",Addresse = "Osloveien19",Email="Olav123@gmail.com",Fodselsdato=new DateTime(1999,2,2), TelefonNmr=23615487}
+                   
 
 
 
@@ -39,7 +39,7 @@ namespace Oblig1.DAL
 
                 var brukere = new List<Bruker>
                 {
-                   new Bruker {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531,Passord="hei123",erAdmin=false,erEier=true,}
+                   new Bruker {personID=2,Navn="Markus",Addresse="Osloveien21",Email="Markus21@gmail.com",Fodselsdato= new DateTime(1995,5,8),TelefonNmr=21336544,Passord="hei123",erAdmin=false,erEier=true,}
                      };
 
                 context.AddRange(brukere);
@@ -51,8 +51,19 @@ namespace Oblig1.DAL
 
                 var kunder = new List<Kunde>
                 {
-                    new Kunde {personID=2,Navn="Olav",Addresse= "Osloveien19",Email="Olav123@gmail.com",Fodselsdato=new DateTime(1999,2,2),TelefonNmr=23615487,kundeId=1}
-                
+                    new Kunde {
+                        kundeId=1,
+                        Person = new Person
+                         {
+                            personID = 3,
+                            Navn = "Olav",
+                            Addresse = "Osloveien19",
+                            Email = "Olav123@gmail.com",
+                            Fodselsdato = new DateTime(1999, 2, 2),
+                            TelefonNmr = 23615487
+                             }
+                    }
+               
                 };
 
 
@@ -65,12 +76,12 @@ namespace Oblig1.DAL
 
                 var eier = new Eier
                 {
-                    personID = 1,
-                    Navn = "Mathias",
-                    Addresse = "Osloveien18",
-                    Email = "Mathias18@gmail.com",
-                    Fodselsdato = new DateTime(1999, 5, 8),
-                    TelefonNmr = 14789531,
+                    personID = 4,
+                    Navn = "Jonas",
+                    Addresse = "Bergenveien13",
+                    Email = "Jonas13@gmail.com",
+                    Fodselsdato = new DateTime(1985, 7, 4),
+                    TelefonNmr = 87546611,
                     eierID = 1,
                     kontoNummer = 11111111111
                 };
