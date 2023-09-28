@@ -1,4 +1,5 @@
 ﻿
+using Oblig1.Migrations;
 using Oblig1.Models;
 using System;
 
@@ -23,7 +24,7 @@ namespace Oblig1.DAL
                 var person = new List<Person>
                 {
                     new Person {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531 },
-                    
+                    new Person {personID=2, Navn="Olav",Addresse = "Osloveien19",Email="Olav123@gmail.com",Fodselsdato=new DateTime(1999,2,2), TelefonNmr=23615487}
 
 
 
@@ -50,7 +51,7 @@ namespace Oblig1.DAL
 
                 var kunder = new List<Kunde>
                 {
-
+                    new Kunde {personID=2,Navn="Olav",Addresse= "Osloveien19",Email="Olav123@gmail.com",Fodselsdato=new DateTime(1999,2,2),TelefonNmr=23615487,kundeId=1}
                 
                 };
 
