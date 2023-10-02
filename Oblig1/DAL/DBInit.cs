@@ -38,7 +38,7 @@ namespace Oblig1.DAL
 
                 var brukere = new List<Bruker>
                 {
-                   new Bruker {personID=1,Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531,Passord="hei123",erAdmin=false,erEier=true,}
+                   new Bruker {personID=1,Navn="Jorgen",Addresse="Bjerkeveien21",Email="Jorgen12@gmail.com",Fodselsdato= new DateTime(1989,6,2),TelefonNmr=31625400,Passord="hei123",erAdmin=false,erEier=true,}
                      };
 
                 context.AddRange(brukere);
@@ -65,11 +65,11 @@ namespace Oblig1.DAL
                 var eier = new Eier
                 {
                     personID = 1,
-                    Navn = "Mathias",
-                    Addresse = "Osloveien18",
-                    Email = "Mathias18@gmail.com",
-                    Fodselsdato = new DateTime(1999, 5, 8),
-                    TelefonNmr = 14789531,
+                    Navn = "Ali",
+                    Addresse = "Gronlandveien22",
+                    Email = "Gronland13@gmail.com",
+                    Fodselsdato = new DateTime(1981, 2, 11),
+                    TelefonNmr = 40306080,
                     eierID = 1,
                     kontoNummer = 11111111111
                 };
