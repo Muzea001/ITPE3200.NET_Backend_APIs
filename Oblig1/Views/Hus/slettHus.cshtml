@@ -1,0 +1,49 @@
+﻿@model Oblig1.Models.Hus
+<h2>Slett Hus</h2>
+
+<h3>Er du sikker at du vil slette dette Hus</h3>
+<div>
+    <h4>Hus</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Hus Id</dt>
+        <dd class="col-sm-10">@Model.husId</dd>
+
+        <dt class="col-sm-2">Adresse</dt>
+        <dd class="col-sm-10">@Model.Addresse</dd>
+
+        <dt class="col-sm-2">By</dt>
+        <dd class="col-sm-10">@Model.by</dd>
+
+        <dt class="col-sm-2">Areal</dt>
+        <dd class="col-sm-10">@Model.areal</dd>
+
+        <dt class="col-sm-2">Pris</dt>
+        <dd class="col-sm-10">@Model.Pris</dd>
+
+        <dt class="col-sm-2">Room antall</dt>
+        <dd class="col-sm-10">@Model.romAntall</dd>
+
+        <dt class="col-sm-2">Tilgjenlighet</dt>
+        <dd class="col-sm-10">@Model.erTilgjengelig</dd>
+
+        <dt class="col-sm-2">Parkering:</dt>
+        <dd class="col-sm-10">@Model.harParkering</dd>
+
+        <dt class="col-sm-2">Moblert:</dt>
+        <dd class="col-sm-10">@Model.erMoblert</dd>
+
+        <dt class="col-sm-2">Beskrivelse</dt>
+        <dd class="col-sm-10">@Model.Beskrivelse</dd>
+
+        <dt class="col-sm-2">Bilder </dt>
+        <dd class="col-sm-10">@Model.bildeURL</dd>
+
+
+    </dl>
+
+    <form asp-action="slettHusBekrefte" asp-route-id="@Model.husId" method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Table" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

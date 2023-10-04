@@ -49,8 +49,8 @@
         <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
     </div>
     <div class="form-group">
-        <label for="bildeURL">Upload Pictures:</label>
-        <input type="file" asp-for="bildeURL" name="uploadPictures[]" multiple>
+        <label for="bildeURL">Last opp bilder :</label>
+        <input type="file" asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Table" class="btn btn-secondary">Back to Table View</a>
