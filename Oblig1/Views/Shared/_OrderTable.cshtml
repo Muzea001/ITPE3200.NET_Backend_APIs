@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Oblig1.Models.Ordre>
+
+<h1>List of Orders</h1>
+
+@foreach (var order in Model)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <div class="container">
+            <h5>Order @order.ordreId </h5>
+            <div>
+                <table class='table table-striped' style='max-width: 1200px;'>
+                    <tr class="table-header">
+                        <th>Order Date</th>
+                        <th>CustomerId</th>
+                        <th>Customer Name</th>
+                        <th>betalt</th>
+                    </tr>
+                    <tr>
+                        <td>@order.ordreId</td>
+                        <td>@order.kundeID</td>
+                        <td>@order.kunde</td>
+                        <td>@order.betaltGjennom</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <partial name="_OrderItemTable" model="order.ordreId" />
+    </div>
+}
+
+<p>
+    <a class="btn btn-secondary"
+       asp-controller="Order"
+       asp-action="CreateOrderItem">Create New OrderItem</a>
+</p>
