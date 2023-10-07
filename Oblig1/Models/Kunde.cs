@@ -4,15 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Oblig1.Models
 {
-    public class Kunde
+    public class Kunde : Person
     {
-
-        public Kunde() { }
-       
-        public int kundeId { get; set; }
-
-        public  virtual Person Person { get; set; }
-
+        public Kunde() : base() { } 
+        
         public virtual List<Ordre> ordreListe { get; set; }
 
 

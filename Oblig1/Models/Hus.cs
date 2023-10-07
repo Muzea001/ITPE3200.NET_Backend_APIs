@@ -7,24 +7,8 @@ namespace Oblig1.Models
     {
 
         public Hus() { }
-        public Hus(int husId, string? beskrivelse, double areal, decimal pris, string by, string addresse, int romAntall, bool erTilgjengelig, int eierID, Eier eier, string bildeURL, bool harParkering, bool erMoblert)
-        {
-            this.husId = husId;
-            Beskrivelse = beskrivelse;
-            this.areal = areal;
-            Pris = pris;
-            this.by = by;
-            Addresse = addresse;
-            this.romAntall = romAntall;
-            this.erTilgjengelig = erTilgjengelig;
-            this.eierID = eierID;
-            Eier = eier;
-            this.bildeURL = bildeURL;
-            this.harParkering = harParkering;
-            this.erMoblert = erMoblert;
-        }
-
-        [Key]
+        
+        
         public int husId { get; set; }
 
         [StringLength(400)]
@@ -44,10 +28,8 @@ namespace Oblig1.Models
 
         public bool erTilgjengelig { get; set; }
 
-        
-        public int eierID { get; set; }
-        [ForeignKey("eierID")]
-        public virtual Eier Eier { get; set; }
+        public int personID { get; set; }
+        public virtual Eier eier { get; set; }
 
         public string bildeURL { get; set; }    
 

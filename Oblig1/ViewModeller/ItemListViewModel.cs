@@ -6,7 +6,6 @@ namespace Oblig1.ViewModeller
     {
         public IEnumerable<Hus> Hus;
         public IEnumerable<Ordre> Ordre;
-        public IEnumerable<Bruker> Bruker;
         public IEnumerable<Kunde> Kunde;
         public string? CurrentViewName;
         private Hus liste;
@@ -21,12 +20,6 @@ namespace Oblig1.ViewModeller
         public ItemListViewModel(IEnumerable<Kunde> kunde, string? viewNavn)
         {
             Kunde = kunde;
-            CurrentViewName = viewNavn;
-        }
-
-        public ItemListViewModel(IEnumerable<Bruker> bruker, string? viewNavn)
-        {
-            Bruker = bruker;
             CurrentViewName = viewNavn;
         }
 

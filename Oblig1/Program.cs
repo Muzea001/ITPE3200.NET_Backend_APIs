@@ -23,7 +23,7 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ItemDbContext>();
 
-builder.Services.AddScoped<BrukerInterface, BrukerRepo>();
+
 builder.Services.AddScoped<HusInterface, HusRepo>();
 builder.Services.AddScoped<KundeInterface, KundeRepo>();
 builder.Services.AddScoped<OrdreInterface, OrdreRepo>();

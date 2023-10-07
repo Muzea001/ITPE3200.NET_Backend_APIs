@@ -9,16 +9,7 @@ namespace Oblig1.Models
 
         public Person() { }
 
-
-        public Person(string navn, DateTime fodselsdato, string addresse, long telefonNmr, string email)
-        {
-            Navn = navn;
-            Fodselsdato = fodselsdato;
-            Addresse = addresse;
-            TelefonNmr = telefonNmr;
-            Email = email;
-        }
-        [Key]
+        
         public int personID { get; set; }
 
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,20}", ErrorMessage = "Navnet må inneholde mellom 1 og 20 tegn")]

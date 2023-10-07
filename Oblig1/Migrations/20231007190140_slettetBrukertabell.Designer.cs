@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oblig1.DAL;
 
@@ -10,9 +11,11 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    partial class ItemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007190140_slettetBrukertabell")]
+    partial class slettetBrukertabell
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,7 +248,7 @@ namespace Oblig1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("eierpersonID")
+                    b.Property<int>("eierID")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("erMoblert")
@@ -257,15 +260,12 @@ namespace Oblig1.Migrations
                     b.Property<bool>("harParkering")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("personID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("romAntall")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("husId");
 
-                    b.HasIndex("eierpersonID");
+                    b.HasIndex("eierID");
 
                     b.ToTable("hus");
                 });
@@ -287,17 +287,14 @@ namespace Oblig1.Migrations
                     b.Property<int>("husID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("kundepersonID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("personID")
+                    b.Property<int>("kundeID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ordreId");
 
                     b.HasIndex("husID");
 
-                    b.HasIndex("kundepersonID");
+                    b.HasIndex("kundeID");
 
                     b.ToTable("ordre");
                 });
@@ -406,13 +403,13 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Hus", b =>
                 {
-                    b.HasOne("Oblig1.Models.Eier", "eier")
-                        .WithMany("husListe")
-                        .HasForeignKey("eierpersonID")
+                    b.HasOne("Oblig1.Models.Eier", "Eier")
+                        .WithMany()
+                        .HasForeignKey("eierID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("eier");
+                    b.Navigation("Eier");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Ordre", b =>
@@ -425,7 +422,7 @@ namespace Oblig1.Migrations
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
                         .WithMany("ordreListe")
-                        .HasForeignKey("kundepersonID")
+                        .HasForeignKey("kundeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -450,11 +447,6 @@ namespace Oblig1.Migrations
                         .HasForeignKey("Oblig1.Models.Kunde", "personID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Oblig1.Models.Eier", b =>
-                {
-                    b.Navigation("husListe");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>

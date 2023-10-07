@@ -5,7 +5,7 @@ namespace Oblig1.Services
     public interface eierInterface
     {
        
-        Task<IEnumerable<Bruker>?> HentAlleEiere();
+        Task<IEnumerable<Eier>?> HentAlleEiere();
         
     }
 }

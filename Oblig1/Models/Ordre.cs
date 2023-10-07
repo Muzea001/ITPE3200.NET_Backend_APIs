@@ -11,7 +11,7 @@ namespace Oblig1.Models
             
         }
 
-        [Key]
+        
         public int ordreId { get; set; }
 
         public DateTime Dato { get; set; }
@@ -19,12 +19,11 @@ namespace Oblig1.Models
         [StringLength(200)]
         public string betaltGjennom { get; set; }
 
-        [ForeignKey("husID")]
         public int husID { get; set; }  
         public virtual Hus hus { get; set; }
-        [ForeignKey("eierID")]
-        public int kundeID { get; set; }
-        [ForeignKey("kundeID")]
+
+        public int personID { get; set; }
+        
         public virtual Kunde kunde { get; set; }
 
         

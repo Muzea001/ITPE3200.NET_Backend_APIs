@@ -16,11 +16,10 @@
         @foreach (var kunde in Model)
         {
             <tr>
-                <td>@kunde.kundeId</td>
-                <td>@kunde.Person.Navn</td>
-                <td>@kunde.Person.Addresse</td>
-                <td>@kunde.Person.Fodselsdato.ToString("dd/MM/yyyy")</td> 
-                <td>@kunde.Person.TelefonNmr</td> 
+                <td>@kunde.Navn</td>
+                <td>@kunde.Addresse</td>
+                <td>@kunde.Fodselsdato.ToString("dd/MM/yyyy")</td> 
+                <td>@kunde.TelefonNmr</td> 
                 <td>
                     @if (kunde.ordreListe != null && kunde.ordreListe.Any())
                     {
@@ -31,11 +30,11 @@
                         <text>Ingen Ordre knyttet</text>
                     }
                 </td>
-                <td>@kunde.Person.Email</td> 
+                <td>@kunde.Email</td> 
                 <td>
                     
-                    <a asp-action="endreBekreftet" asp-route-id="@kunde.kundeId">Endre</a> |
-                    <a asp-action="slettBekreftet" asp-route-id="@kunde.kundeId">Delete</a>
+                    <a asp-action="endreBekreftet" asp-route-id="@kunde.personID">Endre</a> |
+                    <a asp-action="slettBekreftet" asp-route-id="@kunde.personID">Delete</a>
                 </td>
             </tr>
         }

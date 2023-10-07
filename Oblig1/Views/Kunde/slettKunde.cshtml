@@ -1,13 +1,13 @@
 ﻿@model Oblig1.Models.Kunde
 <h2>Slett Kunde</h2>
 
-<h3>Er du sikker at du vil slette dette Kunde</h3>
+<h3>Er du sikker at du vil slette denne Kunden</h3>
 <div>
     <h4>Kunde</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">Kunde Id</dt>
-        <dd class="col-sm-10">@Model.kundeId</dd>
+        <dt class="col-sm-2">Person ID</dt>
+        <dd class="col-sm-10">@Model.personID</dd>
 
         <dt class="col-sm-2">Navn</dt>
         <dd class="col-sm-10">@Model.Navn</dd>
@@ -25,7 +25,7 @@
         <dd class="col-sm-10">@Model.Addresse</dd>
     </dl>
 
-    <form asp-action="Slett" asp-route-id="@Model.kundeId" method="post">
+    <form asp-action="Slett" asp-route-id="@Model.personID" method="post">
         <button type="submit" class="btn btn-danger">Slett</button>
         <a asp-action="Oversikt" class="btn btn-secondary">Avbryt</a>
     </form>
