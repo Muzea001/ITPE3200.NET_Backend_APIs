@@ -9,6 +9,9 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Views\Home\" />
+    <Folder Include="Views\Hus\" />
+    <Folder Include="Views\Kunde\" />
+    <Folder Include="Views\Ordre\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +34,4 @@
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Views\Home\" />
-  </ItemGroup>
 </Project>

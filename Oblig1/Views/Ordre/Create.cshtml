@@ -1,0 +1,15 @@
+﻿@model Oblig1.Models.Ordre
+
+<h2>Lag ny ordre</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="betaltGjennom"></label><span class="text-danger">*</span>
+        <input asp-for="betaltGjennom" class="form-control" />
+        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Table" class="btn btn-secondary">Back to Table View</a>
+</form>

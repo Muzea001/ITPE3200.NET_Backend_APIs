@@ -1,0 +1,33 @@
+﻿@model Oblig1.Models.Ordre
+
+<h2>Slett Ordre</h2>
+
+<h3>Er du sikker at du vil slette dette Hus</h3>
+<div>
+    <h4>Hus</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Order ID</dt>
+        <dd class="col-sm-10">@Model.ordreId</dd>
+
+        <dt class="col-sm-2">Dato</dt>
+        <dd class="col-sm-10">@Model.Dato</dd>
+
+        <dt class="col-sm-2">Betalt</dt>
+        <dd class="col-sm-10">@Model.betaltGjennom</dd>
+
+        <dt class="col-sm-2">Hus ID</dt>
+        <dd class="col-sm-10">@Model.husID</dd>
+
+        <dt class="col-sm-2">Kunde ID</dt>
+        <dd class="col-sm-10">@Model.kundeID</dd>
+
+        <dt class="col-sm-2">Kunde</dt>
+        <dd class="col-sm-10">@Model.kunde</dd>
+    </dl>
+
+    <form asp-action="Slett" asp-route-id="@Model.ordreId" method="post">
+        <button type="submit" class="btn btn-danger">Slett</button>
+        <a asp-action="Oversikt" class="btn btn-secondary">Avbryt</a>
+    </form>
+</div>

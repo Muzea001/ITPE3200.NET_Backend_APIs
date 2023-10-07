@@ -1,0 +1,19 @@
+﻿@model Oblig1.Models.Hus
+
+<h3 class="my-5">
+    @Model.Addresse
+</h3>
+
+<div class="row gx-5">
+    <img alt="@Model.bildeURL" src="@Model.bildeURL" class="img-fluid col-5" />
+    <div class="card-body">
+        <h5 class="card-title">House Details</h5>
+        <p class="card-text">Eier: <span class="text-muted">@Model.Eier</span></p>
+        <p class="card-text">Areal: <span class="text-muted">@Model.areal</span></p>
+        <p class="card-text">by: <span class="text-muted">@Model.by</span></p>
+        <p class="card-text">Roomantall: <span class="text-muted">@Model.romAntall</span></p>
+        <p class="card-text">Parking: <span class="text-muted">@Model.harParkering</span></p>
+        <p class="card-text">Pris: <span class="text-muted">@Model.Pris</span></p>
+        <p class="card-text">tilgjenlighet: <span class="text-muted">@Model.erTilgjengelig</span></p>
+    </div>
+</div>
