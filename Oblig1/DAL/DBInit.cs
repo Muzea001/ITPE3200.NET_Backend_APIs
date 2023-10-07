@@ -89,7 +89,7 @@ namespace Oblig1.DAL
                     new Hus {husId=8, Addresse="Bergengate 30", areal=170, Beskrivelse="Cozy apartment in the city center.", by="Bergen", erTilgjengelig=true, Pris=700, romAntall=4, erMoblert=true, harParkering=false, personID = 1, bildeURL="~/Bilder/1.jpg"},
                     new Hus {husId=9, Addresse="Kristiansandveien 7", areal=200, Beskrivelse="Modern duplex with a rooftop terrace.", by="Kristiansand", erTilgjengelig=true, Pris=800, romAntall=6, erMoblert=false, harParkering=true, personID = 1, bildeURL="~/Bilder/1.jpg"},
                     new Hus {husId=10, Addresse="Alesundgate 25", areal=185, Beskrivelse="Quaint cottage by the seaside.", by="Alesund", erTilgjengelig=true, Pris=550, romAntall=5, erMoblert=false, harParkering=true, personID = 1, bildeURL="~/Bilder/1.jpg"},
-                    
+
 
 
             };

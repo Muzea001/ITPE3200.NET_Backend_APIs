@@ -287,9 +287,6 @@ namespace Oblig1.Migrations
                     b.Property<int>("husID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("kundepersonID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("personID")
                         .HasColumnType("INTEGER");
 
@@ -297,7 +294,7 @@ namespace Oblig1.Migrations
 
                     b.HasIndex("husID");
 
-                    b.HasIndex("kundepersonID");
+                    b.HasIndex("personID");
 
                     b.ToTable("ordre");
                 });
@@ -425,7 +422,7 @@ namespace Oblig1.Migrations
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
                         .WithMany("ordreListe")
-                        .HasForeignKey("kundepersonID")
+                        .HasForeignKey("personID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

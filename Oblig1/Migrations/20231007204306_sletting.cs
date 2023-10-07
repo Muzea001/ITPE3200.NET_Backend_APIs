@@ -5,7 +5,7 @@
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinitEndringer : Migration
+    public partial class sletting : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -26,12 +26,7 @@ namespace Oblig1.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Ordre>()
-                 .HasOne(o => o.kunde)
-                 .WithMany(k => k.ordreListe)
-                 .HasForeignKey(o => o.personID) 
-                 .HasPrincipalKey(k => k.personID);
-
+         
 
 
             base.OnModelCreating(modelBuilder);
