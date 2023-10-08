@@ -35,5 +35,6 @@ namespace Oblig1.ViewModeller
             this.liste = liste;
             this.v = v;
         }
+        public ItemListViewModel () { }
     }
 }

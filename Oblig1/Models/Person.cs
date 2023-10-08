@@ -9,7 +9,8 @@ namespace Oblig1.Models
 
         public Person() { }
 
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int personID { get; set; }
 
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,20}", ErrorMessage = "Navnet må inneholde mellom 1 og 20 tegn")]
@@ -28,6 +29,9 @@ namespace Oblig1.Models
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")]
         
         public string Email { get; set;}
+
+        
+        
 
 
     }

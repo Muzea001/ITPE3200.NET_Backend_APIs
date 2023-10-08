@@ -18,7 +18,7 @@ namespace Oblig1.DAL
         }
 
 
-        public async Task<IEnumerable<Hus>?> hentAlle()
+        public async Task<IEnumerable<Hus>> hentAlle()
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Oblig1.DAL
         }
 
 
-        public async Task<IEnumerable<Hus>?> HentAlleTilgjengelig()
+        public async Task<IEnumerable<Hus>> HentAlleTilgjengelig()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Oblig1.DAL
 
         }
 
-        public async Task<IEnumerable<Hus>?> hentAlleFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
+        public async Task<IEnumerable<Hus>> hentAlleFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
         {
             try
             {
@@ -181,7 +181,7 @@ namespace Oblig1.DAL
 
         }
 
-        public Task<Hus?> hentAlleMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
+        public Task<Hus> hentAlleMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
         {
             throw new NotImplementedException();
         }

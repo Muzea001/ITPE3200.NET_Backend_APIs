@@ -7,25 +7,25 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">Person ID</dt>
-        <dd class="col-sm-10">@Model.personID</dd>
+        <dd class="col-sm-10">@Model.Person.personID</dd>
 
         <dt class="col-sm-2">Navn</dt>
-        <dd class="col-sm-10">@Model.Navn</dd>
+        <dd class="col-sm-10">@Model.Person.Navn</dd>
 
         <dt class="col-sm-2">Fodselsdato</dt>
-        <dd class="col-sm-10">@Model.Fodselsdato</dd>
+        <dd class="col-sm-10">@Model.Person.Fodselsdato</dd>
 
         <dt class="col-sm-2">Telefon Nummer</dt>
-        <dd class="col-sm-10">@Model.TelefonNmr</dd>
+        <dd class="col-sm-10">@Model.Person.TelefonNmr</dd>
 
         <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.Email</dd>
+        <dd class="col-sm-10">@Model.Person.Email</dd>
 
         <dt class="col-sm-2">Addresse</dt>
-        <dd class="col-sm-10">@Model.Addresse</dd>
+        <dd class="col-sm-10">@Model.Person.Addresse</dd>
     </dl>
 
-    <form asp-action="Slett" asp-route-id="@Model.personID" method="post">
+    <form asp-action="Slett" asp-route-id="@Model.Person.personID" method="post">
         <button type="submit" class="btn btn-danger">Slett</button>
         <a asp-action="Oversikt" class="btn btn-secondary">Avbryt</a>
     </form>

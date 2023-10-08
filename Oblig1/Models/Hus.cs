@@ -7,8 +7,9 @@ namespace Oblig1.Models
     {
 
         public Hus() { }
-        
-        
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int husId { get; set; }
 
         [StringLength(400)]
@@ -28,8 +29,9 @@ namespace Oblig1.Models
 
         public bool erTilgjengelig { get; set; }
 
-        public int personID { get; set; }
         public virtual Eier eier { get; set; }
+
+        public virtual List<Ordre> ordreListe { get; set; }
 
         public string bildeURL { get; set; }    
 

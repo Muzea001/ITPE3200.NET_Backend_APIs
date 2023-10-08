@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,14 +177,14 @@ namespace Oblig1.Migrations
                 name: "eier",
                 columns: table => new
                 {
-                    personID = table.Column<int>(type: "INTEGER", nullable: false)
+                    kontoNummer = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    kontoNummer = table.Column<long>(type: "INTEGER", nullable: false),
+                    personID = table.Column<int>(type: "INTEGER", nullable: false),
                     antallAnnonser = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_eier", x => x.personID);
+                    table.PrimaryKey("PK_eier", x => x.kontoNummer);
                     table.ForeignKey(
                         name: "FK_eier_person_personID",
                         column: x => x.personID,
@@ -197,12 +197,13 @@ namespace Oblig1.Migrations
                 name: "kunde",
                 columns: table => new
                 {
+                    kundeID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     personID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_kunde", x => x.personID);
+                    table.PrimaryKey("PK_kunde", x => x.kundeID);
                     table.ForeignKey(
                         name: "FK_kunde_person_personID",
                         column: x => x.personID,
@@ -224,8 +225,7 @@ namespace Oblig1.Migrations
                     Addresse = table.Column<string>(type: "TEXT", nullable: false),
                     romAntall = table.Column<int>(type: "INTEGER", nullable: false),
                     erTilgjengelig = table.Column<bool>(type: "INTEGER", nullable: false),
-                    personID = table.Column<int>(type: "INTEGER", nullable: false),
-                    eierpersonID = table.Column<int>(type: "INTEGER", nullable: false),
+                    eierkontoNummer = table.Column<long>(type: "INTEGER", nullable: false),
                     bildeURL = table.Column<string>(type: "TEXT", nullable: false),
                     harParkering = table.Column<bool>(type: "INTEGER", nullable: false),
                     erMoblert = table.Column<bool>(type: "INTEGER", nullable: false)
@@ -234,10 +234,10 @@ namespace Oblig1.Migrations
                 {
                     table.PrimaryKey("PK_hus", x => x.husId);
                     table.ForeignKey(
-                        name: "FK_hus_eier_eierpersonID",
-                        column: x => x.eierpersonID,
+                        name: "FK_hus_eier_eierkontoNummer",
+                        column: x => x.eierkontoNummer,
                         principalTable: "eier",
-                        principalColumn: "personID",
+                        principalColumn: "kontoNummer",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -249,23 +249,23 @@ namespace Oblig1.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Dato = table.Column<DateTime>(type: "TEXT", nullable: false),
                     betaltGjennom = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    husID = table.Column<int>(type: "INTEGER", nullable: false),
-                    personID = table.Column<int>(type: "INTEGER", nullable: false)
+                    husId = table.Column<int>(type: "INTEGER", nullable: false),
+                    kundeID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ordre", x => x.ordreId);
                     table.ForeignKey(
-                        name: "FK_ordre_hus_husID",
-                        column: x => x.husID,
+                        name: "FK_ordre_hus_husId",
+                        column: x => x.husId,
                         principalTable: "hus",
                         principalColumn: "husId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ordre_kunde_personID",
-                        column: x => x.personID,
+                        name: "FK_ordre_kunde_kundeID",
+                        column: x => x.kundeID,
                         principalTable: "kunde",
-                        principalColumn: "personID",
+                        principalColumn: "kundeID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -307,19 +307,29 @@ namespace Oblig1.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_hus_eierpersonID",
-                table: "hus",
-                column: "eierpersonID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ordre_husID",
-                table: "ordre",
-                column: "husID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ordre_personID",
-                table: "ordre",
+                name: "IX_eier_personID",
+                table: "eier",
                 column: "personID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hus_eierkontoNummer",
+                table: "hus",
+                column: "eierkontoNummer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_kunde_personID",
+                table: "kunde",
+                column: "personID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ordre_husId",
+                table: "ordre",
+                column: "husId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ordre_kundeID",
+                table: "ordre",
+                column: "kundeID");
         }
 
         /// <inheritdoc />

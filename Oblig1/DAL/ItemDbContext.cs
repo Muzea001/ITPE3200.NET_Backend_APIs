@@ -32,7 +32,7 @@ namespace Oblig1.DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityUserLogin<string>>()
-                .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+           .HasKey(l => new { l.LoginProvider, l.ProviderKey });
             modelBuilder.Entity<Kunde>().ToTable("kunde");
             modelBuilder.Entity<Eier>().ToTable("eier");
         }
