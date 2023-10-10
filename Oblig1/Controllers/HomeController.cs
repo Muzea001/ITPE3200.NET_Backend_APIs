@@ -13,6 +13,13 @@ namespace Oblig1.Controllers
     {
 
         private readonly HusInterface husInterface;
+
+        public HomeController(HusInterface husInterface)
+        {
+            this.husInterface = husInterface;
+        }
+
+
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {

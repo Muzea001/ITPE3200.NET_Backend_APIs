@@ -1,10 +1,10 @@
 ﻿@model Oblig1.ViewModeller.ItemListViewModel
 
-<h1>List of Shop Items (@Model.CurrentViewName View)</h1>
+<h1>Home (@Model.CurrentViewName Home)</h1>
 <a href="/Item/Table">Table View</a>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model.CurrentViewName)
+    @foreach (var item in Model.Hus)
     {
         <partial name="_husKort" model="item" />
     }
