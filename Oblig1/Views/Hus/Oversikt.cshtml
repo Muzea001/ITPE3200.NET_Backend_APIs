@@ -14,5 +14,8 @@
         <p class="card-text">Parking: <span class="text-muted">@Model.harParkering</span></p>
         <p class="card-text">Pris: <span class="text-muted">@Model.Pris</span></p>
         <p class="card-text">tilgjenlighet: <span class="text-muted">@Model.erTilgjengelig</span></p>
+        <form asp-controller="Ordre" asp-action="lagOrdre">
+            <button type="submit" class="btn btn-primary">Bestill</button>
+        </form>
     </div>
 </div>

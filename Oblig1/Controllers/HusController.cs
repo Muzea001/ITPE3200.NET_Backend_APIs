@@ -16,7 +16,7 @@ namespace Oblig1.Controllers
 
         public HusController(HusInterface Interface, ILogger<HusController> logger)
         {
-            Interface = husInterface;
+            husInterface = Interface;
             _HusLogger = logger; 
 
 
@@ -67,7 +67,7 @@ namespace Oblig1.Controllers
 
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> Oversikt(int id)
         {
             var hus = await husInterface.hentHusMedId(id);

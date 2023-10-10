@@ -1,7 +1,9 @@
-﻿using Oblig1.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Oblig1.Models;
 
 namespace Oblig1.DAL
 {
+
     public interface OrdreInterface
     {
         Task<bool> endreOrdre(Ordre ordre);

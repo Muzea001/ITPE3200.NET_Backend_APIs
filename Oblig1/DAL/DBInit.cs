@@ -14,6 +14,9 @@ namespace Oblig1.DAL
             ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
             context.Database.EnsureCreated();
             
+
+
+
             
 
 
@@ -119,20 +122,20 @@ namespace Oblig1.DAL
                 context.SaveChanges();
 
                 var ordre = new List<Ordre>
-    {
-        new Ordre
-        {
-            Dato = DateTime.Now,
-            betaltGjennom = "Kort",
-            kundeID = kunde.kundeID  // Assigning the foreign key for Kunde
-        },
-        new Ordre
-        {
-            Dato = DateTime.Now,
-            betaltGjennom = "Klarna",
-            kundeID = kunde.kundeID  // Assigning the foreign key for Kunde
-        }
-    };
+                  {
+                   new Ordre
+                 {
+                    Dato = DateTime.Now,
+                   betaltGjennom = "Kort",
+                    kundeID = kunde.kundeID  
+                      },
+                    new Ordre
+                     {
+                   Dato = DateTime.Now,
+                   betaltGjennom = "Klarna",
+                   kundeID = kunde.kundeID  
+                         }
+                     };
 
                 var eier = new Eier
                 {
@@ -161,10 +164,10 @@ namespace Oblig1.DAL
                 context.Add(hus);
                 context.SaveChanges();
 
-                // Now that Hus is saved and has an ID, we can update the Ordre entities with the foreign key for Hus.
+                
                 foreach (var o in ordre)
                 {
-                    o.husId = hus.husId;  // Assigning the foreign key for Hus
+                    o.husId = hus.husId;  
                 }
 
                 context.AddRange(ordre);

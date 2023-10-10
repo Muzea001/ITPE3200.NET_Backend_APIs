@@ -15,13 +15,14 @@ var connectionString = builder.Configuration.GetConnectionString("ItemDbContextC
 
 
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ItemDbContext>();
+
+builder.Services.AddTransient<Oblig1.Services.Kvittering>();
 
 
 builder.Services.AddScoped<HusInterface, HusRepo>();

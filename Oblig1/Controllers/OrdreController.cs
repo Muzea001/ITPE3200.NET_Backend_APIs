@@ -65,27 +65,28 @@ namespace Oblig1.Controllers
 
             _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
             return View(ordre);
-            
+
 
 
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
-        public IActionResult Create() { return View(); }
+        public IActionResult lagOrdre() { return View(); }
 
 
         [HttpPost]
-       
+
         public async Task<IActionResult> Lag(Ordre ordre, int husid)
         {
             if (ModelState.IsValid)
             {
                 var hus = await _husInterface.hentHusMedId(husid);
-                if (hus == null) {
+                if (hus == null)
+                {
                     return NotFound("hus finnes ikke !");
-                        }
+                }
                 bool OK = await _ordreInterface.lagOrdre(ordre);
                 if (OK)
                 {
@@ -128,7 +129,7 @@ namespace Oblig1.Controllers
             return RedirectToAction(nameof(Tabell));
         }
 
-       
+
     }
 
 }
