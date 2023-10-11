@@ -58,16 +58,16 @@ namespace Oblig1.DAL
             {
                 var hus = new List<Hus>
                 {
-                    new Hus {Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, erMoblert=true, harParkering=false, bildeURL = "~/Bilder/1.jpg"},
-                    new Hus {Addresse="Osloveien22", areal=250, Beskrivelse="bla bla ",by="Oslo",erTilgjengelig=true,Pris=200,romAntall=3,erMoblert=false,harParkering=true, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Trondheimsgate 10", areal=220, Beskrivelse="Spacious house with a view of the river.", by="Trondheim", erTilgjengelig=true, Pris=750, romAntall=6, erMoblert=false, harParkering=true, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Stavangerveien 5", areal=160, Beskrivelse="Modern townhouse in a quiet neighborhood.", by="Stavanger", erTilgjengelig=true, Pris=500, romAntall=4, erMoblert=true, harParkering=false, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Bergensgate 22", areal=180, Beskrivelse="A cozy family home with a garden.", by="Bergen", erTilgjengelig=true, Pris=600, romAntall=5, erMoblert=true, harParkering=true, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Bodogate 8", areal=190, Beskrivelse="Rustic cottage in the countryside.", by="Bodo", erTilgjengelig=true, Pris=450, romAntall=3, erMoblert=true, harParkering=false, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Tromsogate 15", areal=240, Beskrivelse="Spacious family home with a view of the mountains.", by="Tromso", erTilgjengelig=true, Pris=950, romAntall=8, erMoblert=true, harParkering=true, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Bergengate 30", areal=170, Beskrivelse="Cozy apartment in the city center.", by="Bergen", erTilgjengelig=true, Pris=700, romAntall=4, erMoblert=true, harParkering=false, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Kristiansandveien 7", areal=200, Beskrivelse="Modern duplex with a rooftop terrace.", by="Kristiansand", erTilgjengelig=true, Pris=800, romAntall=6, erMoblert=false, harParkering=true, bildeURL="~/Bilder/1.jpg"},
-                    new Hus {Addresse="Alesundgate 25", areal=185, Beskrivelse="Quaint cottage by the seaside.", by="Alesund", erTilgjengelig=true, Pris=550, romAntall=5, erMoblert=false, harParkering=true, bildeURL="~/Bilder/1.jpg"},
+                    new Hus {Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla", by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, erMoblert=true, harParkering=false, bildeURL = "/Bilder/Pic1.jpg"},
+                    new Hus {Addresse="Osloveien22", areal=250, Beskrivelse="bla bla ",by="Oslo",erTilgjengelig=true,Pris=200,romAntall=3,erMoblert=false,harParkering=true, bildeURL="/Bilder/Pic2.jpg"},
+                    new Hus {Addresse="Trondheimsgate 10", areal=220, Beskrivelse="Spacious house with a view of the river.", by="Trondheim", erTilgjengelig=true, Pris=750, romAntall=6, erMoblert=false, harParkering=true, bildeURL="/Bilder/Pic3.jpg"},
+                    new Hus {Addresse="Stavangerveien 5", areal=160, Beskrivelse="Modern townhouse in a quiet neighborhood.", by="Stavanger", erTilgjengelig=true, Pris=500, romAntall=4, erMoblert=true, harParkering=false, bildeURL="/Bilder/Pic4.jpg"},
+                    new Hus {Addresse="Bergensgate 22", areal=180, Beskrivelse="A cozy family home with a garden.", by="Bergen", erTilgjengelig=true, Pris=600, romAntall=5, erMoblert=true, harParkering=true, bildeURL="/Bilder/Pic5.jpg"},
+                    new Hus {Addresse="Bodogate 8", areal=190, Beskrivelse="Rustic cottage in the countryside.", by="Bodo", erTilgjengelig=true, Pris=450, romAntall=3, erMoblert=true, harParkering=false, bildeURL="/Bilder/Pic1.jpg"},
+                    new Hus {Addresse="Tromsogate 15", areal=240, Beskrivelse="Spacious family home with a view of the mountains.", by="Tromso", erTilgjengelig=true, Pris=950, romAntall=8, erMoblert=true, harParkering=true, bildeURL="/Bilder/Pic7.jpg"},
+                    new Hus {Addresse="Bergengate 30", areal=170, Beskrivelse="Cozy apartment in the city center.", by="Bergen", erTilgjengelig=true, Pris=700, romAntall=4, erMoblert=true, harParkering=false, bildeURL="/Bilder/Pic1.jpg"},
+                    new Hus {Addresse="Kristiansandveien 7", areal=200, Beskrivelse="Modern duplex with a rooftop terrace.", by="Kristiansand", erTilgjengelig=true, Pris=800, romAntall=6, erMoblert=false, harParkering=true, bildeURL="/Bilder/Pic1.jpg"},
+                    new Hus {Addresse="Alesundgate 25", areal=185, Beskrivelse="Quaint cottage by the seaside.", by="Alesund", erTilgjengelig=true, Pris=550, romAntall=5, erMoblert=false, harParkering=true, bildeURL="/Bilder/Pic6.jpg"},
 
 
 
