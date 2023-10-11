@@ -2,7 +2,7 @@
 
 <h2>Slett Ordre</h2>
 
-<h3>Er du sikker at du vil slette dette Hus</h3>
+<h3>Er du sikker at du vil slette odre!</h3>
 <div>
     <h4>Hus</h4>
     <hr />
@@ -21,6 +21,6 @@
 
     <form asp-action="Slett" asp-route-id="@Model.ordreId" method="post">
         <button type="submit" class="btn btn-danger">Slett</button>
-        <a asp-action="Oversikt" class="btn btn-secondary">Avbryt</a>
+        <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
     </form>
 </div>

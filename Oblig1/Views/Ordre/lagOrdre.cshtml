@@ -1,8 +1,9 @@
 ﻿@model Oblig1.Models.Person
 
+
 <h2>Lag Ordre</h2>
 <form asp-action="Create">
-    <partial name="_husKort" model="item" />
+    
     <div class="form-group">
         <label asp-for="Navn"></label><span class="text-danger">*</span>
         <input asp-for="Navn" class="form-control" />
