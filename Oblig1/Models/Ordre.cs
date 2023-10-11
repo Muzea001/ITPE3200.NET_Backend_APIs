@@ -26,14 +26,5 @@ namespace Oblig1.Models
 
         public int kundeID { get; set; }    
 
-        
-
-
-
-       
-
-
-
-
     }
 }
