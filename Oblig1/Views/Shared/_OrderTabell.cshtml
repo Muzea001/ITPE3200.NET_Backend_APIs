@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Oblig1.Models.Ordre>
-
 <h1>List of Orders</h1>
 
 @foreach (var order in Model)
@@ -11,12 +10,12 @@
                 <table class='table table-striped' style='max-width: 1200px;'>
                     <tr class="table-header">
                         <th>Order Date</th>
-                        <th>CustomerId</th>
+                        <th>Betalt gjenom</th>
                         <th>Customer Name</th>
                         <th>betalt</th>
                     </tr>
                     <tr>
-                        <td>@order.ordreId</td>
+                        <td>@order.Dato</td>
                         <td>@order.betaltGjennom</td>
                         <td>@order.kunde</td>
                         <td>@order.betaltGjennom</td>

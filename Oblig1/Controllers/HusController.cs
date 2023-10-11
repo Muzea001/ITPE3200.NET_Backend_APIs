@@ -114,7 +114,7 @@ namespace Oblig1.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> endreHus(Hus hus)
+        public async Task<IActionResult> endre(Hus hus)
         {
             if (ModelState.IsValid)
             {
