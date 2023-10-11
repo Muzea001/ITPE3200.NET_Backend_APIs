@@ -2,8 +2,9 @@
 
 <h2>Oppdater Hus</h2>
 
-<form asp-action="endreHus">
-    <input type="hidden" asp-for="husId" />
+
+    <form asp-action="endreBekreftet" method="post">
+        <input type="hidden" asp-for="husId" />
 
     <div class="form-group">
         <label asp-for="Addresse"></label><span class="text-danger">*</span>
@@ -54,7 +55,8 @@
         <input type="file" asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
 
-    <button type="submit" class="btn btn-primary" asp-controller="Hus" asp-action="-----Skrive det her---">Lagre endringer</button>
-    <a asp-action="Grid" class="btn btn-secondary">Avbryt</a>
+    <button type="submit" class="btn btn-danger">Endre</button>
+    <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+    </form>
 
-</form>
+

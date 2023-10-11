@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
@@ -12,12 +13,12 @@ namespace Oblig1.Controllers
 
         private readonly HusInterface husInterface;
 
-  
+
 
         public HusController(HusInterface Interface, ILogger<HusController> logger)
         {
             husInterface = Interface;
-            _HusLogger = logger; 
+            _HusLogger = logger;
 
 
         }
@@ -56,8 +57,8 @@ namespace Oblig1.Controllers
 
         public async Task<IActionResult> hentMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
         {
-            var liste = await husInterface.hentAlleMedFilter( by,minstAreal,maksAreal,minPris, maksPris,  minstRom,maksRom);
-            if(liste==null)
+            var liste = await husInterface.hentAlleMedFilter(by, minstAreal, maksAreal, minPris, maksPris, minstRom, maksRom);
+            if (liste == null)
             {
                 return NotFound("ingenting funnet");
             }
@@ -114,22 +115,31 @@ namespace Oblig1.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> endre(Hus hus)
+        public async Task<IActionResult> endreBekreftet(Hus hus)
         {
-            if (ModelState.IsValid)
+                 if (ModelState.IsValid)
+                    {
+                   bool OK = await husInterface.Endre(hus);
+                 if (OK)
+                  {
+                return RedirectToAction(nameof(Tabell));
+                 }
+                    else
             {
-                bool OK = await husInterface.Endre(hus);
-                if (OK)
-                {
-                    return RedirectToAction(nameof(Tabell));
-                }
-
+                _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: " );
+                // Assuming hus has a property Id
+                ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
             }
 
-            _HusLogger.LogWarning("[HusController] endring av hus failet" + hus);
-            return View(hus);
+        }
+                  else
+            {
+                _HusLogger.LogWarning("[HusController] Invalid model state.");
+                // Log more details about the model state errors if needed
+            }
 
-
+            // Stay on the current view and display an error message if the update fails
+            return RedirectToAction($"{nameof(Tabell)}");
 
         }
 
