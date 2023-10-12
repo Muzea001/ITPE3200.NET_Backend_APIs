@@ -18,6 +18,8 @@ namespace Oblig1.Models
 
         public virtual List<Ordre> ordreListe { get; set; }
 
+        public virtual List<Hus?> husListe { get; set; }
+
 
 
 

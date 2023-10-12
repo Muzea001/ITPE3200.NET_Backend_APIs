@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oblig1.DAL;
 
@@ -10,9 +11,11 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    partial class ItemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231012194445_nullableKunde")]
+    partial class nullableKunde
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,17 +279,12 @@ namespace Oblig1.Migrations
                     b.Property<bool>("harParkering")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("kundeID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("romAntall")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("husId");
 
                     b.HasIndex("eierkontoNummer");
-
-                    b.HasIndex("kundeID");
 
                     b.ToTable("hus");
                 });
@@ -435,13 +433,7 @@ namespace Oblig1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Oblig1.Models.Kunde", "kunde")
-                        .WithMany()
-                        .HasForeignKey("kundeID");
-
                     b.Navigation("eier");
-
-                    b.Navigation("kunde");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>

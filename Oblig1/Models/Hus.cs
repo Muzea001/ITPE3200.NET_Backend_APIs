@@ -29,6 +29,8 @@ namespace Oblig1.Models
 
         public bool erTilgjengelig { get; set; }
 
+        public virtual Kunde? kunde { get; set; }    
+
         public virtual Eier eier { get; set; }
 
         public virtual List<Ordre> ordreListe { get; set; }
