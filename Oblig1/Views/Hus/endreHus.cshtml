@@ -3,13 +3,23 @@
 <h2>Oppdater Hus</h2>
 
 
-<form asp-action="endreBekreftet" method="post">
+<form asp-action="endreHus" method="post">
     <input type="hidden" asp-for="husId" />
 
     <div class="form-group">
         <label asp-for="Addresse"></label><span class="text-danger">*</span>
         <input asp-for="Addresse" class="form-control" />
         <span asp-validation-for="Addresse" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="eier"></label><span class="text-danger">*</span>
+        <input asp-for="eier" class="form-control" />
+        <span asp-validation-for="eier" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ordreListe"></label><span class="text-danger">*</span>
+        <input asp-for="ordreListe" class="form-control" />
+        <span asp-validation-for="ordreListe" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="by"></label><span class="text-danger">*</span>
@@ -33,18 +43,18 @@
     </div>
     <label for="ertilgjenlig">Tilgjengelig:</label>
     <select class="form-control" asp-for="erTilgjengelig">
-        <option value="leilighe">JA</option>
-        <option value="rekkehus">NEI</option>
+        <option value="True">JA</option>
+        <option value="False">NEI</option>
     </select>
     <label for="harparkering">Parkering:</label>
     <select class="form-control" asp-for="harParkering">
-        <option value="leilighe">JA</option>
-        <option value="rekkehus">NEI</option>
+        <option value="True">JA</option>
+        <option value="False">NEI</option>
     </select>
     <label for="erMoblert">Moblert:</label>
     <select class="form-control" asp-for="erMoblert">
-        <option value="leilighe">JA</option>
-        <option value="rekkehus">NEI</option>
+        <option value="True">JA</option>
+        <option value="False">NEI</option>
     </select>
     <div class="form-group">
         <label for="Beskrivelse">Hus Beskrivelse:</label>
@@ -52,13 +62,11 @@
     </div>
     <div class="form-group">
         <label for="bildeURL">Last opp bilder :</label>
-        <input type="file" asp-for="bildeURL" name="bildeURL[]" multiple>
+        <input  asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
 
-    <form  asp-controller="Hus" asp-action="endreBekreftet" asp-route-id="@Model.husId" method="post">
-        <button type="submit" class="btn btn-success">Update</button>
-        <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
-    </form>
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
 </form>
 
 
