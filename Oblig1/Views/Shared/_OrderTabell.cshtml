@@ -17,7 +17,7 @@
                     <tr>
                         <td>@order.Dato</td>
                         <td>@order.betaltGjennom</td>
-                        <td>@order.kunde</td>
+                        <td>@order.kunde.Person.Navn</td>
                         <td>@order.betaltGjennom</td>
                     </tr>
                 </table>
@@ -25,7 +25,7 @@
                     <a class="btn btn-success" asp-controller="Order" asp-action="Endre" asp-route-id="@order.ordreId"> Update</a>
                 </span>
                 <span>
-                    <a class="btn btn-danger" asp-controller="Order" asp-action="Slett" asp-route-id="@order.ordreId">Delet</a>
+                    <a class="btn btn-danger" asp-controller="Ordre" asp-action="Slett" asp-route-id="@order.ordreId">Delet</a>
                 </span>
             </div>
         </div>
