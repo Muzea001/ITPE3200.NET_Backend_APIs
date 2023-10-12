@@ -67,7 +67,7 @@ namespace Oblig1.DAL
                 if (maksPris > 0)
                 {
 
-                    sporring = sporring.Where(h => h.Pris >= maksPris);
+                    sporring = sporring.Where(h => h.Pris <= maksPris);
 
                 }
                 if (minstAreal > 0)
@@ -77,7 +77,7 @@ namespace Oblig1.DAL
                 }
                 if (maksAreal > 0)
                 {
-                    sporring = sporring.Where(h => h.areal >= maksAreal);
+                    sporring = sporring.Where(h => h.areal <= maksAreal);
                 }
                 if (minstRom > 0)
                 {
@@ -85,7 +85,7 @@ namespace Oblig1.DAL
                 }
                 if (maksRom > 0)
                 {
-                    sporring = sporring.Where(h => h.romAntall >= maksRom);
+                    sporring = sporring.Where(h => h.romAntall <= maksRom);
                 }
 
 
