@@ -120,26 +120,35 @@ namespace Oblig1.Controllers
                  if (ModelState.IsValid)
                     {
                    bool OK = await husInterface.Endre(hus);
-                 if (OK)
-                  {
-                return RedirectToAction(nameof(Tabell));
-                 }
+                   if (OK)
+                        {
+                            return RedirectToAction(nameof(Tabell));
+                        }
                     else
-            {
-                _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: " );
-                // Assuming hus has a property Id
-                ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
-            }
+                        {
+                            _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: " );
+                            // Assuming hus has a property Id
+                             ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
+                        }
 
-        }
+                    }
                   else
-            {
-                _HusLogger.LogWarning("[HusController] Invalid model state.");
-                // Log more details about the model state errors if needed
-            }
+                    {
+                         _HusLogger.LogWarning("[HusController] Invalid model state.");
+                         // Log more details about the model state errors if needed
+                        foreach (var modelStateKey in ViewData.ModelState.Keys)
+                        {
+                            var modelStateVal = ViewData.ModelState[modelStateKey];
+                            foreach (var error in modelStateVal.Errors)
+                            {
+                                // Log your modelState errors
+                                _HusLogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                            }
+                        }
+                    }
 
-            // Stay on the current view and display an error message if the update fails
-            return RedirectToAction($"{nameof(Tabell)}");
+                    // Stay on the current view and display an error message if the update fails
+                    return RedirectToAction($"{nameof(Tabell)}");
 
         }
 

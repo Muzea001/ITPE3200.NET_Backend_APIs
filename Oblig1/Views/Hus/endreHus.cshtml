@@ -55,10 +55,10 @@
         <input type="file" asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
 
-    <form  asp-controller="Hus" asp-action="endreBekreftet" asp-route-id="@Model.husId" method="post">
-        <button type="submit" class="btn btn-success">Update</button>
-        <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+        
+            <button type="submit" class="btn btn-success">Update</button>
+            <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+        
     </form>
-</form>
 
 
