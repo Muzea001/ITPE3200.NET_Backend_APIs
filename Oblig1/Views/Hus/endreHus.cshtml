@@ -9,8 +9,9 @@
     <input type="hidden" asp-for="eier.kontoNummer" />
     <input type="hidden" asp-for="eier.husListe" />
     <input type="hidden" asp-for="eier.antallAnnonser" />
+    <input type="hidden" asp-for="ordreListe" />
 
-    
+
 
     <div class="form-group">
         <label asp-for="eier.Person.TelefonNmr"> Owner Tel </label><span class="text-danger">*</span>
@@ -19,104 +20,82 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.Person.Navn"></label><span class="text-danger">*</span>
+        <label asp-for="eier.Person.Navn">Owner name</label><span class="text-danger">*</span>
         <input asp-for="eier.Person.Navn" class="form-control" />
         <span asp-validation-for="eier.Person.Navn" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.Person.Fodselsdato"></label><span class="text-danger">*</span>
+        <label asp-for="eier.Person.Fodselsdato">Owner birthday</label><span class="text-danger">*</span>
         <input asp-for="eier.Person.Fodselsdato" class="form-control" />
         <span asp-validation-for="eier.Person.Fodselsdato" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.Person.Email"></label><span class="text-danger">*</span>
+        <label asp-for="eier.Person.Email">Owner e-mail</label><span class="text-danger">*</span>
         <input asp-for="eier.Person.Email" class="form-control" />
         <span asp-validation-for="eier.Person.Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.Person.Addresse"></label><span class="text-danger">*</span>
+        <label asp-for="eier.Person.Addresse">Owner address</label><span class="text-danger">*</span>
         <input asp-for="eier.Person.Addresse" class="form-control" />
         <span asp-validation-for="eier.Person.Addresse" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.antallAnnonser"></label><span class="text-danger">*</span>
-        <input asp-for="eier.antallAnnonser" class="form-control" />
-        <span asp-validation-for="eier.antallAnnonser" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="eier.husListe"></label><span class="text-danger">*</span>
-        <input asp-for="eier.husListe" class="form-control" />
-        <span asp-validation-for="eier.husListe" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="eier.Person.personID"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.personID" class="form-control" />
-        <span asp-validation-for="Addresse" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Addresse"></label><span class="text-danger">*</span>
+        <label asp-for="Addresse">House address</label><span class="text-danger">*</span>
         <input asp-for="Addresse" class="form-control" />
         <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="eier.kontoNummer"></label><span class="text-danger">*</span>
+        <label asp-for="eier.kontoNummer">Owner account No.</label><span class="text-danger">*</span>
         <input asp-for="eier.kontoNummer" class="form-control" />
         <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
     </div>
+    
     <div class="form-group">
-        <label asp-for="ordreListe"></label><span class="text-danger">*</span>
-        <input asp-for="ordreListe" class="form-control" />
-        <span asp-validation-for="ordreListe" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="by"></label><span class="text-danger">*</span>
+        <label asp-for="by">City</label><span class="text-danger">*</span>
         <input asp-for="by" class="form-control" />
         <span asp-validation-for="by" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="areal"></label>
+        <label asp-for="areal">Area</label>
         <input asp-for="areal" class="form-control" />
         <span asp-validation-for="areal" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Pris"></label>
+        <label asp-for="Pris">Price</label>
         <input asp-for="Pris" class="form-control" />
         <span asp-validation-for="Pris" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="romAntall"></label>
+        <label asp-for="romAntall">Room No.</label>
         <input asp-for="romAntall" class="form-control" />
         <span asp-validation-for="romAntall" class="text-danger"></span>
     </div>
-    <label for="ertilgjenlig">Tilgjengelig:</label>
+    <label for="ertilgjenlig">Available:</label>
     <select class="form-control" asp-for="erTilgjengelig">
-        <option value="True">JA</option>
-        <option value="False">NEI</option>
+        <option value="True">Yes</option>
+        <option value="False">No</option>
     </select>
-    <label for="harparkering">Parkering:</label>
+    <label for="harparkering">Parking:</label>
     <select class="form-control" asp-for="harParkering">
-        <option value="True">JA</option>
-        <option value="False">NEI</option>
+        <option value="True">Yes</option>
+        <option value="False">No</option>
     </select>
-    <label for="erMoblert">Moblert:</label>
+    <label for="erMoblert">furniture:</label>
     <select class="form-control" asp-for="erMoblert">
-        <option value="True">JA</option>
-        <option value="False">NEI</option>
+        <option value="True">Yes</option>
+        <option value="False">No</option>
     </select>
     <div class="form-group">
-        <label for="Beskrivelse">Hus Beskrivelse:</label>
+        <label for="Beskrivelse">House describtion:</label>
         <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
     </div>
     <div class="form-group">
-        <label for="bildeURL">Last opp bilder :</label>
+        <label for="bildeURL">Upload photo:</label>
         <input asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
 
