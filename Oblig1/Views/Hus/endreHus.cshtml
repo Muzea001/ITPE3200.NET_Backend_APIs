@@ -3,7 +3,7 @@
 <h2>Oppdater Hus</h2>
 
 
-<form asp-action="endreHus" method="post">
+<form asp-action="endreBekreftet" method="post">
     <input type="hidden" asp-for="husId" />
 
     <div class="form-group">
@@ -12,9 +12,9 @@
         <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="eier"></label><span class="text-danger">*</span>
-        <input asp-for="eier" class="form-control" />
-        <span asp-validation-for="eier" class="text-danger"></span>
+        <label asp-for="eier.kontoNummer"></label><span class="text-danger">*</span>
+        <input asp-for="eier.kontoNummer" class="form-control" />
+        <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="ordreListe"></label><span class="text-danger">*</span>
