@@ -1,16 +1,71 @@
 ﻿@model Oblig1.Models.Hus
-
+ 
 <h2>Oppdater Hus</h2>
 
 
 <form asp-action="endreBekreftet" method="post">
     <input type="hidden" asp-for="husId" />
+    <input type="hidden" asp-for="eier.Person.personID" />
+    <input type="hidden" asp-for="eier.kontoNummer" />
+    <input type="hidden" asp-for="eier.husListe" />
+    <input type="hidden" asp-for="eier.antallAnnonser" />
+
+    
+
+    <div class="form-group">
+        <label asp-for="eier.Person.TelefonNmr"> Owner Tel </label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.TelefonNmr" class="form-control" />
+        <span asp-validation-for="eier.Person.TelefonNmr" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Navn"></label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Navn" class="form-control" />
+        <span asp-validation-for="eier.Person.Navn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Fodselsdato"></label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Fodselsdato" class="form-control" />
+        <span asp-validation-for="eier.Person.Fodselsdato" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Email"></label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Email" class="form-control" />
+        <span asp-validation-for="eier.Person.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Addresse"></label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Addresse" class="form-control" />
+        <span asp-validation-for="eier.Person.Addresse" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.antallAnnonser"></label><span class="text-danger">*</span>
+        <input asp-for="eier.antallAnnonser" class="form-control" />
+        <span asp-validation-for="eier.antallAnnonser" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.husListe"></label><span class="text-danger">*</span>
+        <input asp-for="eier.husListe" class="form-control" />
+        <span asp-validation-for="eier.husListe" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.personID"></label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.personID" class="form-control" />
+        <span asp-validation-for="Addresse" class="text-danger"></span>
+    </div>
 
     <div class="form-group">
         <label asp-for="Addresse"></label><span class="text-danger">*</span>
         <input asp-for="Addresse" class="form-control" />
         <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="eier.kontoNummer"></label><span class="text-danger">*</span>
         <input asp-for="eier.kontoNummer" class="form-control" />
@@ -62,7 +117,7 @@
     </div>
     <div class="form-group">
         <label for="bildeURL">Last opp bilder :</label>
-        <input  asp-for="bildeURL" name="bildeURL[]" multiple>
+        <input asp-for="bildeURL" name="bildeURL[]" multiple>
     </div>
 
     <button type="submit" class="btn btn-success">Update</button>
