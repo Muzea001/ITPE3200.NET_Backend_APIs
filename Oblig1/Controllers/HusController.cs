@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
@@ -95,6 +96,22 @@ namespace Oblig1.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(Hus hus)
+        {
+            if (ModelState.IsValid)
+            {
+                bool OK = await husInterface.Lag(hus);
+                if (OK)
+                {
+                    return RedirectToAction(nameof(Tabell));
+
+                }
+            }
+            _HusLogger.LogWarning("[HusController] Hus laging har failet", hus);
+            return View(hus);
+        }
 
 
         [HttpGet]
