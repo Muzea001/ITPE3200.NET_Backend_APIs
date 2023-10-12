@@ -1,0 +1,47 @@
+﻿@model Oblig1.Models.Ordre
+
+<h2>Update The Order</h2>
+
+<form asp-action="EndreBekreftet" method="post">
+    <input type="hidden" asp-for="ordreId" />
+    <input type="hidden" asp-for="husId" />
+    <input type="hidden" asp-for="kundeID" />
+    <input type="hidden" asp-for="kunde.Person.TelefonNmr" />
+    <input type="hidden" asp-for="kunde.Person.Addresse" />
+    <input type="hidden" asp-for="kunde.Person.Email" />
+    <input type="hidden" asp-for="kunde.Person.Fodselsdato" />
+    <input type="hidden" asp-for="kunde.Person.Navn" />
+    <input type="hidden" asp-for="kunde.Person.personID" />
+    <input type="hidden" asp-for="hus.Addresse" />
+    <input type="hidden" asp-for="hus.areal" />
+    <input type="hidden" asp-for="hus.Beskrivelse" />
+    <input type="hidden" asp-for="hus.bildeURL" />
+    <input type="hidden" asp-for="hus.by" />
+    <input type="hidden" asp-for="hus.eier" />
+    <input type="hidden" asp-for="hus.erMoblert" />
+    <input type="hidden" asp-for="hus.erTilgjengelig" />
+    <input type="hidden" asp-for="hus.harParkering" />
+    <input type="hidden" asp-for="hus.ordreListe" />
+    <input type="hidden" asp-for="hus.Pris" />
+    <input type="hidden" asp-for="hus.romAntall" />
+
+
+
+
+
+    <div class="form-group">
+        <label asp-for="betaltGjennom"> Payment method </label><span class="text-danger">*</span>
+        <input asp-for="betaltGjennom" class="form-control" />
+        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Dato"> Date </label><span class="text-danger">*</span>
+        <input asp-for="Dato" class="form-control" />
+        <span asp-validation-for="Dato" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Abort</a>
+
+</form>
