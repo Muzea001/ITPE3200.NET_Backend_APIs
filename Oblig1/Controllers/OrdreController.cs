@@ -60,11 +60,31 @@ namespace Oblig1.Controllers
                 {
                     return RedirectToAction(nameof(Tabell));
                 }
+                else
+                {
+                    _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
+                    // Assuming hus has a property Id
+                    ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
+                }
 
             }
+            else
+            {
+                _Ordrelogger.LogWarning("[OrdreKontroller] Invalid model state.", ordre);
+                // Log more details about the model state errors if needed
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        // Log your modelState errors
+                        _Ordrelogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
 
-            _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
-            return View(ordre);
+            
+            return RedirectToAction($"{nameof(Tabell)}");
 
 
 
