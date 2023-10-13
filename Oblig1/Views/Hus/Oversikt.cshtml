@@ -25,7 +25,7 @@
             <form asp-controller="Ordre" asp-action="lagOrdre">
                 <button type="button" class="btn btn-primary"
                         asp-controller="Ordre" asp-action="lagOrdre" id="bestillKnapp" asp-route-id="@Model.husId">
-                    Bestill
+                    Reserve
                 </button>
             </form>
         </div>
@@ -35,27 +35,27 @@
         <h2>Lag Ordre</h2>
         <form asp-controller="Ordre" asp-action="Lag">
             <div class="form-group">
-                <label asp-for="kunde.Person.Navn"></label><span class="text-danger">*</span>
+                <label asp-for="kunde.Person.Navn">Name</label><span class="text-danger">*</span>
                 <input asp-for="kunde.Person.Navn" class="form-control" />
                 <span asp-validation-for="kunde.Person.Navn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="kunde.Person.Fodselsdato"></label><span class="text-danger">*</span>
+                <label asp-for="kunde.Person.Fodselsdato">Birth date</label><span class="text-danger">*</span>
                 <input asp-for="kunde.Person.Fodselsdato" type="date" class="form-control" />
                 <span asp-validation-for="kunde.Person.Fodselsdato" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="kunde.Person.Addresse"></label><span class="text-danger">*</span>
+                <label asp-for="kunde.Person.Addresse">Address</label><span class="text-danger">*</span>
                 <input asp-for="kunde.Person.Addresse" class="form-control" />
                 <span asp-validation-for="kunde.Person.Addresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="kunde.Person.TelefonNmr"></label><span class="text-danger">*</span>
+                <label asp-for="kunde.Person.TelefonNmr">Tel</label><span class="text-danger">*</span>
                 <input asp-for="kunde.Person.TelefonNmr" class="form-control" />
                 <span asp-validation-for="kunde.Person.TelefonNmr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="kunde.Person.Email"></label><span class="text-danger">*</span>
+                <label asp-for="kunde.Person.Email">E-mail</label><span class="text-danger">*</span>
                 <input asp-for="kunde.Person.Email" type="email" class="form-control" />
                 <span asp-validation-for="kunde.Person.Email" class="text-danger"></span>
             </div>
