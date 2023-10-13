@@ -118,7 +118,7 @@ namespace Oblig1.Controllers
                 }
             }
             _Ordrelogger.LogWarning("[OrdreRepo] har failet med å danne en kvittering for denne ordren", ordre);
-            return RedirectToAction("index");
+            return RedirectToAction(nameof(Tabell));
         }
 
         [HttpGet]
