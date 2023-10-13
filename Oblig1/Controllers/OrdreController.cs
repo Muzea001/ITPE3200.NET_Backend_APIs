@@ -40,13 +40,13 @@ namespace Oblig1.Controllers
         [Authorize]
         public async Task<IActionResult> Endre(int id)
         {
-            var ordre = await _ordreInterface.hentOrdreMedId(id);
-            if (ordre == null)
+            var Ordre = await _ordreInterface.hentOrdreMedId(id);
+            if (Ordre == null)
             {
                 _Ordrelogger.LogError("[OrdreKontroller] Ordre ikke funnet for denne iden" + id);
                 return NotFound("Ordre ikke funnet");
             }
-            return View(ordre);
+            return View(Ordre);
         }
 
         [HttpPost]
