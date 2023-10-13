@@ -1,10 +1,39 @@
-﻿@model Oblig1.Models.Person
+﻿@model Oblig1.Models.Ordre
 
 
 <h2>Create Order</h2>
 <form asp-action="Creat">
-    
+    <input type="hidden" asp-for="ordreId" />
+    <input type="hidden" asp-for="husId" />
+    <input type="hidden" asp-for="kundeID" />
+    <input type="hidden" asp-for="kunde.Person.Email" />
+    <input type="hidden" asp-for="kunde.Person" />
+    <input type="hidden" asp-for="hus.Addresse" />
+    <input type="hidden" asp-for="hus.areal" />
+    <input type="hidden" asp-for="hus.Beskrivelse" />
+    <input type="hidden" asp-for="hus.bildeURL" />
+    <input type="hidden" asp-for="hus.by" />
+    <input type="hidden" asp-for="hus.eier" />
+    <input type="hidden" asp-for="hus.erMoblert" />
+    <input type="hidden" asp-for="hus.erTilgjengelig" />
+    <input type="hidden" asp-for="hus.harParkering" />
+    <input type="hidden" asp-for="hus.ordreListe" />
+    <input type="hidden" asp-for="hus.Pris" />
+    <input type="hidden" asp-for="hus.romAntall" />
+    <input type="hidden" asp-for="kunde.husListe" />
+    <input type="hidden" asp-for="kunde.ordreListe" />
+    <input type="hidden" asp-for="hus.eier.antallAnnonser" />
+    <input type="hidden" asp-for="hus.eier.husListe" />
+    <input type="hidden" asp-for="hus.eier.kontoNummer" />
+    <input type="hidden" asp-for="hus.eier.Person.Addresse" />
+    <input type="hidden" asp-for="hus.eier.Person.Email" />
+    <input type="hidden" asp-for="hus.eier.Person.Fodselsdato" />
+    <input type="hidden" asp-for="hus.eier.Person.Navn" />
+    <input type="hidden" asp-for="hus.eier.Person" />
+    <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
+
     <div class="form-group">
+<<<<<<< Updated upstream
         <label asp-for="Navn">Name</label><span class="text-danger">*</span>
         <input asp-for="Navn" class="form-control" />
         <span asp-validation-for="Navn" class="text-danger"></span>
@@ -28,6 +57,36 @@
         <label asp-for="Email">E-mail</label><span class="text-danger">*</span>
         <input asp-for="Email" type="email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
+=======
+        <label asp-for="kunde.Person.Navn"></label><span class="text-danger">*</span>
+        <input asp-for="kunde.Person.Navn" class="form-control" />
+        <span asp-validation-for="kunde.Person.Navn" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="kunde.Person.Fodselsdato"></label><span class="text-danger">*</span>
+        <input asp-for="kunde.Person.Fodselsdato" type="date" class="form-control" />
+        <span asp-validation-for="kunde.Person.Fodselsdato" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="kunde.Person.Addresse"></label><span class="text-danger">*</span>
+        <input asp-for="kunde.Person.Addresse" class="form-control" />
+        <span asp-validation-for="kunde.Person.Addresse" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="kunde.Person.TelefonNmr"></label><span class="text-danger">*</span>
+        <input asp-for="kunde.Person.TelefonNmr" class="form-control" />
+        <span asp-validation-for="kunde.Person.TelefonNmr" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="kunde.Person.Email"></label><span class="text-danger">*</span>
+        <input asp-for="kunde.Person.Email" type="email" class="form-control" />
+        <span asp-validation-for="kunde.Person.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="betaltGjennom"></label><span class="text-danger">*</span>
+        <input asp-for="betaltGjennom" type="email" class="form-control" />
+        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
+>>>>>>> Stashed changes
     </div>
     <button type="submit" class="btn btn-primary" asp-controller="Ordre" asp-action="lagOrdre">Create</button>
     <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Back to Table View</a>
