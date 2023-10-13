@@ -33,31 +33,6 @@
     <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
 
     <div class="form-group">
-<<<<<<< Updated upstream
-        <label asp-for="Navn">Name</label><span class="text-danger">*</span>
-        <input asp-for="Navn" class="form-control" />
-        <span asp-validation-for="Navn" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Fodselsdato">Birth date</label><span class="text-danger">*</span>
-        <input asp-for="Fodselsdato" type="date" class="form-control" />
-        <span asp-validation-for="Fodselsdato" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Addresse">Address</label><span class="text-danger">*</span>
-        <input asp-for="Addresse" class="form-control" />
-        <span asp-validation-for="Addresse" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TelefonNmr">Tel</label><span class="text-danger">*</span>
-        <input asp-for="TelefonNmr" class="form-control" />
-        <span asp-validation-for="TelefonNmr" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">E-mail</label><span class="text-danger">*</span>
-        <input asp-for="Email" type="email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-=======
         <label asp-for="kunde.Person.Navn"></label><span class="text-danger">*</span>
         <input asp-for="kunde.Person.Navn" class="form-control" />
         <span asp-validation-for="kunde.Person.Navn" class="text-danger"></span>
@@ -86,7 +61,6 @@
         <label asp-for="betaltGjennom"></label><span class="text-danger">*</span>
         <input asp-for="betaltGjennom" type="email" class="form-control" />
         <span asp-validation-for="betaltGjennom" class="text-danger"></span>
->>>>>>> Stashed changes
     </div>
     <button type="submit" class="btn btn-primary" asp-controller="Ordre" asp-action="lagOrdre">Create</button>
     <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Back to Table View</a>

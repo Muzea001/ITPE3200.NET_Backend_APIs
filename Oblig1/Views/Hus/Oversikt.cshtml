@@ -22,49 +22,12 @@
             <p class="card-text">Price: <span class="text-muted">@Model.Pris</span></p>
             <p class="card-text">Availability: <span class="text-muted">@Model.erTilgjengelig</span></p>
             <p class="card-text">Discription: <span class="text-muted">@Model.Beskrivelse</span></p>
-            <form asp-controller="Ordre" asp-action="lagOrdre">
+            <form>
                 <button type="button" class="btn btn-primary"
-                        asp-controller="Ordre" asp-action="lagOrdre" id="bestillKnapp" asp-route-id="@Model.husId">
+                        asp-controller="Ordre" asp-action="lagOrdre" asp-route-id="@Model.husId"> 
                     Reserve
                 </button>
             </form>
         </div>
     </div>
-
-<<<<<<< Updated upstream
-    <div class="form ml-5 pl-5" id="ordreForm" style="display: none">
-        <h2>Create Order</h2>
-        <form asp-controller="Ordre" asp-action="Lag">
-            <div class="form-group">
-                <label asp-for="kunde.Person.Navn">Name</label><span class="text-danger">*</span>
-                <input asp-for="kunde.Person.Navn" class="form-control" />
-                <span asp-validation-for="kunde.Person.Navn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="kunde.Person.Fodselsdato">Birth date</label><span class="text-danger">*</span>
-                <input asp-for="kunde.Person.Fodselsdato" type="date" class="form-control" />
-                <span asp-validation-for="kunde.Person.Fodselsdato" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="kunde.Person.Addresse">Address</label><span class="text-danger">*</span>
-                <input asp-for="kunde.Person.Addresse" class="form-control" />
-                <span asp-validation-for="kunde.Person.Addresse" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="kunde.Person.TelefonNmr">Tel</label><span class="text-danger">*</span>
-                <input asp-for="kunde.Person.TelefonNmr" class="form-control" />
-                <span asp-validation-for="kunde.Person.TelefonNmr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="kunde.Person.Email">E-mail</label><span class="text-danger">*</span>
-                <input asp-for="kunde.Person.Email" type="email" class="form-control" />
-                <span asp-validation-for="kunde.Person.Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary" asp-controller="Hus" asp-action="Oversikt">Create</button>
-            <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Back to Table View</a>
-        </form>
-    </div>
-=======
->>>>>>> Stashed changes
-</div>
 
