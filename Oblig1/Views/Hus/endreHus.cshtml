@@ -94,10 +94,13 @@
         <label for="Beskrivelse">House describtion:</label>
         <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
     </div>
-    <div class="form-group">
-        <label for="bildeURL">Upload photo:</label>
-        <input asp-for="bildeURL" name="bildeURL[]" multiple>
-    </div>
+    @for (int i = 0; i < Model.bildeListe.Count; i++)
+    {
+        <div class="form-group">
+            <label for="husListe[@i].bildeURL">Upload photo for House @i:</label>
+            <input asp-for="husListe[@i].bildeURL" name="husListe[@i].bildeURL[]" multiple>
+        </div>
+    }
 
     <button type="submit" class="btn btn-success">Update</button>
     <a asp-action="Tabell" class="btn btn-secondary">Abort</a>

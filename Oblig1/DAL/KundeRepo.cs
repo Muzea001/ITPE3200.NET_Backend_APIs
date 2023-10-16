@@ -51,20 +51,22 @@ namespace Oblig1.DAL
 
 
 
-        public async Task<bool> lagKunde(Kunde kunde)
+        public async Task<int> lagKunde(Kunde kunde)
         {
             try
             {
                 _db.kunde.Add(kunde);
                 await _db.SaveChangesAsync();
-                return true;
+                _Kundelogger.LogError("Dette er iden til kunden");
+
+                return kunde.kundeID;
             }
 
             catch (Exception ex)
             {
 
                 _Kundelogger.LogError("[KundeRepo] feil med lagKunde metoden, error melding : {e}", ex.Message);
-                return false;
+                return -1;
             }
 
         }

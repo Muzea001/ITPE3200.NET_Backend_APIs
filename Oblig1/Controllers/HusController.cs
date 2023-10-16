@@ -5,6 +5,7 @@ using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
+using System.Drawing;
 
 namespace Oblig1.Controllers
 {
@@ -98,13 +99,25 @@ namespace Oblig1.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(Hus hus)
+        public async Task<IActionResult> Create(Hus hus, IFormFile imageData)
         {
             if (ModelState.IsValid)
             {
                 bool OK = await husInterface.Lag(hus);
                 if (OK)
                 {
+                    if (imageData!= null && imageData.Length> 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Bilder");
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_ " + imageData.FileName;
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageData.CopyToAsync(stream);
+                        }
+
+                    }
                     return RedirectToAction(nameof(Tabell));
 
                 }
@@ -152,7 +165,7 @@ namespace Oblig1.Controllers
                   else
                     {
                          _HusLogger.LogWarning("[HusController] Invalid model state.");
-                         // Log more details about the model state errors if needed
+                        
                         foreach (var modelStateKey in ViewData.ModelState.Keys)
                         {
                             var modelStateVal = ViewData.ModelState[modelStateKey];
@@ -164,7 +177,7 @@ namespace Oblig1.Controllers
                         }
                     }
 
-                    // Stay on the current view and display an error message if the update fails
+                    
                     return RedirectToAction($"{nameof(Tabell)}");
 
         }

@@ -18,27 +18,27 @@
             <th></th>
             <th>Actions</th>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var Hus in Model)
         {
             <tr>
-            <td>@item.husId</td> 
-            <td>@item.Pris.ToString("0.00 NOK")</td>
-            <td>@item.Beskrivelse</td>
-            <td>@item.erTilgjengelig</td> 
+            <td>@Hus.husId</td> 
+            <td>@Hus.Pris.ToString("0.00 NOK")</td>
+            <td>@Hus.Beskrivelse</td>
+            <td>@Hus.erTilgjengelig</td> 
             <td>
-                <img src="@item.bildeURL" alt="Item Image" style="max-width: 80px; max-height: 80px;" />
+                <img src="@Hus.bildeListe[0]" alt="Item Image" style="max-width: 80px; max-height: 80px;" />
                 
             </td>
-            <td>@item.Addresse</td> 
-            <td>@item.by</td> 
-            <td>@item.areal</td> 
-            <td>@item.romAntall</td> 
-            <td>@item.erMoblert</td> 
-            <td>@item.harParkering</td> 
+            <td>@Hus.Addresse</td> 
+            <td>@Hus.by</td> 
+            <td>@Hus.areal</td> 
+            <td>@Hus.romAntall</td> 
+            <td>@Hus.erMoblert</td> 
+            <td>@Hus.harParkering</td> 
             <td></td> 
             <td>
-                <a asp-action="EndreHus" asp-route-id="@item.husId">Oppdater</a> 
-                <a asp-action="SlettHus" asp-route-id="@item.husId">Slett</a> 
+                <a asp-action="EndreHus" asp-route-id="@Hus.husId">Oppdater</a> 
+                <a asp-action="SlettHus" asp-route-id="@Hus.husId">Slett</a> 
                 </td>
             </tr>
         }

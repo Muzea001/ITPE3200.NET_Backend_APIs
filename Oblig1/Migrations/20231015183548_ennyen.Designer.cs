@@ -11,8 +11,8 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231008211601_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231015183548_ennyen")]
+    partial class ennyen
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,6 +220,26 @@ namespace Oblig1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Oblig1.Models.Bilder", b =>
+                {
+                    b.Property<int>("bilderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("bilderUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("husId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("bilderId");
+
+                    b.HasIndex("husId");
+
+                    b.ToTable("bilder");
+                });
+
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
                 {
                     b.Property<long>("kontoNummer")
@@ -259,10 +279,6 @@ namespace Oblig1.Migrations
                     b.Property<double>("areal")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("bildeURL")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("by")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -279,12 +295,17 @@ namespace Oblig1.Migrations
                     b.Property<bool>("harParkering")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("kundeID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("romAntall")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("husId");
 
                     b.HasIndex("eierkontoNummer");
+
+                    b.HasIndex("kundeID");
 
                     b.ToTable("hus");
                 });
@@ -414,6 +435,17 @@ namespace Oblig1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Oblig1.Models.Bilder", b =>
+                {
+                    b.HasOne("Oblig1.Models.Hus", "hus")
+                        .WithMany("bildeListe")
+                        .HasForeignKey("husId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("hus");
+                });
+
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
                 {
                     b.HasOne("Oblig1.Models.Person", "Person")
@@ -433,7 +465,13 @@ namespace Oblig1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Oblig1.Models.Kunde", "kunde")
+                        .WithMany("husListe")
+                        .HasForeignKey("kundeID");
+
                     b.Navigation("eier");
+
+                    b.Navigation("kunde");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>
@@ -473,11 +511,15 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Hus", b =>
                 {
+                    b.Navigation("bildeListe");
+
                     b.Navigation("ordreListe");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>
                 {
+                    b.Navigation("husListe");
+
                     b.Navigation("ordreListe");
                 });
 #pragma warning restore 612, 618

@@ -25,8 +25,8 @@
         <dd class="col-sm-10">@Model.Person.Addresse</dd>
     </dl>
 
-    <form asp-action="Slett" asp-route-id="@Model.Person.personID" method="post">
+    <form asp-action="SlettBekreftet" asp-route-id="@Model.Person.personID" method="post">
         <button type="submit" class="btn btn-danger">Slett</button>
-        <a asp-action="Oversikt" class="btn btn-secondary">Avbryt</a>
+        <a asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
     </form>
 </div>

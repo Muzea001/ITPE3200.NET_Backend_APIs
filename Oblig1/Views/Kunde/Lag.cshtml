@@ -1,10 +1,9 @@
 ﻿@model Oblig1.Models.Kunde
+<h2>Create New Kunde</h2>
 
-<h2>Oppdater Kunde</h2>
+<div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action="Endre">
-    <input type="hidden" asp-for="Person.personID" />
-
+<form asp-action="Lag">
     <div class="form-group">
         <label asp-for="Person.Navn"></label><span class="text-danger">*</span>
         <input asp-for="Person.Navn" class="form-control" />
@@ -20,6 +19,16 @@
         <input asp-for="Person.Addresse" class="form-control" />
         <span asp-validation-for="Person.Addresse" class="text-danger"></span>
     </div>
+    <div class="class=" form-group" >
+        <label asp-for="ordreListe"></label><span class="text-danger">*</span>
+        <input asp-for="ordreListe" class="form-control" hidden />
+        <span asp-validation-for="ordreListe" class="text-danger"></span>
+    </div>
+    <div class="class=" form-group">
+        <label asp-for="husListe"></label><span class="text-danger">*</span>
+        <input asp-for="husListe" class="form-control" hidden />
+        <span asp-validation-for="husListe" class="text-danger"></span>
+    </div>
     <div class="form-group">
         <label asp-for="Person.TelefonNmr"></label>
         <input type="tel" asp-for="Person.TelefonNmr" class="form-control" />
@@ -30,7 +39,7 @@
         <input type="email" asp-for="Person.Email" class="form-control" />
         <span asp-validation-for="Person.Email" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Lagre endringer</button>
-    <a asp-action="Table" class="btn btn-secondary">Avbryt</a>
+    
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Lag" class="btn btn-secondary">Back to Table View</a>
 </form>

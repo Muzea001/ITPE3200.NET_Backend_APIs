@@ -22,6 +22,8 @@ namespace Oblig1.DAL
 
         public DbSet<Eier> eier { get; set; }
 
+        public DbSet<Bilder> bilder { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

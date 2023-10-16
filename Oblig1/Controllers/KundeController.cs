@@ -17,6 +17,8 @@ namespace Oblig1.Controllers
             _Brukerlogger = logger;
         }
 
+
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Tabell()
         {
@@ -65,8 +67,18 @@ namespace Oblig1.Controllers
 
         }
 
+       
+
+
+
         [HttpGet]
-        public IActionResult Create() { return View(); }
+        public IActionResult Lag()
+        {
+
+            return View();
+
+
+        }
 
 
         [HttpPost]
@@ -75,8 +87,8 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool OK = await _kundeInterface.lagKunde(kunde);
-                if (OK)
+                int id  = await _kundeInterface.lagKunde(kunde);
+                if ( id > -1)
                 {
                     return RedirectToAction(nameof(Tabell));
 

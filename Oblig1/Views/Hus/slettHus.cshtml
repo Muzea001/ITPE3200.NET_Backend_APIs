@@ -36,7 +36,10 @@
         <dd class="col-sm-10">@Model.Beskrivelse</dd>
 
         <dt class="col-sm-2">Bilder </dt>
-        <dd class="col-sm-10">@Model.bildeURL</dd>
+        @foreach (var url in Model.bildeListe)
+        {
+            <img src="@url" alt="Hus bilder" class="img-fluid" style="max-width: 300px; max-height: 200px;" />
+        }
 
 
     </dl>

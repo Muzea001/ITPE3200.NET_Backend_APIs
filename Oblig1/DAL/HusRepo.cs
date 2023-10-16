@@ -22,7 +22,7 @@ namespace Oblig1.DAL
         {
             try
             {
-                return await _db.hus.ToListAsync();
+                return await _db.hus.Include(h => h.bildeListe).ToListAsync();
             }
             catch (Exception ex)
             {

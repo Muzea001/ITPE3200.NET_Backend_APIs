@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -225,8 +225,8 @@ namespace Oblig1.Migrations
                     Addresse = table.Column<string>(type: "TEXT", nullable: false),
                     romAntall = table.Column<int>(type: "INTEGER", nullable: false),
                     erTilgjengelig = table.Column<bool>(type: "INTEGER", nullable: false),
+                    kundeID = table.Column<int>(type: "INTEGER", nullable: true),
                     eierkontoNummer = table.Column<long>(type: "INTEGER", nullable: false),
-                    bildeURL = table.Column<string>(type: "TEXT", nullable: false),
                     harParkering = table.Column<bool>(type: "INTEGER", nullable: false),
                     erMoblert = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
@@ -238,6 +238,31 @@ namespace Oblig1.Migrations
                         column: x => x.eierkontoNummer,
                         principalTable: "eier",
                         principalColumn: "kontoNummer",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_hus_kunde_kundeID",
+                        column: x => x.kundeID,
+                        principalTable: "kunde",
+                        principalColumn: "kundeID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "bilder",
+                columns: table => new
+                {
+                    bilderId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    bilderUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    husId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_bilder", x => x.bilderId);
+                    table.ForeignKey(
+                        name: "FK_bilder_hus_husId",
+                        column: x => x.husId,
+                        principalTable: "hus",
+                        principalColumn: "husId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -307,6 +332,11 @@ namespace Oblig1.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_bilder_husId",
+                table: "bilder",
+                column: "husId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_eier_personID",
                 table: "eier",
                 column: "personID");
@@ -315,6 +345,11 @@ namespace Oblig1.Migrations
                 name: "IX_hus_eierkontoNummer",
                 table: "hus",
                 column: "eierkontoNummer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_hus_kundeID",
+                table: "hus",
+                column: "kundeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_kunde_personID",
@@ -351,6 +386,9 @@ namespace Oblig1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "bilder");
+
+            migrationBuilder.DropTable(
                 name: "ordre");
 
             migrationBuilder.DropTable(
@@ -363,10 +401,10 @@ namespace Oblig1.Migrations
                 name: "hus");
 
             migrationBuilder.DropTable(
-                name: "kunde");
+                name: "eier");
 
             migrationBuilder.DropTable(
-                name: "eier");
+                name: "kunde");
 
             migrationBuilder.DropTable(
                 name: "person");

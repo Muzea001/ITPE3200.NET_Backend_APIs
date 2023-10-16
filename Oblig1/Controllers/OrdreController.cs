@@ -14,13 +14,15 @@ namespace Oblig1.Controllers
         private readonly OrdreInterface _ordreInterface;
         private readonly Kvittering _kvittering;
         private readonly HusInterface _husInterface;
+        private readonly KundeInterface _kunderinterface;
 
-        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering)
+        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, KundeInterface kundeInterface)
         {
             _ordreInterface = ordreinterface;
             _Ordrelogger = logger;
             _husInterface = husInterface; ;
             _kvittering = kvittering;
+            _kunderinterface = kundeInterface;
         }
 
         public async Task<IActionResult> Tabell()
@@ -71,22 +73,31 @@ namespace Oblig1.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         [Authorize]
-        public IActionResult lagOrdre() { return View(); }
+        public IActionResult lagOrdre(int husId) { return View(); }
 
 
         [HttpPost]
 
-        public async Task<IActionResult> Lag(Ordre ordre, int husid)
+        public async Task<IActionResult> Lag(Ordre ordre, int husid, Kunde kunde)
         {
             if (ModelState.IsValid)
             {
+                var dbKunde = await _kunderinterface.hentKundeMedId(kunde.kundeID);
+                if (dbKunde == null)
+                {
+                    await _kunderinterface.lagKunde(dbKunde);
+                }
+              
+                ordre.kundeID = dbKunde.kundeID;
                 var hus = await _husInterface.hentHusMedId(husid);
                 if (hus == null)
                 {
                     return NotFound("hus finnes ikke !");
                 }
+                ordre.husId = hus.husId;
+                
                 bool OK = await _ordreInterface.lagOrdre(ordre);
                 if (OK)
                 {

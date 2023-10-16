@@ -1,9 +1,10 @@
 ﻿@model Oblig1.Models.Kunde
-<h2>Create New Kunde</h2>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+<h2>Oppdater Kunde</h2>
 
-<form asp-action="Create">
+<form asp-action="EndreBekreftet">
+    <input type="hidden" asp-for="Person.personID" />
+
     <div class="form-group">
         <label asp-for="Person.Navn"></label><span class="text-danger">*</span>
         <input asp-for="Person.Navn" class="form-control" />
@@ -29,7 +30,7 @@
         <input type="email" asp-for="Person.Email" class="form-control" />
         <span asp-validation-for="Person.Email" class="text-danger"></span>
     </div>
-    
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Table" class="btn btn-secondary">Back to Table View</a>
+
+    <button type="submit" class="btn btn-primary">Lagre endringer</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
 </form>

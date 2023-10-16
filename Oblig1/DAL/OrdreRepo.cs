@@ -4,6 +4,7 @@ using Oblig1.Models;
 namespace Oblig1.DAL
 {
     public class OrdreRepo : OrdreInterface
+
     {
 
         private readonly ItemDbContext _db;
@@ -56,6 +57,7 @@ namespace Oblig1.DAL
         {
             try
             {
+               
                 _db.ordre.Add(ordre);
                 await _db.SaveChangesAsync();
                 return true;

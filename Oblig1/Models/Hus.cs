@@ -35,7 +35,8 @@ namespace Oblig1.Models
 
         public virtual List<Ordre> ordreListe { get; set; }
 
-        public string bildeURL { get; set; }    
+        public virtual List<Bilder> bildeListe { get; set; }    
+
 
         public bool harParkering { get; set; }  
 

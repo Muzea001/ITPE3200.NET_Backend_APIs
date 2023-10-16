@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Logs\" />
     <Folder Include="Views\Home\" />
-    <Folder Include="Views\Kunde\" />
   </ItemGroup>
 
   <ItemGroup>

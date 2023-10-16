@@ -5,7 +5,7 @@
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class nullableKunde : Migration
+    public partial class ennyen : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

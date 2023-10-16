@@ -217,6 +217,26 @@ namespace Oblig1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Oblig1.Models.Bilder", b =>
+                {
+                    b.Property<int>("bilderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("bilderUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("husId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("bilderId");
+
+                    b.HasIndex("husId");
+
+                    b.ToTable("bilder");
+                });
+
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
                 {
                     b.Property<long>("kontoNummer")
@@ -255,10 +275,6 @@ namespace Oblig1.Migrations
 
                     b.Property<double>("areal")
                         .HasColumnType("REAL");
-
-                    b.Property<string>("bildeURL")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("by")
                         .IsRequired()
@@ -416,6 +432,13 @@ namespace Oblig1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Oblig1.Models.Bilder", b =>
+                {
+                    b.HasOne("Oblig1.Models.Hus", null)
+                        .WithMany("bildeListe")
+                        .HasForeignKey("husId");
+                });
+
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
                 {
                     b.HasOne("Oblig1.Models.Person", "Person")
@@ -436,7 +459,7 @@ namespace Oblig1.Migrations
                         .IsRequired();
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
-                        .WithMany()
+                        .WithMany("husListe")
                         .HasForeignKey("kundeID");
 
                     b.Navigation("eier");
@@ -481,11 +504,15 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Hus", b =>
                 {
+                    b.Navigation("bildeListe");
+
                     b.Navigation("ordreListe");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>
                 {
+                    b.Navigation("husListe");
+
                     b.Navigation("ordreListe");
                 });
 #pragma warning restore 612, 618
