@@ -42,13 +42,13 @@ namespace Oblig1.Controllers
         [Authorize]
         public async Task<IActionResult> Endre(int id)
         {
-            var ordre = await _ordreInterface.hentOrdreMedId(id);
-            if (ordre == null)
+            var Ordre = await _ordreInterface.hentOrdreMedId(id);
+            if (Ordre == null)
             {
                 _Ordrelogger.LogError("[OrdreKontroller] Ordre ikke funnet for denne iden" + id);
                 return NotFound("Ordre ikke funnet");
             }
-            return View(ordre);
+            return View(Ordre);
         }
 
         [HttpPost]
@@ -62,11 +62,31 @@ namespace Oblig1.Controllers
                 {
                     return RedirectToAction(nameof(Tabell));
                 }
+                else
+                {
+                    _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
+                    // Assuming hus has a property Id
+                    ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
+                }
 
             }
+            else
+            {
+                _Ordrelogger.LogWarning("[OrdreKontroller] Invalid model state.", ordre);
+                // Log more details about the model state errors if needed
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        // Log your modelState errors
+                        _Ordrelogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
 
-            _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
-            return View(ordre);
+            
+            return RedirectToAction($"{nameof(Tabell)}");
 
 
 
@@ -109,7 +129,11 @@ namespace Oblig1.Controllers
                 }
             }
             _Ordrelogger.LogWarning("[OrdreRepo] har failet med å danne en kvittering for denne ordren", ordre);
-            return RedirectToAction("index");
+
+            return RedirectToAction("Review");
+
+            
+
         }
 
         [HttpGet]
