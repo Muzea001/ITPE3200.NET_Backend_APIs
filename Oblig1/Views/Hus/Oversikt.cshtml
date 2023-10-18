@@ -47,10 +47,10 @@
             <p class="card-text">Price: <span class="text-muted">@Model.Pris</span></p>
             <p class="card-text">Availability: <span class="text-muted">@Model.erTilgjengelig</span></p>
             <p class="card-text">Discription: <span class="text-muted">@Model.Beskrivelse</span></p>
-            <form>
-                <button type="button" class="btn btn-primary"
-                        asp-controller="Ordre" asp-action="lagOrdre" asp-route-id="@Model.husId"> 
-                    Reserve
+            <form asp-controller="Ordre" asp-action="lagOrdre">
+                <button type="submit" class="btn btn-primary"
+                        asp-controller="Ordre" asp-action="lagOrdre" asp-route-id="@Model.husId">
+                    Reserver
                 </button>
             </form>
         </div>
