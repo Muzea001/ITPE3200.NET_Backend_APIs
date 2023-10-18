@@ -53,16 +53,26 @@ namespace Oblig1.DAL
 
 
 
-        public async Task<bool> lagOrdre(Ordre ordre)
+        public async Task<bool> lagOrdre(Ordre ordre, int husID, Kunde kunde)
         {
             try
             {
-               
-                _db.ordre.Add(ordre);
-                await _db.SaveChangesAsync();
-                return true;
-            }
+                var hus = _db.hus.FindAsync(husID);
+                if (hus != null)
+                {
+                    hus. = false;
+                    ordre.kundeID = kunde.kundeID;
+                    ordre.husId = husID;
+                    _db.ordre.Add(ordre);
+                    await _db.SaveChangesAsync();
+                    return true;
+                }
 
+                else
+                {
+                    return false;
+                }
+            }
             catch (Exception ex)
             {
 

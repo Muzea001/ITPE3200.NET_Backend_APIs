@@ -121,6 +121,7 @@ namespace Oblig1.Controllers
                 bool OK = await _ordreInterface.lagOrdre(ordre);
                 if (OK)
                 {
+                   
                     var htmlKvittering = "<html><body><p><Kvittinerg Detaljer>.....</p></body></html>";
                     var pdfKvittering = _kvittering.genererPdfKvittering(htmlKvittering);
                     var filnavn = "Bestilling kvittering.pdf";
