@@ -87,7 +87,7 @@ namespace Oblig1.Controllers
 
 
 
-
+        
         [HttpGet]
         public IActionResult Create()
         {
@@ -98,7 +98,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> Create(Hus hus, IFormFile imageData)
         {
             if (ModelState.IsValid)
@@ -128,7 +128,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        
 
         public async Task<IActionResult> endreHus(int id)
         {
@@ -144,7 +144,7 @@ namespace Oblig1.Controllers
 
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> endreBekreftet(Hus hus)
         {
                  if (ModelState.IsValid)
@@ -183,7 +183,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        
         public async Task<IActionResult> slettHus(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -197,7 +197,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> slettHusBekreftet(int id)
         {
 

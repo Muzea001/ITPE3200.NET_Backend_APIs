@@ -9,5 +9,8 @@ namespace Oblig1.DAL
         Task<Kunde> hentKundeMedId(int id);
         Task<int> lagKunde(Kunde kunde);
         Task<bool> SlettKunde(int id);
+
+        Task<Kunde> finnKundeId(string id);
+       
     }
 }

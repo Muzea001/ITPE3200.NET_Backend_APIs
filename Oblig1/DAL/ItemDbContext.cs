@@ -6,23 +6,24 @@ using Oblig1.Models;
 
 namespace Oblig1.DAL
 {
-    public class ItemDbContext : IdentityDbContext
+    public class ItemDbContext : IdentityDbContext<Person>
 
     {
+
         public ItemDbContext(DbContextOptions<ItemDbContext> options) : base(options)
         {
 
 
         }
-        public DbSet<Person> person { get; set; }
-        public DbSet<Hus> hus { get; set; } 
-        public DbSet<Kunde> kunde { get; set; } 
+        public DbSet<Ordre> Ordre { get; set; }
+        public DbSet<Hus> Hus { get; set; } 
+        public DbSet<Kunde> Kunde { get; set; } 
 
-        public DbSet <Ordre> ordre { get; set; }
+        public DbSet <Person> Person { get; set; }
 
-        public DbSet<Eier> eier { get; set; }
+        public DbSet<Eier> Eier { get; set; }
 
-        public DbSet<Bilder> bilder { get; set; }
+        public DbSet<Bilder> Bilder { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,11 +33,12 @@ namespace Oblig1.DAL
 
 
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Person>()
+             .ToTable("Person");
             modelBuilder.Entity<IdentityUserLogin<string>>()
            .HasKey(l => new { l.LoginProvider, l.ProviderKey });
-            modelBuilder.Entity<Kunde>().ToTable("kunde");
-            modelBuilder.Entity<Eier>().ToTable("eier");
+            modelBuilder.Entity<Kunde>().ToTable("Kunde");
+            modelBuilder.Entity<Eier>().ToTable("Eier");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 
 namespace Oblig1.DAL
@@ -20,7 +21,7 @@ namespace Oblig1.DAL
         {
             try
             {
-                return await _db.kunde.ToListAsync();
+                return await _db.Kunde.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,7 +37,7 @@ namespace Oblig1.DAL
 
             try
             {
-                return await _db.kunde.FindAsync(id);
+                return await _db.Kunde.FindAsync(id);
 
             }
             catch (Exception ex)
@@ -50,12 +51,32 @@ namespace Oblig1.DAL
         }
 
 
+        public async Task<Kunde> finnKundeId(string id)
 
+        {
+            try
+            {
+                var kunde = await _db.Kunde.FirstOrDefaultAsync(k => k.Person.Id == id);
+
+                if (kunde != null)
+                {
+                    return kunde;
+                }
+                return null;
+
+
+            }
+            catch (Exception ex) {
+
+                _Kundelogger.LogError("Finn kunde med id har ikke klart å finne kunden", ex.Message);
+                return null; }
+        
+        }
         public async Task<int> lagKunde(Kunde kunde)
         {
             try
             {
-                _db.kunde.Add(kunde);
+                _db.Kunde.Add(kunde);
                 await _db.SaveChangesAsync();
                 _Kundelogger.LogError("Dette er iden til kunden");
 
@@ -71,11 +92,13 @@ namespace Oblig1.DAL
 
         }
 
+      
+
         public async Task<bool> endreKunde(Kunde kunde)
         {
             try
             {
-                _db.kunde.Update(kunde);
+                _db.Kunde.Update(kunde);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -92,14 +115,14 @@ namespace Oblig1.DAL
         {
             try
             {
-                var kunde = await _db.kunde.FindAsync(id);
+                var kunde = await _db.Kunde.FindAsync(id);
                 if (kunde == null)
                 {
                     _Kundelogger.LogError("[KundeRepo] kunde finnes ikke for denne iden" + id);
                     return false;
                 }
 
-                _db.kunde.Remove(kunde);
+                _db.Kunde.Remove(kunde);
                 await _db.SaveChangesAsync();
                 return true;
 

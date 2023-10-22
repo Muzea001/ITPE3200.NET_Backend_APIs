@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class initCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,10 +26,14 @@ namespace Oblig1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Person",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Navn = table.Column<string>(type: "TEXT", nullable: false),
+                    Fodselsdato = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Addresse = table.Column<string>(type: "TEXT", nullable: false),
+                    TelefonNmr = table.Column<long>(type: "INTEGER", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -47,24 +51,7 @@ namespace Oblig1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "person",
-                columns: table => new
-                {
-                    personID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Navn = table.Column<string>(type: "TEXT", nullable: false),
-                    Fodselsdato = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Addresse = table.Column<string>(type: "TEXT", nullable: false),
-                    TelefonNmr = table.Column<long>(type: "INTEGER", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_person", x => x.personID);
+                    table.PrimaryKey("PK_Person", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,9 +89,9 @@ namespace Oblig1.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        name: "FK_AspNetUserClaims_Person_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -122,9 +109,9 @@ namespace Oblig1.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        name: "FK_AspNetUserLogins_Person_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -146,9 +133,9 @@ namespace Oblig1.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        name: "FK_AspNetUserRoles_Person_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -166,54 +153,52 @@ namespace Oblig1.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        name: "FK_AspNetUserTokens_Person_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "eier",
+                name: "Eier",
                 columns: table => new
                 {
                     kontoNummer = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    personID = table.Column<int>(type: "INTEGER", nullable: false),
+                    PersonId = table.Column<string>(type: "TEXT", nullable: true),
                     antallAnnonser = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_eier", x => x.kontoNummer);
+                    table.PrimaryKey("PK_Eier", x => x.kontoNummer);
                     table.ForeignKey(
-                        name: "FK_eier_person_personID",
-                        column: x => x.personID,
-                        principalTable: "person",
-                        principalColumn: "personID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Eier_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "kunde",
+                name: "Kunde",
                 columns: table => new
                 {
                     kundeID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    personID = table.Column<int>(type: "INTEGER", nullable: false)
+                    PersonId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_kunde", x => x.kundeID);
+                    table.PrimaryKey("PK_Kunde", x => x.kundeID);
                     table.ForeignKey(
-                        name: "FK_kunde_person_personID",
-                        column: x => x.personID,
-                        principalTable: "person",
-                        principalColumn: "personID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Kunde_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "hus",
+                name: "Hus",
                 columns: table => new
                 {
                     husId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -224,7 +209,6 @@ namespace Oblig1.Migrations
                     by = table.Column<string>(type: "TEXT", nullable: false),
                     Addresse = table.Column<string>(type: "TEXT", nullable: false),
                     romAntall = table.Column<int>(type: "INTEGER", nullable: false),
-                    erTilgjengelig = table.Column<bool>(type: "INTEGER", nullable: false),
                     kundeID = table.Column<int>(type: "INTEGER", nullable: true),
                     eierkontoNummer = table.Column<long>(type: "INTEGER", nullable: false),
                     harParkering = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -232,66 +216,64 @@ namespace Oblig1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_hus", x => x.husId);
+                    table.PrimaryKey("PK_Hus", x => x.husId);
                     table.ForeignKey(
-                        name: "FK_hus_eier_eierkontoNummer",
+                        name: "FK_Hus_Eier_eierkontoNummer",
                         column: x => x.eierkontoNummer,
-                        principalTable: "eier",
+                        principalTable: "Eier",
                         principalColumn: "kontoNummer",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_hus_kunde_kundeID",
+                        name: "FK_Hus_Kunde_kundeID",
                         column: x => x.kundeID,
-                        principalTable: "kunde",
+                        principalTable: "Kunde",
                         principalColumn: "kundeID");
                 });
 
             migrationBuilder.CreateTable(
-                name: "bilder",
+                name: "Bilder",
                 columns: table => new
                 {
                     bilderId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     bilderUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    husId = table.Column<int>(type: "INTEGER", nullable: false)
+                    husId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_bilder", x => x.bilderId);
+                    table.PrimaryKey("PK_Bilder", x => x.bilderId);
                     table.ForeignKey(
-                        name: "FK_bilder_hus_husId",
+                        name: "FK_Bilder_Hus_husId",
                         column: x => x.husId,
-                        principalTable: "hus",
-                        principalColumn: "husId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Hus",
+                        principalColumn: "husId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ordre",
+                name: "Ordre",
                 columns: table => new
                 {
                     ordreId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Dato = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    betaltGjennom = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    husId = table.Column<int>(type: "INTEGER", nullable: false),
-                    kundeID = table.Column<int>(type: "INTEGER", nullable: false)
+                    betaltGjennom = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    startDato = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    sluttDato = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    husId = table.Column<int>(type: "INTEGER", nullable: true),
+                    kundeID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ordre", x => x.ordreId);
+                    table.PrimaryKey("PK_Ordre", x => x.ordreId);
                     table.ForeignKey(
-                        name: "FK_ordre_hus_husId",
+                        name: "FK_Ordre_Hus_husId",
                         column: x => x.husId,
-                        principalTable: "hus",
-                        principalColumn: "husId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Hus",
+                        principalColumn: "husId");
                     table.ForeignKey(
-                        name: "FK_ordre_kunde_kundeID",
+                        name: "FK_Ordre_Kunde_kundeID",
                         column: x => x.kundeID,
-                        principalTable: "kunde",
-                        principalColumn: "kundeID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Kunde",
+                        principalColumn: "kundeID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -321,50 +303,50 @@ namespace Oblig1.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bilder_husId",
+                table: "Bilder",
+                column: "husId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Eier_PersonId",
+                table: "Eier",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hus_eierkontoNummer",
+                table: "Hus",
+                column: "eierkontoNummer");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hus_kundeID",
+                table: "Hus",
+                column: "kundeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Kunde_PersonId",
+                table: "Kunde",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ordre_husId",
+                table: "Ordre",
+                column: "husId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ordre_kundeID",
+                table: "Ordre",
+                column: "kundeID");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "AspNetUsers",
+                table: "Person",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "AspNetUsers",
+                table: "Person",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_bilder_husId",
-                table: "bilder",
-                column: "husId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_eier_personID",
-                table: "eier",
-                column: "personID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_hus_eierkontoNummer",
-                table: "hus",
-                column: "eierkontoNummer");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_hus_kundeID",
-                table: "hus",
-                column: "kundeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_kunde_personID",
-                table: "kunde",
-                column: "personID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ordre_husId",
-                table: "ordre",
-                column: "husId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ordre_kundeID",
-                table: "ordre",
-                column: "kundeID");
         }
 
         /// <inheritdoc />
@@ -386,28 +368,25 @@ namespace Oblig1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "bilder");
+                name: "Bilder");
 
             migrationBuilder.DropTable(
-                name: "ordre");
+                name: "Ordre");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Hus");
 
             migrationBuilder.DropTable(
-                name: "hus");
+                name: "Eier");
 
             migrationBuilder.DropTable(
-                name: "eier");
+                name: "Kunde");
 
             migrationBuilder.DropTable(
-                name: "kunde");
-
-            migrationBuilder.DropTable(
-                name: "person");
+                name: "Person");
         }
     }
 }

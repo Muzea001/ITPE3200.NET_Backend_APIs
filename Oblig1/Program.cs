@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Oblig1.DAL;
+using Oblig1.Models;
 using Oblig1.Services;
 using Serilog;
 using Serilog.Events;
-
+using Microsoft.AspNetCore.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ItemDbContextConnection' was not found");
@@ -20,7 +21,13 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ItemDbContext>();
+builder.Services.AddDefaultIdentity<Person>()
+    
+   .AddRoles<IdentityRole>()
+   .AddEntityFrameworkStores<ItemDbContext>();
+
+
+
 
 builder.Services.AddTransient<Oblig1.Services.Kvittering>();
 
@@ -58,13 +65,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    DBInit.Seed(app);
+    DBInit.Seed(app).Wait();
 }
 
 app.UseStaticFiles();
 
 app.UseSession();
-app.UseAuthentication();    
+   
 app.UseAuthorization();
 
 app.UseAuthentication();
@@ -72,6 +79,7 @@ app.UseAuthentication();
 app.MapRazorPages();
  
 app.MapDefaultControllerRoute();
+
 
 app.Run();
 

@@ -23,7 +23,7 @@
                 <td>
                     @if (kunde.ordreListe != null && kunde.ordreListe.Any())
                     {
-                        @string.Join(", ", kunde.ordreListe.Select(order => $"Order{order.ordreId}"))
+                        @string.Join(", ", kunde.ordreListe.Select(ordre => $"Order{ordre.ordreId}"))
                     }
                     else
                     {

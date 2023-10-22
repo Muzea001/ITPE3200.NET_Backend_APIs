@@ -11,5 +11,9 @@ namespace Oblig1.DAL
         Task<Ordre> hentOrdreMedId(int id);
         Task<bool> lagOrdre(Ordre ordre);
         Task<bool> SlettOrdre(int id);
+        Task<IEnumerable<Ordre>?> HentMine(int kundeID);
+
+        Task<bool> sjekkTilgjengelighet(int husID, DateTime start, DateTime slutt);
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 using Oblig1.Services;
 using System.Linq.Expressions;
@@ -22,7 +23,7 @@ namespace Oblig1.DAL
         {
             try
             {
-                return await _db.hus.Include(h => h.bildeListe).ToListAsync();
+                return await _db.Hus.Include(h => h.bildeListe).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -32,12 +33,28 @@ namespace Oblig1.DAL
 
         }
 
+        public async Task<IEnumerable<Hus>> hentMine(int kundeId)
+        {
+            try
+            {
+                return await _db.Hus
+                                .Where(h => h.kunde.kundeID == kundeId)  
+                                .Include(h => h.bildeListe)
+                                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[HusRepo] metoden hent mine hus failed ved inkalling, error message: {e}", ex.Message);
+                return null;
+            }
+        }
+
 
         public async Task<IEnumerable<Hus>> HentAlleTilgjengelig()
         {
             try
             {
-                return await _db.hus.FromSqlRaw("SELECT* FROM hus WHERE erTilgjengelig=1").ToListAsync();
+                return await _db.Hus.FromSqlRaw("SELECT* FROM hus WHERE erTilgjengelig=1").ToListAsync();
             }
             catch (Exception ex)
             {
@@ -51,7 +68,7 @@ namespace Oblig1.DAL
         {
             try
             {
-                var sporring = _db.hus.AsQueryable();
+                var sporring = _db.Hus.AsQueryable();
 
                 if (!string.IsNullOrEmpty(by))
                 {
@@ -105,7 +122,7 @@ namespace Oblig1.DAL
 
             try
             {
-                return await _db.hus.FindAsync(id);
+                return await _db.Hus.FindAsync(id);
 
             }
             catch (Exception ex)
@@ -119,12 +136,12 @@ namespace Oblig1.DAL
         }
 
 
-
+       
         public async Task<bool> Lag(Hus hus)
         {
             try
             {
-                _db.hus.Add(hus);
+                _db.Hus.Add(hus);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -136,12 +153,12 @@ namespace Oblig1.DAL
             }
 
         }
-
+        
         public async Task<bool> Endre(Hus hus)
         {
             try
             {
-                _db.hus.Update(hus);
+                _db.Hus.Update(hus);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -153,18 +170,18 @@ namespace Oblig1.DAL
                 return false;
             }
         }
-
+       
         public async Task<bool> Slett(int id)
         {
             try {
-                var hus = await _db.hus.FindAsync(id);
+                var hus = await _db.Hus.FindAsync(id);
                 if (hus == null)
                 {
                     _logger.LogError("[HusRepo] hus finnes ikke for denne iden" + id);
                     return false;
                 }
 
-                _db.hus.Remove(hus);
+                _db.Hus.Remove(hus);
                 await _db.SaveChangesAsync();
                 return true;
 

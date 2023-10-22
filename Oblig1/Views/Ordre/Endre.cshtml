@@ -4,8 +4,7 @@
 
 <form asp-action="EndreBekreftet" method="post">
     <input type="hidden" asp-for="ordreId" />
-    <input type="hidden" asp-for="husId" />
-    <input type="hidden" asp-for="kundeID" />
+  
     <input type="hidden" asp-for="kunde.Person.TelefonNmr" />
     <input type="hidden" asp-for="kunde.Person.Addresse" />
     <input type="hidden" asp-for="kunde.Person.Email" />
@@ -19,7 +18,6 @@
     <input type="hidden" asp-for="hus.by" />
     <input type="hidden" asp-for="hus.eier" />
     <input type="hidden" asp-for="hus.erMoblert" />
-    <input type="hidden" asp-for="hus.erTilgjengelig" />
     <input type="hidden" asp-for="hus.harParkering" />
     <input type="hidden" asp-for="hus.ordreListe" />
     <input type="hidden" asp-for="hus.Pris" />
@@ -48,9 +46,15 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Dato"> Date </label><span class="text-danger">*</span>
-        <input asp-for="Dato" class="form-control" />
-        <span asp-validation-for="Dato" class="text-danger"></span>
+        <label asp-for="startDato"> Date </label><span class="text-danger">*</span>
+        <input asp-for="startDato" class="form-control" />
+        <span asp-validation-for="startDato" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="sluttDato"> Date </label><span class="text-danger">*</span>
+        <input asp-for="sluttDato" class="form-control" />
+        <span asp-validation-for="sluttDato" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-success">Update</button>

@@ -16,6 +16,7 @@ namespace Oblig1.Models
 
         public virtual List<Hus> husListe { get; set; }
 
+
         [NotNull]
         public virtual Person Person { get; set; }
 

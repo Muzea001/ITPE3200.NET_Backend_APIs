@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 
 namespace Oblig1.DAL
@@ -22,7 +23,7 @@ namespace Oblig1.DAL
         {
             try
             {
-                return await _db.ordre.ToListAsync();
+                return await _db.Ordre.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -31,6 +32,20 @@ namespace Oblig1.DAL
             }
 
         }
+        public async Task<IEnumerable<Ordre>?> HentMine(int kundeID)
+        {
+            try
+            {
+                return await _db.Ordre
+                               
+                                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _OrdreLogger.LogError("[OrdreRepo] hentMine ordre metoden failet ved inkalling, error melding : {e}", ex.Message);
+                return null;
+            }
+        }
 
 
         public async Task<Ordre> hentOrdreMedId(int id)
@@ -38,7 +53,7 @@ namespace Oblig1.DAL
 
             try
             {
-                return await _db.ordre.FindAsync(id);
+                return await _db.Ordre.FindAsync(id);
 
             }
             catch (Exception ex)
@@ -51,42 +66,64 @@ namespace Oblig1.DAL
 
         }
 
-
-
-        public async Task<bool> lagOrdre(Ordre ordre, int husID, Kunde kunde)
+        public async Task<bool> sjekkTilgjengelighet(int husID, DateTime start, DateTime slutt)
         {
+
             try
             {
-                var hus = _db.hus.FindAsync(husID);
-                if (hus != null)
-                {
-                    hus. = false;
-                    ordre.kundeID = kunde.kundeID;
-                    ordre.husId = husID;
-                    _db.ordre.Add(ordre);
-                    await _db.SaveChangesAsync();
-                    return true;
-                }
+                bool isOverlap = await _db.Ordre
+                                           .AnyAsync(o =>
+                                           o.hus.husId == husID &&
+                                           o.startDato < slutt &&
+                                           o.sluttDato > start);
 
-                else
+                if (isOverlap)
                 {
                     return false;
                 }
+                else
+                {
+                    return true;
+                }
             }
+
+
             catch (Exception ex)
             {
-
-                _OrdreLogger.LogError("[OrdreRepo] feil med lagOrdre metoden, error melding : {e}", ex.Message);
+                _OrdreLogger.LogError("[OrdreRepo] sjekkTilgjengelighet metoden failet, error message: {e}", ex.Message);
                 return false;
             }
 
         }
 
+
+        public async Task<bool> lagOrdre(Ordre ordre)
+        {
+            
+                try
+                { 
+                        
+                        _db.Ordre.Add(ordre);
+                        await _db.SaveChangesAsync();
+                        return true;
+                 
+                }
+                catch (Exception ex)
+                {
+
+                    _OrdreLogger.LogError("[OrdreRepo] feil med lagOrdre metoden, error melding : {e}", ex.Message);
+                    return false;
+                }
+            }
+    
+
+        
+
         public async Task<bool> endreOrdre(Ordre ordre)
         {
             try
             {
-                _db.ordre.Update(ordre);
+                _db.Ordre.Update(ordre);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -103,14 +140,14 @@ namespace Oblig1.DAL
         {
             try
             {
-                var ordre = await _db.ordre.FindAsync(id);
+                var ordre = await _db.Ordre.FindAsync(id);
                 if (ordre == null)
                 {
                     _OrdreLogger.LogError("[OrdreRepo] ordre finnes ikke for denne iden" + id);
                     return false;
                 }
 
-                _db.ordre.Remove(ordre);
+                _db.Ordre.Remove(ordre);
                 await _db.SaveChangesAsync();
                 return true;
 

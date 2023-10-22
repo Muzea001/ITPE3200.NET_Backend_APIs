@@ -11,8 +11,8 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231015183548_ennyen")]
-    partial class ennyen
+    [Migration("20231022200536_initCreate")]
+    partial class initCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,70 +71,6 @@ namespace Oblig1.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -230,14 +166,14 @@ namespace Oblig1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("husId")
+                    b.Property<int?>("husId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("bilderId");
 
                     b.HasIndex("husId");
 
-                    b.ToTable("bilder");
+                    b.ToTable("Bilder");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
@@ -246,17 +182,17 @@ namespace Oblig1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("antallAnnonser")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("PersonId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("personID")
+                    b.Property<int>("antallAnnonser")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("kontoNummer");
 
-                    b.HasIndex("personID");
+                    b.HasIndex("PersonId");
 
-                    b.ToTable("eier", (string)null);
+                    b.ToTable("Eier", (string)null);
                 });
 
             modelBuilder.Entity("Oblig1.Models.Hus", b =>
@@ -289,9 +225,6 @@ namespace Oblig1.Migrations
                     b.Property<bool>("erMoblert")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("erTilgjengelig")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("harParkering")
                         .HasColumnType("INTEGER");
 
@@ -307,7 +240,7 @@ namespace Oblig1.Migrations
 
                     b.HasIndex("kundeID");
 
-                    b.ToTable("hus");
+                    b.ToTable("Hus");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Kunde", b =>
@@ -316,35 +249,37 @@ namespace Oblig1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("personID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("PersonId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("kundeID");
 
-                    b.HasIndex("personID");
+                    b.HasIndex("PersonId");
 
-                    b.ToTable("kunde", (string)null);
+                    b.ToTable("Kunde", (string)null);
                 });
 
             modelBuilder.Entity("Oblig1.Models.Ordre", b =>
                 {
-                    b.Property<int>("ordreId")
+                    b.Property<int?>("ordreId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Dato")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("betaltGjennom")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("husId")
+                    b.Property<int?>("husId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("kundeID")
+                    b.Property<int?>("kundeID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("sluttDato")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("startDato")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ordreId");
 
@@ -352,36 +287,85 @@ namespace Oblig1.Migrations
 
                     b.HasIndex("kundeID");
 
-                    b.ToTable("ordre");
+                    b.ToTable("Ordre");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Person", b =>
                 {
-                    b.Property<int>("personID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Addresse")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("Fodselsdato")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Navn")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("TelefonNmr")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("personID");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
 
-                    b.ToTable("person");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -395,7 +379,7 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Oblig1.Models.Person", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -404,7 +388,7 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Oblig1.Models.Person", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -419,7 +403,7 @@ namespace Oblig1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Oblig1.Models.Person", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -428,7 +412,7 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Oblig1.Models.Person", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -437,22 +421,16 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Bilder", b =>
                 {
-                    b.HasOne("Oblig1.Models.Hus", "hus")
+                    b.HasOne("Oblig1.Models.Hus", null)
                         .WithMany("bildeListe")
-                        .HasForeignKey("husId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("hus");
+                        .HasForeignKey("husId");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
                 {
                     b.HasOne("Oblig1.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("personID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PersonId");
 
                     b.Navigation("Person");
                 });
@@ -478,9 +456,7 @@ namespace Oblig1.Migrations
                 {
                     b.HasOne("Oblig1.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("personID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PersonId");
 
                     b.Navigation("Person");
                 });
@@ -489,15 +465,11 @@ namespace Oblig1.Migrations
                 {
                     b.HasOne("Oblig1.Models.Hus", "hus")
                         .WithMany("ordreListe")
-                        .HasForeignKey("husId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("husId");
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
                         .WithMany("ordreListe")
-                        .HasForeignKey("kundeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("kundeID");
 
                     b.Navigation("hus");
 

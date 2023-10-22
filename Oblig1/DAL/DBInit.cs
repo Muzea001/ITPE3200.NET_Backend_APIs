@@ -1,35 +1,79 @@
 ﻿
 
+using Microsoft.AspNetCore.Identity;
 using Oblig1.Models;
 using System;
+using System.Drawing.Text;
 
 namespace Oblig1.DAL
 {
     public class DBInit
     {
 
-        public static void Seed(IApplicationBuilder app)
+        
+
+        
+
+        public static async Task Seed(IApplicationBuilder app )
         {
+
+        
+
             using var serviceScope = app.ApplicationServices.CreateScope();
             ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
+            var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            using var scope = app.ApplicationServices.CreateScope();
+            var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<Person>>();
             context.Database.EnsureCreated();
-            
 
 
 
-            
 
+            var roles = new[] { "Admin", "Bruker" };
 
-            if (!context.person.Any() && !context.kunde.Any() && !context.eier.Any())
+            foreach ( var role in roles ) 
+                {
+                if (!await roleManager.RoleExistsAsync(role))
+                    await roleManager.CreateAsync(new IdentityRole(role));
+
+            }
+            string navn = "Muat";
+            int telefonnummer = 40336208;
+            string adresse = "Tokerudbekken 16";
+            DateTime fodselsdato = DateTime.Now;
+            string email = "muat0072@gmail.com";
+            string passord = "Test1234,";
+            if (await userManager.FindByEmailAsync(email) == null)
+            {
+                
+                var user = new Person();
+                user.UserName = email;
+                user.Email = email;
+                user.EmailConfirmed = true;
+                user.Addresse = adresse;
+                user.TelefonNmr = telefonnummer;    
+                user.Navn= navn;
+                user.Fodselsdato= fodselsdato;
+               
+
+               await userManager.CreateAsync(user,passord);
+               await userManager.AddToRoleAsync(user, "Admin");
+            }
+            string defaultPass = "Hei-12345";
+
+            if (!context.Kunde.Any() && !context.Eier.Any())
 
 
             {
-
-                var person = new Person { 
                 
-                 Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531
-                  
+                var person = new Person
+                {
+
+                    Navn="Mathias",Addresse="Osloveien18",Email="Mathias18@gmail.com",Fodselsdato= new DateTime(1999,5,8),TelefonNmr=14789531, UserName= "Mathias18@gmail.com"
+
                 };
+
+                await userManager.CreateAsync(person, defaultPass);
 
                 var kunde = new Kunde
                  {
@@ -45,7 +89,7 @@ namespace Oblig1.DAL
 
  
 
-
+                
                 context.AddRange(kunde,eier);
                 context.SaveChanges();
             }
@@ -53,7 +97,7 @@ namespace Oblig1.DAL
             
 
 
-            if (!context.hus.Any())
+            if (!context.Hus.Any())
 
             {
 
@@ -65,8 +109,12 @@ namespace Oblig1.DAL
                     Email = "Jonas13@gmail.com",
                     Fodselsdato = new DateTime(1985, 7, 4),
                     TelefonNmr = 87546611,
+                    UserName = "Jonas13@gmail.com",
+                    
+                    
 
                 };
+                await userManager.CreateAsync(person, defaultPass);
 
                 var eier = new Eier
                 {
@@ -204,25 +252,25 @@ namespace Oblig1.DAL
                 var hus = new List<Hus>
                 {
                     new Hus {Addresse="Osloveien18",areal=200,Beskrivelse="bla bla bla",
-                        by="Oslo",erTilgjengelig=true,Pris=400,romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe1, eier = eier },
+                        by="Oslo",Pris=400,romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe1, eier = eier },
                     new Hus {Addresse="Osloveien22", areal=250, Beskrivelse="bla bla ",
-                        by="Oslo",erTilgjengelig=true,Pris=200,romAntall=3,erMoblert=false,harParkering=true,bildeListe=bildeListe2, eier = eier },
+                        by="Oslo",Pris=200,romAntall=3,erMoblert=false,harParkering=true,bildeListe=bildeListe2, eier = eier },
                     new Hus {Addresse="Trondheimsgate 10", areal=220, Beskrivelse="Spacious house with a view of the river.",
-                        by="Trondheim", erTilgjengelig=true, Pris=750, romAntall=6, erMoblert=false, harParkering=true,bildeListe=bildeListe3, eier = eier },
+                        by="Trondheim", Pris=750, romAntall=6, erMoblert=false, harParkering=true,bildeListe=bildeListe3, eier = eier },
                     new Hus {Addresse="Stavangerveien 5", areal=160, Beskrivelse="Modern townhouse in a quiet neighborhood.",
-                        by="Stavanger", erTilgjengelig=true, Pris=500, romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe4, eier = eier},
+                        by="Stavanger", Pris=500, romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe4, eier = eier},
                     new Hus {Addresse="Bergensgate 22", areal=180, Beskrivelse="A cozy family home with a garden.", by="Bergen",
-                        erTilgjengelig=true, Pris=600, romAntall=5, erMoblert=true, harParkering=true,bildeListe=bildeListe5, eier = eier},
+                        Pris=600, romAntall=5, erMoblert=true, harParkering=true,bildeListe=bildeListe5, eier = eier},
                     new Hus {Addresse="Bodogate 8", areal=190, Beskrivelse="Rustic cottage in the countryside.",
-                        by="Bodo", erTilgjengelig=true, Pris=450, romAntall=3, erMoblert=true, harParkering=false,bildeListe=bildeListe6, eier = eier},
+                        by="Bodo", Pris=450, romAntall=3, erMoblert=true, harParkering=false,bildeListe=bildeListe6, eier = eier},
                     new Hus {Addresse="Tromsogate 15", areal=240, Beskrivelse="Spacious family home with a view of the mountains.",
-                        by="Tromso", erTilgjengelig=true, Pris=950, romAntall=8, erMoblert=true, harParkering=true,bildeListe=bildeListe7, eier = eier},
+                        by="Tromso", Pris=950, romAntall=8, erMoblert=true, harParkering=true,bildeListe=bildeListe7, eier = eier},
                     new Hus {Addresse="Bergengate 30", areal=170, Beskrivelse="Cozy apartment in the city center.",
-                        by="Bergen", erTilgjengelig=true, Pris=700, romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe8, eier = eier},
+                        by="Bergen", Pris=700, romAntall=4, erMoblert=true, harParkering=false,bildeListe=bildeListe8, eier = eier},
                     new Hus {Addresse="Kristiansandveien 7", areal=200, Beskrivelse="Modern duplex with a rooftop terrace.",
-                        by="Kristiansand", erTilgjengelig=true, Pris=800, romAntall=6, erMoblert=false, harParkering=true,bildeListe=bildeListe9, eier = eier },
+                        by="Kristiansand", Pris=800, romAntall=6, erMoblert=false, harParkering=true,bildeListe=bildeListe9, eier = eier },
                     new Hus {Addresse="Alesundgate 25", areal=185, Beskrivelse="Dette er ",
-                        by="Alesund", erTilgjengelig=true, Pris=550, romAntall=5, erMoblert=false, harParkering=true, bildeListe=bildeListe10, eier = eier},
+                        by="Alesund", Pris=550, romAntall=5, erMoblert=false, harParkering=true, bildeListe=bildeListe10, eier = eier},
 
 
 
@@ -238,7 +286,7 @@ namespace Oblig1.DAL
 
 
 
-            if (!context.ordre.Any())
+            if (!context.Ordre.Any())
             {
                 var person = new Person
                 {
@@ -246,10 +294,13 @@ namespace Oblig1.DAL
                     Addresse = "Hammerveien22",
                     Email = "Marius22@gmail.com",
                     Fodselsdato = new DateTime(2001, 4, 3),
-                    TelefonNmr = 14789531
+                    TelefonNmr = 14789531,
+                    UserName = "Marius22@gmail.com",
+                    
                 };
+                await userManager.CreateAsync(person, defaultPass);
 
-                
+
 
                 var kunde = new Kunde
                 {
@@ -259,21 +310,7 @@ namespace Oblig1.DAL
                 context.Add(kunde);
                 context.SaveChanges();
 
-                var ordre = new List<Ordre>
-                  {
-                   new Ordre
-                 {
-                    Dato = DateTime.Now,
-                   betaltGjennom = "Kort",
-                    kundeID = kunde.kundeID  
-                      },
-                    new Ordre
-                     {
-                   Dato = DateTime.Now,
-                   betaltGjennom = "Klarna",
-                   kundeID = kunde.kundeID  
-                         }
-                     };
+               
 
                 var eier = new Eier
                 {
@@ -300,7 +337,6 @@ namespace Oblig1.DAL
                     areal = 200,
                     Beskrivelse = "Dette er et hus som får inn bilder",
                     by = "Oslo",
-                    erTilgjengelig = true,
                     Pris = 400,
                     romAntall = 4,
                     bildeListe= bildeListe11,
@@ -309,13 +345,38 @@ namespace Oblig1.DAL
                     eier = eier
                 };
 
+
                 context.Add(hus);
                 context.SaveChanges();
+                var ordre = new List<Ordre>
+                  {
+                   new Ordre
+                 {
 
-                
+                   betaltGjennom = "Kort",
+                   startDato = new DateTime(2023,5,8),
+                  sluttDato = new DateTime(2023,7,8),
+                    kunde = kunde,
+                    hus = hus
+
+                      },
+                    new Ordre
+                     {
+
+                   betaltGjennom = "Klarna",
+                   startDato = new DateTime(2023,1,1),
+                  sluttDato = new DateTime(2023,1,15),
+                   kunde=kunde,
+                   hus = hus
+
+                         }
+                     };
+
+
                 foreach (var o in ordre)
                 {
-                    o.husId = hus.husId;  
+                    o.hus.husId = hus.husId;
+                    o.kunde.kundeID = kunde.kundeID;
                 }
 
                 context.AddRange(ordre);

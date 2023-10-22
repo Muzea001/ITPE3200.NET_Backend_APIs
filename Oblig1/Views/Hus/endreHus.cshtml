@@ -5,7 +5,7 @@
 
 <form asp-action="endreBekreftet" method="post">
     <input type="hidden" asp-for="husId" />
-    <input type="hidden" asp-for="eier.Person.personID" />
+    <input type="hidden" asp-for="eier.Person.Id" />
     <input type="hidden" asp-for="eier.kontoNummer" />
     <input type="hidden" asp-for="eier.husListe" />
     <input type="hidden" asp-for="eier.antallAnnonser" />
@@ -75,11 +75,6 @@
         <input asp-for="romAntall" class="form-control" />
         <span asp-validation-for="romAntall" class="text-danger"></span>
     </div>
-    <label for="ertilgjenlig">Available:</label>
-    <select class="form-control" asp-for="erTilgjengelig">
-        <option value="True">Yes</option>
-        <option value="False">No</option>
-    </select>
     <label for="harparkering">Parking:</label>
     <select class="form-control" asp-for="harParkering">
         <option value="True">Yes</option>

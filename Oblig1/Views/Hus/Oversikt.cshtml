@@ -42,14 +42,14 @@
             <p class="card-text">Owner: <span class="text-muted">@Model.eier.Person.Navn</span></p>
             <p class="card-text">Areal: <span class="text-muted">@Model.areal</span></p>
             <p class="card-text">City: <span class="text-muted">@Model.by</span></p>
+            <p hidden class="card-text" >: <span class="text-muted">@Model.eier.kontoNummer</span></p>
             <p class="card-text">Number of Rooms: <span class="text-muted">@Model.romAntall</span></p>
             <p class="card-text">Parking: <span class="text-muted">@Model.harParkering</span></p>
             <p class="card-text">Price: <span class="text-muted">@Model.Pris</span></p>
-            <p class="card-text">Availability: <span class="text-muted">@Model.erTilgjengelig</span></p>
             <p class="card-text">Discription: <span class="text-muted">@Model.Beskrivelse</span></p>
-            <form asp-controller="Ordre" asp-action="lagOrdre">
-                <button type="submit" class="btn btn-primary"
-                        asp-controller="Ordre" asp-action="lagOrdre" asp-route-id="@Model.husId">
+            <form asp-controller="Ordre" asp-action="lagOrdre" method = "get">
+                <button type="submit" class="btn btn-primary" 
+                        asp-controller="Ordre" asp-action="lagOrdre"  asp-route-id="@Model.husId">
                     Reserver
                 </button>
             </form>

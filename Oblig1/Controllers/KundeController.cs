@@ -19,7 +19,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        
         public async Task<IActionResult> Tabell()
         {
 
@@ -33,7 +33,18 @@ namespace Oblig1.Controllers
             var itemListViewModel = new ItemListViewModel(liste, "Tabell");
             return View(itemListViewModel);
         }
-        [Authorize]
+
+        [HttpGet]
+        public async Task<IActionResult> hentMin(int id) { 
+        var kunde = await _kundeInterface.hentKundeMedId(id);
+            if (kunde== null)
+            {
+                _Brukerlogger.LogError("[KundeKontroller] Kunde ikke funnet for denne iden" + id);
+                return NotFound("Kunde ikke funnet");
+            }
+            return View(kunde);
+        }
+        
         [HttpGet]
         public async Task<IActionResult> Endre(int id)
         {
@@ -47,7 +58,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> EndreBekreftet(Kunde kunde)
         {
             if(ModelState.IsValid)
@@ -72,6 +83,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
+        
         public IActionResult Lag()
         {
 
@@ -82,7 +94,7 @@ namespace Oblig1.Controllers
 
 
         [HttpPost]
-        [Authorize]
+       
         public async Task<IActionResult> Lag(Kunde kunde)
         {
             if (ModelState.IsValid)
@@ -99,7 +111,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        
 
         public async Task<IActionResult> Slett(int id)
         {
@@ -115,7 +127,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+       
 
         public async Task<IActionResult> SlettBekreftet(int id)
         {

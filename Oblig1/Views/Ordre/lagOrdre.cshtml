@@ -1,67 +1,31 @@
-﻿@model Oblig1.Models.Ordre
-
+﻿@model Oblig1.Controllers.MyViewModel
 
 <h2>Create Order</h2>
-<form asp-action="Creat">
-    <input type="hidden" asp-for="ordreId" />
-    <input type="hidden" asp-for="husId" />
-    <input type="hidden" asp-for="kundeID" />
-    <input type="hidden" asp-for="kunde.Person.Email" />
-    <input type="hidden" asp-for="kunde.Person" />
-    <input type="hidden" asp-for="hus.Addresse" />
-    <input type="hidden" asp-for="hus.areal" />
-    <input type="hidden" asp-for="hus.Beskrivelse" />
-    <input type="hidden" asp-for="hus.bildeURL" />
-    <input type="hidden" asp-for="hus.by" />
-    <input type="hidden" asp-for="hus.eier" />
-    <input type="hidden" asp-for="hus.erMoblert" />
-    <input type="hidden" asp-for="hus.erTilgjengelig" />
-    <input type="hidden" asp-for="hus.harParkering" />
-    <input type="hidden" asp-for="hus.ordreListe" />
-    <input type="hidden" asp-for="hus.Pris" />
-    <input type="hidden" asp-for="hus.romAntall" />
-    <input type="hidden" asp-for="kunde.husListe" />
-    <input type="hidden" asp-for="kunde.ordreListe" />
-    <input type="hidden" asp-for="hus.eier.antallAnnonser" />
-    <input type="hidden" asp-for="hus.eier.husListe" />
-    <input type="hidden" asp-for="hus.eier.kontoNummer" />
-    <input type="hidden" asp-for="hus.eier.Person.Addresse" />
-    <input type="hidden" asp-for="hus.eier.Person.Email" />
-    <input type="hidden" asp-for="hus.eier.Person.Fodselsdato" />
-    <input type="hidden" asp-for="hus.eier.Person.Navn" />
-    <input type="hidden" asp-for="hus.eier.Person" />
-    <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
 
+<form asp-controller="Ordre" asp-action="Lag" method="post">
     <div class="form-group">
-        <label asp-for="kunde.Person.Navn"></label><span class="text-danger">*</span>
-        <input asp-for="kunde.Person.Navn" class="form-control" />
-        <span asp-validation-for="kunde.Person.Navn" class="text-danger"></span>
+        <label for="betaltgjennom">Payment Method</label><span class="text-danger">*</span>
+        <input type="text" id="betaltgjennom" name="betaltgjennom" class="form-control" />
+        <span asp-validation-for="@Model.ordre.betaltGjennom" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="kunde.Person.Fodselsdato"></label><span class="text-danger">*</span>
-        <input asp-for="kunde.Person.Fodselsdato" type="date" class="form-control" />
-        <span asp-validation-for="kunde.Person.Fodselsdato" class="text-danger"></span>
+        <label for="startDato">Start Date</label><span class="text-danger">*</span>
+        <input type="date" id="startDato" name="startDato" class="form-control" />
+        <span asp-validation-for="@Model.ordre.startDato" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="kunde.Person.Addresse"></label><span class="text-danger">*</span>
-        <input asp-for="kunde.Person.Addresse" class="form-control" />
-        <span asp-validation-for="kunde.Person.Addresse" class="text-danger"></span>
+        <label for="sluttDato">End Date</label><span class="text-danger">*</span>
+        <input type="date" id="sluttDato" name="sluttDato" class="form-control" />
+        <span asp-validation-for="@Model.ordre.sluttDato" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="kunde.Person.TelefonNmr"></label><span class="text-danger">*</span>
-        <input asp-for="kunde.Person.TelefonNmr" class="form-control" />
-        <span asp-validation-for="kunde.Person.TelefonNmr" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="kunde.Person.Email"></label><span class="text-danger">*</span>
-        <input asp-for="kunde.Person.Email" type="email" class="form-control" />
-        <span asp-validation-for="kunde.Person.Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="betaltGjennom"></label><span class="text-danger">*</span>
-        <input asp-for="betaltGjennom" type="email" class="form-control" />
-        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary" asp-controller="Ordre" asp-action="lagOrdre">Create</button>
-    <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Back to Table View</a>
+
+    <input type="hidden" name="husID" value="@Model.hus.husId" />
+
+    <button type="submit" class="btn btn-primary">Create</button>
+
+    <a asp-controller="Ordre"
+       asp-action="Tabell"
+       class="btn btn-secondary">
+        Back to Table View
+    </a>
 </form>

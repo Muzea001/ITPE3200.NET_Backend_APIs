@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Oblig1.DAL;
 using Oblig1.Models;
@@ -6,18 +7,21 @@ using Oblig1.Services;
 using Oblig1.ViewModeller;
 
 
+
 namespace Oblig1.Controllers
 {
     public class OrdreController : Controller
     {
+        private readonly UserManager<Person> _userManager;    
         private readonly ILogger _Ordrelogger;
         private readonly OrdreInterface _ordreInterface;
         private readonly Kvittering _kvittering;
         private readonly HusInterface _husInterface;
         private readonly KundeInterface _kunderinterface;
 
-        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, KundeInterface kundeInterface)
+        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, KundeInterface kundeInterface, UserManager<Person> userManager)
         {
+            _userManager = userManager;
             _ordreInterface = ordreinterface;
             _Ordrelogger = logger;
             _husInterface = husInterface; ;
@@ -39,7 +43,7 @@ namespace Oblig1.Controllers
             return View(ItemListViewModel);
         }
         [HttpGet]
-        [Authorize]
+        
         public async Task<IActionResult> Endre(int id)
         {
             var Ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -52,7 +56,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> EndreBekreftet(Ordre ordre)
         {
             if (ModelState.IsValid)
@@ -65,7 +69,7 @@ namespace Oblig1.Controllers
                 else
                 {
                     _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
-                    // Assuming hus has a property Id
+                    
                     ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
                 }
 
@@ -73,13 +77,13 @@ namespace Oblig1.Controllers
             else
             {
                 _Ordrelogger.LogWarning("[OrdreKontroller] Invalid model state.", ordre);
-                // Log more details about the model state errors if needed
+                
                 foreach (var modelStateKey in ViewData.ModelState.Keys)
                 {
                     var modelStateVal = ViewData.ModelState[modelStateKey];
                     foreach (var error in modelStateVal.Errors)
                     {
-                        // Log your modelState errors
+                        
                         _Ordrelogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
                     }
                 }
@@ -94,51 +98,113 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public IActionResult lagOrdre(int husId) { return View(); }
+        
+        public async Task <IActionResult> lagOrdre(int id) {
+
+            var brukerId = _userManager.GetUserId(User);
+            var bruker = await _userManager.FindByIdAsync(brukerId);
+            var kunde = await _kunderinterface.finnKundeId(brukerId);
+            var hus = await _husInterface.hentHusMedId(id);
+            if (hus == null || bruker==null) {
+                return RedirectToAction("Error");
+          }
+            var viewModell = new MyViewModel
+            {
+                hus = hus,
+                kunde = kunde,
+                Person = bruker,
+                ordre = new Ordre { }
+
+            };
+            return View(viewModell);
+        }
 
 
         [HttpPost]
-
-        public async Task<IActionResult> Lag(Ordre ordre, int husid, Kunde kunde)
+        public async Task<IActionResult> Lag(DateTime startDato, DateTime sluttDato, string betaltGjennom, int husID)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var dbKunde = await _kunderinterface.hentKundeMedId(kunde.kundeID);
-                if (dbKunde == null)
-                {
-                    await _kunderinterface.lagKunde(dbKunde);
-                }
-              
-                ordre.kundeID = dbKunde.kundeID;
-                var hus = await _husInterface.hentHusMedId(husid);
-                if (hus == null)
-                {
-                    return NotFound("hus finnes ikke !");
-                }
-                ordre.husId = hus.husId;
-                
-                bool OK = await _ordreInterface.lagOrdre(ordre);
-                if (OK)
-                {
-                   
-                    var htmlKvittering = "<html><body><p><Kvittinerg Detaljer>.....</p></body></html>";
-                    var pdfKvittering = _kvittering.genererPdfKvittering(htmlKvittering);
-                    var filnavn = "Bestilling kvittering.pdf";
-                    return File(pdfKvittering, filnavn);
+                _Ordrelogger.LogInformation("Entering Lag method with parameters: startDato={startDato}, sluttDato={sluttDato}, betaltgjennom={betaltgjennom}",
+                                             startDato, sluttDato, betaltGjennom);
 
+                Ordre ordre = new Ordre
+                {
+                    startDato = startDato,
+                    sluttDato = sluttDato,
+                    betaltGjennom = betaltGjennom
+                };
+
+                // Validate ModelState here...
+                if (!ModelState.IsValid)
+                {
+                    foreach (var modelStateKey in ModelState.Keys)
+                    {
+                        var modelStateVal = ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            _Ordrelogger.LogError($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                        }
+                    }
+                    return View("Error", ModelState); // Directly return Error view if model state is not valid
+                }
+
+                var personID = _userManager.GetUserId(User);
+                var person = await _userManager.FindByIdAsync(personID);
+                var lagetBruker = new Kunde { Person = person };
+                lagetBruker.kundeID = await _kunderinterface.lagKunde(lagetBruker);
+                var ordreHus = await _husInterface.hentHusMedId(husID);
+
+                if (await _ordreInterface.sjekkTilgjengelighet(husID, startDato, sluttDato))
+                {
+                    ordre.hus = ordreHus;
+                    ordre.kunde = lagetBruker;
+
+                    bool OK = await _ordreInterface.lagOrdre(ordre);
+                    if (OK)
+                    {
+                        var htmlKvittering = "<html><body><p>Kvittering Detaljer>.....</p></body></html>";
+                        var pdfKvittering = _kvittering.genererPdfKvittering(htmlKvittering);
+                        var filnavn = "Bestilling kvittering.pdf";
+                        return File(pdfKvittering, "application/pdf", filnavn);
+                    }
+                    else
+                    {
+                        _Ordrelogger.LogWarning("Lagring av data ordre ikke godkjent");
+                        return View("Error", ModelState);
+                    }
+                }
+                else
+                {
+                    _Ordrelogger.LogError("Dato ikke tilgjengelig");
+                    return View("Error", ModelState);
                 }
             }
-            _Ordrelogger.LogWarning("[OrdreRepo] har failet med å danne en kvittering for denne ordren", ordre);
+            catch (Exception ex)
+            {
+                _Ordrelogger.LogError(ex, "An error occurred while processing the Lag method");
+                return View("Error", ex.Message);
+            }
 
-            return RedirectToAction("Review");
+            var brukerId = _userManager.GetUserId(User);
+            var bruker = await _userManager.FindByIdAsync(brukerId);
+            var kunde = await _kunderinterface.finnKundeId(brukerId);
+            var hus = await _husInterface.hentHusMedId(husID);
 
-            
+            var viewModell = new MyViewModel
+            {
+                hus = hus,
+                kunde = kunde,
+                Person = bruker,
+                ordre = new Ordre { }
+            };
 
+            _Ordrelogger.LogWarning("Failed to generate a receipt for this order");
+            return View("lagOrdre", viewModell);
         }
 
         [HttpGet]
-        [Authorize]
+       
         public async Task<IActionResult> Slett(int id)
         {
             var ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -153,7 +219,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public async Task<IActionResult> SlettBekreftet(int id)
         {
             bool OK = await _ordreInterface.SlettOrdre(id);

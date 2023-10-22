@@ -1,5 +1,8 @@
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Mvc.ViewEngines
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Oblig1.Models.Person> SignInManager
+@inject UserManager<Oblig1.Models.Person> UserManager
 @inject IWebHostEnvironment Environment
 @inject ICompositeViewEngine Engine
 <!DOCTYPE html>
@@ -31,17 +34,30 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+
+                 @if (User.IsInRole("Admin"))
+                {
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Hus" asp-action="Tabell">Houses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Ordre" asp-action="Tabell">Orders</a>
+                            <a class="nav-link text-dark" asp-controller="Ordre" asp-action="Tabell">Orders</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Kunde" asp-action="Tabell">Customers</a>
+                            <a class="nav-link text-dark" asp-controller="Kunde" asp-action="Tabell">Customers</a>
                         </li>
                     </ul>
+                }
+                
+                   
+                        
+                        
+                        
+                        
+                        
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     @{
