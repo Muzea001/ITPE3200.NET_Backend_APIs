@@ -16,6 +16,7 @@
         @foreach (var kunde in @Model)
         {
             <tr>
+                <td>@kunde.kundeID</td>
                 <td>@kunde.Person.Navn</td>
                 <td>@kunde.Person.Addresse</td>
                 <td>@kunde.Person.Fodselsdato.ToString("dd/MM/yyyy")</td>
