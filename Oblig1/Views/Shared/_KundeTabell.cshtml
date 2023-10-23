@@ -4,22 +4,15 @@
     <table class='table table-striped'>
         <tr>
             <th>kundeID</th>
-            <th>Navn</th>
-            <th>Address</th>
-            <th>Fodselsdato</th>
-            <th>Telefonnummer</th>
             <th>Ordre</th>
-            <th>Email</th>
+            <th>Hus</th>
             <th>Actions</th>
 
         </tr>
         @foreach (var kunde in @Model)
         {
             <tr>
-                <td>@kunde.Person.Navn</td>
-                <td>@kunde.Person.Addresse</td>
-                <td>@kunde.Person.Fodselsdato.ToString("dd/MM/yyyy")</td>
-                <td>@kunde.Person.TelefonNmr</td>
+                <td>@kunde.kundeID</td>
                 <td>
                     @if (kunde.ordreListe != null && kunde.ordreListe.Any())
                     {
@@ -30,12 +23,18 @@
                         <text>Ingen Ordre knyttet</text>
                     }
                 </td>
-                <td>@kunde.Person.Email</td>
                 <td>
-
-                    <span>
-                        <a class="btn btn-success" asp-controller="Kunde" asp-action="Endre" asp-route-id="@kunde.kundeID"> Update</a>
-                    </span>
+                    @if (kunde.husListe != null && kunde.husListe.Any())
+                    {
+                        @string.Join(", ", kunde.husListe.Select(hus => $"Hus{hus.husId}"))
+                    }
+                    else
+                    {
+                        <text>Ingen Hus knyttet</text>
+                    }
+                </td>
+                
+                <td>
                     <span>
                         <a class="btn btn-danger" asp-controller="Kunde" asp-action="Slett" asp-route-id="@kunde.kundeID">Delete</a>
                     </span>
@@ -44,9 +43,4 @@
         }
     </table>
 
-    <p>
-        <a class="btn btn-secondary"
-           asp-controller="Kunde"
-           asp-action="Lag">Create new customer</a>
-    </p>
 </div>

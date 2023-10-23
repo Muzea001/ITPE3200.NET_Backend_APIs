@@ -142,49 +142,51 @@ namespace Oblig1.Controllers
 
         }
 
-
         [HttpPost]
-        
-        public async Task<IActionResult> endreBekreftet(Hus hus)
+        public async Task<IActionResult> EndreBekreftet(Hus hus)
         {
-                 if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bool OK = await husInterface.Endre(hus);
+                    if (OK)
                     {
-                   bool OK = await husInterface.Endre(hus);
-                   if (OK)
-                        {
-                            return RedirectToAction(nameof(Tabell));
-                        }
+                        return RedirectToAction(nameof(Tabell));
+                    }
                     else
-                        {
-                            _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: " );
-                            // Assuming hus has a property Id
-                             ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
-                        }
-
-                    }
-                  else
                     {
-                         _HusLogger.LogWarning("[HusController] Invalid model state.");
-                        
-                        foreach (var modelStateKey in ViewData.ModelState.Keys)
-                        {
-                            var modelStateVal = ViewData.ModelState[modelStateKey];
-                            foreach (var error in modelStateVal.Errors)
-                            {
-                                // Log your modelState errors
-                                _HusLogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                            }
-                        }
+                        _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: {houseId}", hus.husId);
+                        ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
                     }
+                }
+                catch (Exception ex)
+                {
+                    _HusLogger.LogError(ex, "[HusController] Exception occurred while modifying the house. House ID: {houseId}", hus.husId);
+                }
+            }
+            else
+            {
+                _HusLogger.LogWarning("[HusController] Invalid model state for House ID: {houseId}. Errors:", hus.husId);
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        _HusLogger.LogWarning("Key: {key}, Error: {error}", modelStateKey, error.ErrorMessage);
+                    }
+                }
+            }
 
-                    
-                    return RedirectToAction($"{nameof(Tabell)}");
+            // If you want to display the error on the same page, consider returning View with the model
+            // return View(hus);
 
+            return RedirectToAction(nameof(Tabell));
         }
 
         [HttpGet]
         
-        public async Task<IActionResult> slettHus(int id)
+        public async Task<IActionResult> Slett(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
             if (hus == null)
@@ -198,11 +200,12 @@ namespace Oblig1.Controllers
 
         [HttpPost]
         
-        public async Task<IActionResult> slettHusBekreftet(int id)
+        public async Task<IActionResult> SlettBekreftet(int id, int eierId)
         {
 
 
             bool OK = await husInterface.Slett(id);
+            bool OKEier = await husInterface.SlettEier(eierId);
             if (!OK)
             {
                 _HusLogger.LogWarning("[HusController] sletting av bruker failet" + id);

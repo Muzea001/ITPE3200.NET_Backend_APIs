@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
 
@@ -51,62 +52,36 @@ namespace Oblig1.DAL
         }
 
 
-        public async Task<Kunde> finnKundeId(string id)
-
-        {
-            try
-            {
-                var kunde = await _db.Kunde.FirstOrDefaultAsync(k => k.Person.Id == id);
-
-                if (kunde != null)
-                {
-                    return kunde;
-                }
-                return null;
-
-
-            }
-            catch (Exception ex) {
-
-                _Kundelogger.LogError("Finn kunde med id har ikke klart å finne kunden", ex.Message);
-                return null; }
-        
-        }
-        public async Task<int> lagKunde(Kunde kunde)
-        {
-            try
-            {
-                _db.Kunde.Add(kunde);
-                await _db.SaveChangesAsync();
-                _Kundelogger.LogError("Dette er iden til kunden");
-
-                return kunde.kundeID;
-            }
-
-            catch (Exception ex)
-            {
-
-                _Kundelogger.LogError("[KundeRepo] feil med lagKunde metoden, error melding : {e}", ex.Message);
-                return -1;
-            }
-
-        }
-
-      
-
         public async Task<bool> endreKunde(Kunde kunde)
         {
             try
             {
-                _db.Kunde.Update(kunde);
+                var existingKunde = await _db.Kunde
+                    .Include(k => k.Person)
+                    .FirstOrDefaultAsync(k => k.kundeID == kunde.kundeID);
+
+                if (existingKunde == null)
+                {
+                    _Kundelogger.LogError("[OrdreRepo] Kunde not found with id: {id}", kunde.kundeID);
+                    return false;
+                }
+
+                if (existingKunde.Person != null && kunde.Person != null)
+                {
+                    // Explicitly updating the Person entity
+                    _db.Entry(existingKunde.Person).CurrentValues.SetValues(kunde.Person);
+                    _db.Entry(existingKunde.Person).State = EntityState.Modified;
+                }
+
+                _db.Entry(existingKunde).CurrentValues.SetValues(kunde);
+                _db.Entry(existingKunde).State = EntityState.Modified;
+
                 await _db.SaveChangesAsync();
                 return true;
             }
-
             catch (Exception ex)
             {
-
-                _Kundelogger.LogError("[KundeRepo] feil med endreKunde metoden, error melding : {e}", ex.Message);
+                _Kundelogger.LogError("[OrdreRepo] Error updating kunde, message: {message}", ex.Message);
                 return false;
             }
         }
@@ -137,6 +112,16 @@ namespace Oblig1.DAL
 
             }
 
+        }
+
+        public Task<int> lagKunde(Kunde kunde)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Kunde> finnKundeId(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

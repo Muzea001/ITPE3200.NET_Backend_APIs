@@ -153,35 +153,73 @@ namespace Oblig1.DAL
             }
 
         }
-        
+
         public async Task<bool> Endre(Hus hus)
         {
             try
             {
-                _db.Hus.Update(hus);
+                var existingHus = await _db.Hus.FindAsync(hus.husId);
+                if (existingHus == null)
+                {
+                    _logger.LogError("[HusRepo] House not found with id: {id}", hus.husId);
+                    return false;
+                }
+
+                _db.Entry(existingHus).CurrentValues.SetValues(hus);
+                _db.Entry(existingHus).State = EntityState.Modified;
+
                 await _db.SaveChangesAsync();
                 return true;
             }
-
             catch (Exception ex)
             {
-
-                _logger.LogError("[HusRepo] feil med endreHus metoden, error melding : {e}", ex.Message);
+                _logger.LogError("[HusRepo] Error updating house, message: {message}", ex.Message);
                 return false;
             }
         }
-       
+
         public async Task<bool> Slett(int id)
         {
             try {
-                var hus = await _db.Hus.FindAsync(id);
+                var hus = await _db.Hus.Include(h => h.ordreListe)
+                        .Include(h => h.bildeListe)
+                        .FirstOrDefaultAsync(h => h.husId == id);
                 if (hus == null)
                 {
                     _logger.LogError("[HusRepo] hus finnes ikke for denne iden" + id);
                     return false;
                 }
-
+                _db.Ordre.RemoveRange(hus.ordreListe);
+                _db.Bilder.RemoveRange(hus.bildeListe);
                 _db.Hus.Remove(hus);
+                await _db.SaveChangesAsync();
+                return true;
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("[HusRepo] hus sletting failet for iden angitt, error melding {e}", id, ex.Message);
+                return false;
+
+            }
+
+        }
+
+        public async Task<bool> SlettEier(int id)
+        {
+            try
+            {
+                var eier = await _db.Eier.FindAsync(id);
+                if (eier == null)
+                {
+                    _logger.LogError("[HusRepo] hus finnes ikke for denne iden" + id);
+                    return false;
+                }
+
+                _db.Eier.Remove(eier);
                 await _db.SaveChangesAsync();
                 return true;
 

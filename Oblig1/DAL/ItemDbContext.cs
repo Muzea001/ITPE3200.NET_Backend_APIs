@@ -29,7 +29,7 @@ namespace Oblig1.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-         
+           
 
 
             base.OnModelCreating(modelBuilder);
@@ -39,7 +39,14 @@ namespace Oblig1.DAL
            .HasKey(l => new { l.LoginProvider, l.ProviderKey });
             modelBuilder.Entity<Kunde>().ToTable("Kunde");
             modelBuilder.Entity<Eier>().ToTable("Eier");
+            modelBuilder.Entity<Kunde>()
+            .Ignore(c => c.husListe);
+
+            modelBuilder.Entity<Kunde>()
+            .Ignore(c => c.ordreListe);
         }
+
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

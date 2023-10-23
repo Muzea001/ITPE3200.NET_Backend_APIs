@@ -14,6 +14,7 @@ namespace Oblig1.Services
         Task<bool> Endre(Hus hus);
         Task<bool> Slett(int id);
 
+        Task<bool> SlettEier(int id);
 
     }
 }

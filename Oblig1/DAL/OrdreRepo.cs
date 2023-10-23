@@ -115,23 +115,30 @@ namespace Oblig1.DAL
                     return false;
                 }
             }
-    
 
-        
+
+
 
         public async Task<bool> endreOrdre(Ordre ordre)
         {
             try
             {
-                _db.Ordre.Update(ordre);
+                var existingOrdre = await _db.Ordre.FindAsync(ordre.ordreId);  
+                if (existingOrdre == null)
+                {
+                    _OrdreLogger.LogError("[OrdreRepo] Order not found with id: {id}", ordre.ordreId);
+                    return false;
+                }
+
+                _db.Entry(existingOrdre).CurrentValues.SetValues(ordre);
+                _db.Entry(existingOrdre).State = EntityState.Modified;
+
                 await _db.SaveChangesAsync();
                 return true;
             }
-
             catch (Exception ex)
             {
-
-                _OrdreLogger.LogError("[OrdreRepo] feil med endreKunde metoden, error melding : {e}", ex.Message);
+                _OrdreLogger.LogError("[OrdreRepo] Error updating order, message: {message}", ex.Message);
                 return false;
             }
         }

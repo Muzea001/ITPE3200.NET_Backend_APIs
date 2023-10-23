@@ -18,6 +18,12 @@
         <dt class="col-sm-2">Price</dt>
         <dd class="col-sm-10">@Model.Pris</dd>
 
+        <dt class="col-sm-2">Eier Navn</dt>
+        <dd class="col-sm-10">@Model.eier.Person.Navn</dd>
+
+        <dt class="col-sm-2">Eier Kontonummer</dt>
+        <dd class="col-sm-10">@Model.eier.kontoNummer</dd>
+
         <dt class="col-sm-2">Number of Rooms</dt>
         <dd class="col-sm-10">@Model.romAntall</dd>
 
@@ -39,7 +45,7 @@
 
     </dl>
 
-    <form asp-action="slettHusBekreftet" asp-route-id="@Model.husId" method="post">
+    <form asp-action="SlettBekreftet" asp-route-id="@Model.husId" asp-route-eierId="@Model.eier.kontoNummer" method="post">
         <button type="submit" class="btn btn-danger">Slett</button>
         <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
     </form>

@@ -57,7 +57,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        
+
         public async Task<IActionResult> EndreBekreftet(Ordre ordre)
         {
             if (ModelState.IsValid)
@@ -70,7 +70,7 @@ namespace Oblig1.Controllers
                 else
                 {
                     _Ordrelogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", ordre);
-                    
+
                     ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
                 }
 
@@ -78,19 +78,19 @@ namespace Oblig1.Controllers
             else
             {
                 _Ordrelogger.LogWarning("[OrdreKontroller] Invalid model state.", ordre);
-                
+
                 foreach (var modelStateKey in ViewData.ModelState.Keys)
                 {
                     var modelStateVal = ViewData.ModelState[modelStateKey];
                     foreach (var error in modelStateVal.Errors)
                     {
-                        
+
                         _Ordrelogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
                     }
                 }
             }
 
-            
+
             return RedirectToAction($"{nameof(Tabell)}");
 
 

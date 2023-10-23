@@ -92,8 +92,8 @@
     @for (int i = 0; i < Model.bildeListe.Count; i++)
     {
         <div class="form-group">
-            <label for="husListe[@i].bildeURL">Upload photo for House @i:</label>
-            <input asp-for="husListe[@i].bildeURL" name="husListe[@i].bildeURL[]" multiple>
+            <label for="bildeListe[@i].bildeURL">Upload photo for House @i:</label>
+            <input asp-for="bildeListe[@i].bildeURL" name="bildeListe[@i].bildeURL" multiple>
         </div>
     }
 

@@ -58,27 +58,41 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        
         public async Task<IActionResult> EndreBekreftet(Kunde kunde)
         {
-            if(ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                bool OK = await _kundeInterface.endreKunde(kunde);   
-                if (OK) 
+                var errors = ModelState.SelectMany(x => x.Value.Errors.Select(p => new {
+                    Field = x.Key,
+                    Error = p.ErrorMessage
+                })).ToList();
+
+                foreach (var error in errors)
+                {
+                    _Brukerlogger.LogWarning("Field: {Field}, Error: {Error}", error.Field, error.Error);
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                bool OK = await _kundeInterface.endreKunde(kunde);
+                if (OK)
                 {
                     return RedirectToAction(nameof(Tabell));
                 }
-
+                else
+                {
+                    _Brukerlogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", kunde);
+                    ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
+                }
             }
 
             _Brukerlogger.LogWarning("[KundeController] oppdatering av kunde failet", kunde);
-            return View(kunde);
-
-
-
+            return RedirectToAction($"{nameof(Tabell)}");
         }
 
-       
+
 
 
 
