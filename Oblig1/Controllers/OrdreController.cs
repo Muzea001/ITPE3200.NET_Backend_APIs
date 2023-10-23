@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
@@ -119,14 +120,37 @@ namespace Oblig1.Controllers
             return View(viewModell);
         }
 
+        [HttpGet]
+
+        public async Task<bool> sjekkTilgjengelighet(int husId, DateTime startDato, DateTime sluttDato)
+        {
+
+            bool OK = await _ordreInterface.sjekkTilgjengelighet(husId, startDato, sluttDato);
+            if(OK) {
+                return true;
+                    }
+
+            else
+            {
+                return false;
+            }
+
+            
+        
+        
+        
+        
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Lag(DateTime startDato, DateTime sluttDato, string betaltGjennom, int husID)
         {
             try
             {
-                _Ordrelogger.LogInformation("Entering Lag method with parameters: startDato={startDato}, sluttDato={sluttDato}, betaltgjennom={betaltgjennom}",
-                                             startDato, sluttDato, betaltGjennom);
+                _Ordrelogger.LogInformation("Entering Lag method with parameters: startDato={startDato}, sluttDato={sluttDato}, betaltgjennom={betaltgjennom}, husID={husID}" ,
+                                             startDato, sluttDato, betaltGjennom, husID);
 
                 Ordre ordre = new Ordre
                 {
@@ -135,7 +159,7 @@ namespace Oblig1.Controllers
                     betaltGjennom = betaltGjennom
                 };
 
-                // Validate ModelState here...
+
                 if (!ModelState.IsValid)
                 {
                     foreach (var modelStateKey in ModelState.Keys)
@@ -155,8 +179,7 @@ namespace Oblig1.Controllers
                 lagetBruker.kundeID = await _kunderinterface.lagKunde(lagetBruker);
                 var ordreHus = await _husInterface.hentHusMedId(husID);
 
-                if (await _ordreInterface.sjekkTilgjengelighet(husID, startDato, sluttDato))
-                {
+                
                     ordre.hus = ordreHus;
                     ordre.kunde = lagetBruker;
 
@@ -173,12 +196,8 @@ namespace Oblig1.Controllers
                         _Ordrelogger.LogWarning("Lagring av data ordre ikke godkjent");
                         return View("Error", ModelState);
                     }
-                }
-                else
-                {
-                    _Ordrelogger.LogError("Dato ikke tilgjengelig");
-                    return View("Error", ModelState);
-                }
+                
+               
             }
             catch (Exception ex)
             {

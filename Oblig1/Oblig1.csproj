@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Logs\" />
     <Folder Include="ViewModeller\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
@@ -37,5 +36,9 @@
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;C:\WebApplikasjoner\Oblig1\Oblig1\wkhtmltox.dll&quot; &quot;C:\WebApplikasjoner\Oblig1\Oblig1\bin\Debug\net6.0\&quot; /Y /R /I &gt; &quot;C:\WebApplikasjoner\Oblig1\Oblig1\copy.log&quot; 2&gt;&amp;1&#xD;&#xA;" />
+  </Target>
 
 </Project>

@@ -10,12 +10,12 @@
     </div>
     <div class="form-group">
         <label for="startDato">Start Date</label><span class="text-danger">*</span>
-        <input type="date" id="startDato" name="startDato" class="form-control" />
+        <input type="datetime-local" id="startDato" name="startDato" class="form-control" />
         <span asp-validation-for="@Model.ordre.startDato" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="sluttDato">End Date</label><span class="text-danger">*</span>
-        <input type="date" id="sluttDato" name="sluttDato" class="form-control" />
+        <input type="datetime-local" id="sluttDato" name="sluttDato" class="form-control" />
         <span asp-validation-for="@Model.ordre.sluttDato" class="text-danger"></span>
     </div>
 
