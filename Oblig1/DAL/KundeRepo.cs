@@ -113,15 +113,25 @@ namespace Oblig1.DAL
             }
 
         }
-
-        public Task<int> lagKunde(Kunde kunde)
+        public async Task<int> Lag(Kunde kunde)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.Kunde.Add(kunde);
+                await _db.SaveChangesAsync();
+                return kunde.kundeID;
+            }
+            catch (Exception ex)
+            {
+                _Kundelogger.LogError("[KundeRepo] Error in Lag method, error message: {e}", ex.Message);
+                return -1;
+            }
         }
+    
 
-        public Task<Kunde> finnKundeId(string id)
+    public async Task<Kunde> finnKundeId(string id)
         {
-            throw new NotImplementedException();
+            return await _db.Kunde.FirstOrDefaultAsync(k => k.Person.Id == id);
         }
     }
 }

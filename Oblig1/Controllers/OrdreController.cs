@@ -170,25 +170,29 @@ namespace Oblig1.Controllers
                             _Ordrelogger.LogError($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
                         }
                     }
-                    return View("Error", ModelState); // Directly return Error view if model state is not valid
+                    return View("Error", ModelState); 
                 }
 
                 var personID = _userManager.GetUserId(User);
                 var person = await _userManager.FindByIdAsync(personID);
-                var lagetBruker = new Kunde { Person = person };
-                lagetBruker.kundeID = await _kunderinterface.lagKunde(lagetBruker);
                 var ordreHus = await _husInterface.hentHusMedId(husID);
+                var lagetBruker = new Kunde { Person = person, husListe = new List<Hus>(), ordreListe=new List<Ordre>() };
+                
+                
+                lagetBruker.kundeID = await _kunderinterface.Lag(lagetBruker);
+                
+                
                 ordre.hus = ordreHus;
                 ordre.kunde = lagetBruker;
 
                     bool OK = await _ordreInterface.lagOrdre(ordre);
                     if (OK)
                     {
-                        var htmlKvittering = "<html><body><p>Kvittering Detaljer>.....</p></body></html>";
-                        var pdfKvittering = _kvittering.genererPdfKvittering(htmlKvittering);
-                        var filnavn = "Bestilling kvittering.pdf";
-                        return File(pdfKvittering, "application/pdf", filnavn);
-                    }
+                        lagetBruker.ordreListe.Add(ordre);
+                         lagetBruker.husListe.Add(ordreHus);
+                         ordreHus.ordreListe.Add(ordre);
+                            return View("Kvittering", ordre);
+                }
                     else
                     {
                         _Ordrelogger.LogWarning("Lagring av data ordre ikke godkjent");
@@ -203,21 +207,6 @@ namespace Oblig1.Controllers
                 return View("Error", ex.Message);
             }
 
-            var brukerId = _userManager.GetUserId(User);
-            var bruker = await _userManager.FindByIdAsync(brukerId);
-            var kunde = await _kunderinterface.finnKundeId(brukerId);
-            var hus = await _husInterface.hentHusMedId(husID);
-
-            var viewModell = new MyViewModel
-            {
-                hus = hus,
-                kunde = kunde,
-                Person = bruker,
-                ordre = new Ordre { }
-            };
-
-            _Ordrelogger.LogWarning("Failed to generate a receipt for this order");
-            return View("lagOrdre", viewModell);
         }
 
         [HttpGet]

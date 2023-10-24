@@ -113,7 +113,7 @@ namespace Oblig1.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id  = await _kundeInterface.lagKunde(kunde);
+                int id  = await _kundeInterface.Lag(kunde);
                 if ( id > -1)
                 {
                     return RedirectToAction(nameof(Tabell));
