@@ -178,10 +178,8 @@ namespace Oblig1.Controllers
                 var lagetBruker = new Kunde { Person = person };
                 lagetBruker.kundeID = await _kunderinterface.lagKunde(lagetBruker);
                 var ordreHus = await _husInterface.hentHusMedId(husID);
-
-                
-                    ordre.hus = ordreHus;
-                    ordre.kunde = lagetBruker;
+                ordre.hus = ordreHus;
+                ordre.kunde = lagetBruker;
 
                     bool OK = await _ordreInterface.lagOrdre(ordre);
                     if (OK)
