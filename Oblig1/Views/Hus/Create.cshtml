@@ -1,62 +1,63 @@
 ﻿@model Oblig1.Models.Hus
-<h2>Put out an announcement</h2>
+<h2>Add a New House</h2>
 
-<div asp-validation-summary="All" class="text-danger"></div>
-
-<form asp-action="lagHus">
-    <input type="hidden" asp-for="bildeListe" />
-    <input type="hidden" asp-for="ordreListe" />
-    <input type="hidden" asp-for="eier.Person" />
-    <input type="hidden" asp-for="eier.husListe" />
-    <input type="hidden" asp-for="eier.Person" />
+<form asp-action="lagHus" asp-controller="Hus" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label asp-for="eier.kontoNummer"></label><span class="text-danger">*</span>
-        <input asp-for="eier.kontoNummer" class="form-control" />
-        <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
+        <label for="Beskrivelse">Description</label>
+        <input asp-for="Beskrivelse" class="form-control" />
+        <span asp-validation-for="Beskrivelse" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="by"></label><span class="text-danger">*</span>
+        <label for="areal">Area</label>
+        <input asp-for="areal" class="form-control" />
+        <span asp-validation-for="areal" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Pris">Price</label>
+        <input asp-for="Pris" class="form-control" />
+        <span asp-validation-for="Pris" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="by">City</label>
         <input asp-for="by" class="form-control" />
         <span asp-validation-for="by" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="areal"></label>
-        <input asp-for="areal" class="form-control" type="number" />
-        <span asp-validation-for="areal" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Addresse"></label>
-        <input asp-for="Addresse" class="form-control" type="text" />
+        <label for="Addresse">Address</label>
+        <input asp-for="Addresse" class="form-control" />
         <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Pris"></label>
-        <input asp-for="Pris" class="form-control" type="number" />
-        <span asp-validation-for="Pris" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="romAntall"></label>
-        <input asp-for="romAntall" class="form-control" type="number" />
+        <label for="romAntall">Number of Rooms</label>
+        <input asp-for="romAntall" class="form-control" />
         <span asp-validation-for="romAntall" class="text-danger"></span>
     </div>
-    <label for="harparkering">Parkering:</label>
-    <select class="form-control" asp-for="harParkering">
-        <option value="True">JA</option>
-        <option value="False">NEI</option>
-    </select>
-    <label for="erMoblert">Moblert:</label>
-    <select class="form-control" asp-for="erMoblert">
-        <option value="True">JA</option>
-        <option value="False">NEI</option>
-    </select>
+
     <div class="form-group">
-        <label for="Beskrivelse">Hus Beskrivelse:</label>
-        <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
+        <label for="harParkering">Has Parking</label>
+        <input asp-for="harParkering" type="checkbox" />
     </div>
+
     <div class="form-group">
-        <label for="bildeListe">Last opp bilder :</label>
-        <input type="file" name="imageData" accept="image/*" required />
+        <label for="erMoblert">Is Furnished</label>
+        <input asp-for="erMoblert" type="checkbox" />
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Grid" class="btn btn-secondary">Back to Table View</a>
+
+    <div class="form-group">
+        <label for="bildeListe">Upload Images</label>
+        <input type="file" name="bildeListe" accept="image/*" multiple required />
+    </div>
+
+    <div class="form-group">
+        <label for="eier.kontoNummer">Owner Account Number</label>
+        <input asp-for="eier.kontoNummer" class="form-control" />
+        <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add House</button>
 </form>

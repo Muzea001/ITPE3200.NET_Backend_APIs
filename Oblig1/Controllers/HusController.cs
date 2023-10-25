@@ -3,17 +3,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
 using System.Drawing;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Oblig1.Controllers
 {
     public class HusController : Controller
     {
+        private readonly ItemDbContext _db;
+
         private readonly ILogger _HusLogger;
 
         private readonly HusInterface husInterface;
@@ -22,13 +26,12 @@ namespace Oblig1.Controllers
 
 
 
-        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager)
+        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager, ItemDbContext itemDbContext)
         {
             husInterface = Interface;
             _HusLogger = logger;
-            _userManager
-                = userManager;
-
+            _userManager= userManager;
+            _db = itemDbContext;
         }
 
         public async Task<IActionResult> Tabell()
@@ -104,77 +107,77 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        
-        public async Task<IActionResult> lagHus(Hus hus, List<IFormFile> imageData)
+        [ValidateAntiForgeryToken] // For security purposes
+        public async Task<IActionResult> Create(Hus hus, List<IFormFile> bildeListe)
         {
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) // Check if the model's state is valid based on your annotations
             {
-                foreach (var modelStateKey in ModelState.Keys)
-                {
-                    var modelStateVal = ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        _HusLogger.LogError($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                    }
-                }
-                return View("Error", ModelState);
-            }
-            var personID = _userManager.GetUserId(User);
-            var person = await _userManager.FindByIdAsync(personID);
-            hus.eier = new Eier {Person = person, husListe = new List<Hus>(), antallAnnonser=0};
-            hus.bildeListe = new List<Bilder>();
-            hus.ordreListe = new List<Ordre>();
-            
-            if (ModelState.IsValid)
-            {
-
                 try
                 {
-                    bool OK = await husInterface.Lag(hus);
-
-                    if (OK)
+                    
+                    var imageUrls = new List<string>();
+                    foreach (var image in bildeListe)
                     {
-                        hus.eier.antallAnnonser++;
-                        hus.eier.husListe.Add(hus);
-                        if (imageData != null && imageData.Count > 0)
+                        var fileName = Path.GetFileName(image.FileName);
+                        var filePath = Path.Combine("wwwroot/Bilder", fileName); // Adjust this path as necessary
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-
-
-                            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Bilder");
-
-                            foreach (var image in imageData)
-                            {
-                                var uniqueFileName = Guid.NewGuid().ToString() + "_ " + image.FileName;
-                                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                                using (var stream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    await image.CopyToAsync(stream);
-                                }
-
-                                var bilde = new Bilder
-                                {
-                                    bilderUrl = filePath
-
-                                };
-                                hus.bildeListe.Add(bilde);
-                            }
+                            await image.CopyToAsync(stream);
                         }
+                        imageUrls.Add("/Bilder/" + fileName); // Adjust this path as necessary
+                    }
+
+                    // Assign the image URLs to the house object
+                    hus.bildeListe = imageUrls.Select(url => new Bilder { bilderUrl = url }).ToList();
+
+                    // Assuming your logged-in user's kontoNummer can be fetched this way
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var eier = _db.Eier.FirstOrDefault(e => e.Person.Id == userId); // Assuming you have a _dbContext with your EF context
+
+                    if (eier != null)
+                    {
+                        hus.eier = eier; // Set the house's owner to the current user
+
+                        // Now, save the house to the database using your interface
+                        await husInterface.Lag(hus);
+
+                        // If all goes well, redirect to the Kvittering view with the house object
                         return RedirectToAction("Kvittering", hus);
                     }
+                    else
+                    {
+                        // Handle the case where the current user is not an Eier or other issues
+                        ModelState.AddModelError("", "Current user is not a valid house owner.");
+                    }
                 }
-
                 catch (Exception ex)
                 {
-                    _HusLogger.LogError($"An exception occurred: {ex.Message}", ex);
-                    return View("Error", ex.Message);
+                    // Handle the exception appropriately (log it, etc.)
+                    ModelState.AddModelError("", "An error occurred while processing your request.");
                 }
             }
-                
-                
+
+            // If we get here, something went wrong. Display the error to the user.
+            return View("Error"); // You should have a view named "Error" with a proper message to the user.
+        }
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> Kvittering(int id)
+        {
+            var hus = await husInterface.hentHusMedId(id);
+            if (hus == null)
+            {
+                return NotFound("The specified house could not be found.");
+                _HusLogger.LogError($"No Hus found with ID: {id}");
+            }
+
             
-            _HusLogger.LogWarning("[HusController] Hus laging har failet", hus);
             return View(hus);
         }
 
