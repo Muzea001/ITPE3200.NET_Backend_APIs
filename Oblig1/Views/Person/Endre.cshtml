@@ -1,6 +1,6 @@
-﻿@model Oblig1.Models.Ordre
+﻿@model Oblig1.Models.Person
 
-<h2>Update The Order</h2>
+<h2>Update this Person</h2>
 
 <form asp-action="EndreBekreftet" method="post">
     <input type="hidden" asp-for="ordreId" />
@@ -33,29 +33,40 @@
     <input type="hidden" asp-for="hus.eier.Person.Navn" />
     <input type="hidden" asp-for="hus.eier.Person" />
     <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
-    
 
+    <div class="form-group">
+        <label asp-for="Navn"> Name </label><span class="text-danger">*</span>
+        <input asp-for="Navn" class="form-control" />
+        <span asp-validation-for="Navn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"> Email </label><span class="text-danger">*</span>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
 
 
 
 
     <div class="form-group">
-        <label asp-for="betaltGjennom"> Payment method </label><span class="text-danger">*</span>
-        <input asp-for="betaltGjennom" class="form-control" />
-        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
+        <label asp-for="Fodselsdato"> Birth date </label><span class="text-danger">*</span>
+        <input asp-for="Fodselsdato" class="form-control" />
+        <span asp-validation-for="Fodselsdato" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="startDato"> Date </label><span class="text-danger">*</span>
-        <input asp-for="startDato" class="form-control" />
-        <span asp-validation-for="startDato" class="text-danger"></span>
+        <label asp-for="Adress"> Adress </label><span class="text-danger">*</span>
+        <input asp-for="Adress" class="form-control" />
+        <span asp-validation-for="Adress" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="sluttDato"> Date </label><span class="text-danger">*</span>
-        <input asp-for="sluttDato" class="form-control" />
-        <span asp-validation-for="sluttDato" class="text-danger"></span>
+        <label asp-for="TelefonNmr"> Telephon number </label><span class="text-danger">*</span>
+        <input asp-for="TelefonNmr" class="form-control" />
+        <span asp-validation-for="TelefonNmr" class="text-danger"></span>
     </div>
+
 
     <button type="submit" class="btn btn-success">Update</button>
     <a asp-action="Tabell" class="btn btn-secondary">Abort</a>
