@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
 using System.Drawing;
+using System.Linq.Expressions;
 
 namespace Oblig1.Controllers
 {
@@ -15,13 +18,16 @@ namespace Oblig1.Controllers
 
         private readonly HusInterface husInterface;
 
+        private readonly UserManager<Person> _userManager;
 
 
-        public HusController(HusInterface Interface, ILogger<HusController> logger)
+
+        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager)
         {
             husInterface = Interface;
             _HusLogger = logger;
-
+            _userManager
+                = userManager;
 
         }
 
@@ -99,29 +105,75 @@ namespace Oblig1.Controllers
 
         [HttpPost]
         
-        public async Task<IActionResult> Create(Hus hus, IFormFile imageData)
+        public async Task<IActionResult> lagHus(Hus hus, List<IFormFile> imageData)
         {
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    var modelStateVal = ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        _HusLogger.LogError($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                    }
+                }
+                return View("Error", ModelState);
+            }
+            var personID = _userManager.GetUserId(User);
+            var person = await _userManager.FindByIdAsync(personID);
+            hus.eier = new Eier {Person = person, husListe = new List<Hus>(), antallAnnonser=0};
+            hus.bildeListe = new List<Bilder>();
+            hus.ordreListe = new List<Ordre>();
+            
             if (ModelState.IsValid)
             {
-                bool OK = await husInterface.Lag(hus);
-                if (OK)
+
+                try
                 {
-                    if (imageData!= null && imageData.Length> 0)
+                    bool OK = await husInterface.Lag(hus);
+
+                    if (OK)
                     {
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Bilder");
-                        var uniqueFileName = Guid.NewGuid().ToString() + "_ " + imageData.FileName;
-                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        hus.eier.antallAnnonser++;
+                        hus.eier.husListe.Add(hus);
+                        if (imageData != null && imageData.Count > 0)
                         {
-                            await imageData.CopyToAsync(stream);
+
+
+                            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Bilder");
+
+                            foreach (var image in imageData)
+                            {
+                                var uniqueFileName = Guid.NewGuid().ToString() + "_ " + image.FileName;
+                                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                                using (var stream = new FileStream(filePath, FileMode.Create))
+                                {
+                                    await image.CopyToAsync(stream);
+                                }
+
+                                var bilde = new Bilder
+                                {
+                                    bilderUrl = filePath
+
+                                };
+                                hus.bildeListe.Add(bilde);
+                            }
                         }
-
+                        return RedirectToAction("Kvittering", hus);
                     }
-                    return RedirectToAction(nameof(Tabell));
+                }
 
+                catch (Exception ex)
+                {
+                    _HusLogger.LogError($"An exception occurred: {ex.Message}", ex);
+                    return View("Error", ex.Message);
                 }
             }
+                
+                
+            
             _HusLogger.LogWarning("[HusController] Hus laging har failet", hus);
             return View(hus);
         }

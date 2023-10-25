@@ -3,61 +3,16 @@
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action="Create">
+<form asp-action="lagHus">
+    <input type="hidden" asp-for="bildeListe" />
+    <input type="hidden" asp-for="ordreListe" />
+    <input type="hidden" asp-for="eier.Person" />
+    <input type="hidden" asp-for="eier.husListe" />
+    <input type="hidden" asp-for="eier.Person" />
     <div class="form-group">
         <label asp-for="eier.kontoNummer"></label><span class="text-danger">*</span>
         <input asp-for="eier.kontoNummer" class="form-control" />
         <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.antallAnnonser"></label><span class="text-danger">*</span>
-        <input asp-for="eier.antallAnnonser" class="form-control" />
-        <span asp-validation-for="eier.antallAnnonser" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.Addresse"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.Addresse" class="form-control" />
-        <span asp-validation-for="eier.Person.Addresse" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.Email"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.Email" class="form-control" />
-        <span asp-validation-for="eier.Person.Email" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="ordreListe"></label><span class="text-danger">*</span>
-        <input asp-for="ordreListe" class="form-control" />
-        <span asp-validation-for="ordreListe" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.Fodselsdato"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.Fodselsdato" class="form-control" />
-        <span asp-validation-for="eier.Person.Fodselsdato" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.Navn"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.Navn" class="form-control" />
-        <span asp-validation-for="eier.Person.Navn" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.Id"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.Id" class="form-control" />
-        <span asp-validation-for="eier.Person.Id" class="text-danger"></span>
-    </div>
-    <div class="class=" form-group">
-        <label asp-for="eier.Person.TelefonNmr"></label><span class="text-danger">*</span>
-        <input asp-for="eier.Person.TelefonNmr" class="form-control" />
-        <span asp-validation-for="eier.Person.TelefonNmr" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="eier.husListe"></label><span class="text-danger">*</span>
-        <input asp-for="eier.husListe" class="form-control" />
-        <span asp-validation-for="eier.husListe" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Addresse"></label><span class="text-danger">*</span>
-        <input asp-for="Addresse" class="form-control" />
-        <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="by"></label><span class="text-danger">*</span>
@@ -68,6 +23,11 @@
         <label asp-for="areal"></label>
         <input asp-for="areal" class="form-control" type="number" />
         <span asp-validation-for="areal" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Addresse"></label>
+        <input asp-for="Addresse" class="form-control" type="text" />
+        <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Pris"></label>
@@ -94,8 +54,8 @@
         <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
     </div>
     <div class="form-group">
-        <label for="bildeURL">Last opp bilder :</label>
-        <input asp-for="bildeListe">
+        <label for="bildeListe">Last opp bilder :</label>
+        <input type="file" name="imageData" accept="image/*" required />
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Grid" class="btn btn-secondary">Back to Table View</a>

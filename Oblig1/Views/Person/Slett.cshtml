@@ -1,0 +1,26 @@
+﻿@model Oblig1.Models.Ordre
+
+<h3>Are you sure you want to delet this order!</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Order ID</dt>
+        <dd class="col-sm-10">@Model.ordreId</dd>
+
+        <dt class="col-sm-2">Date</dt>
+        <dd class="col-sm-10">@Model.startDato</dd>
+
+        <dt class="col-sm-2">Date</dt>
+        <dd class="col-sm-10">@Model.sluttDato</dd>
+
+        <dt class="col-sm-2">Payment method</dt>
+        <dd class="col-sm-10">@Model.betaltGjennom</dd>
+
+
+    </dl>
+
+    <form asp-action="SlettBekreftet" asp-route-id="@Model.ordreId" method="post">
+        <button type="submit" class="btn btn-danger">Slett</button>
+        <a asp-controller="Ordre" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+    </form>
+</div>
