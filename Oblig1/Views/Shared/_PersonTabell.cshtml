@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Oblig1.Models.Person>
+<h1>List of persons</h1>
+
+@foreach (var person in Model)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <div class="container">
+            <h5>Order @order.ordreId </h5>
+            <div>
+                <table class='table table-striped' style='max-width: 1200px;'>
+                    <tr class="table-header">
+                        <th>Name</th>
+                        <th>Birth date</th>
+                        <th>Adress</th>
+                        <th>Telephon number</th>
+                    </tr>
+                    <tr>
+                        <td>@person.Navn</td>
+                        <td>@person.Fodselsdato</td>
+                        <td>@person.Addresse</td>
+                        <td>@person.TelefonNmr</td>
+
+                    </tr>
+                </table>
+                <span>
+                    <a class="btn btn-success" asp-controller="Person" asp-action="Endre" asp-route-id="------"> Update</a>
+                </span>
+                <span>
+                    <a class="btn btn-danger" asp-controller="Ordre" asp-action="Slett" asp-route-id="-------">Delete</a>
+                </span>
+            </div>
+        </div>
+    </div>
+}

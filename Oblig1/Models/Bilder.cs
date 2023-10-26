@@ -11,7 +11,7 @@ namespace Oblig1.Models
 
         public string bilderUrl { get; set;}
 
-
+        public virtual Hus Hus { get; set; }
        
 
 

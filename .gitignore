@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Oblig1/Controllers/HusController.cs
+Oblig1/Oblig1.csproj

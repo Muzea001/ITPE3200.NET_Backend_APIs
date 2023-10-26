@@ -44,6 +44,8 @@ namespace Oblig1.DAL
 
             modelBuilder.Entity<Kunde>()
             .Ignore(c => c.ordreListe);
+
+           
         }
 
         

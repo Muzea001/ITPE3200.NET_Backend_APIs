@@ -31,7 +31,7 @@ namespace Oblig1.Models
 
         public virtual Eier eier { get; set; }
 
-        public virtual List<Ordre> ordreListe { get; set; }
+        public virtual List<Ordre?> ordreListe { get; set; }
 
         public virtual List<Bilder> bildeListe { get; set; }    
 

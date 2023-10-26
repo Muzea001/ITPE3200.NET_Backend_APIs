@@ -236,7 +236,7 @@ namespace Oblig1.DAL
                 new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
                 new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
                 new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic4.jpg", },
                 new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
 
 
