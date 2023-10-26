@@ -3,36 +3,7 @@
 <h2>Update this Person</h2>
 
 <form asp-action="EndreBekreftet" method="post">
-    <input type="hidden" asp-for="ordreId" />
-  
-    <input type="hidden" asp-for="kunde.Person.TelefonNmr" />
-    <input type="hidden" asp-for="kunde.Person.Addresse" />
-    <input type="hidden" asp-for="kunde.Person.Email" />
-    <input type="hidden" asp-for="kunde.Person.Fodselsdato" />
-    <input type="hidden" asp-for="kunde.Person.Navn" />
-    <input type="hidden" asp-for="kunde.Person" />
-    <input type="hidden" asp-for="hus.Addresse" />
-    <input type="hidden" asp-for="hus.areal" />
-    <input type="hidden" asp-for="hus.Beskrivelse" />
-    <input type="hidden" asp-for="hus.bildeListe" />
-    <input type="hidden" asp-for="hus.by" />
-    <input type="hidden" asp-for="hus.eier" />
-    <input type="hidden" asp-for="hus.erMoblert" />
-    <input type="hidden" asp-for="hus.harParkering" />
-    <input type="hidden" asp-for="hus.ordreListe" />
-    <input type="hidden" asp-for="hus.Pris" />
-    <input type="hidden" asp-for="hus.romAntall" />
-    <input type="hidden" asp-for="kunde.husListe" />
-    <input type="hidden" asp-for="kunde.ordreListe" />
-    <input type="hidden" asp-for="hus.eier.antallAnnonser" />
-    <input type="hidden" asp-for="hus.eier.husListe" />
-    <input type="hidden" asp-for="hus.eier.kontoNummer" />
-    <input type="hidden" asp-for="hus.eier.Person.Addresse" />
-    <input type="hidden" asp-for="hus.eier.Person.Email" />
-    <input type="hidden" asp-for="hus.eier.Person.Fodselsdato" />
-    <input type="hidden" asp-for="hus.eier.Person.Navn" />
-    <input type="hidden" asp-for="hus.eier.Person" />
-    <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
+    <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
         <label asp-for="Navn"> Name </label><span class="text-danger">*</span>
@@ -47,8 +18,6 @@
     </div>
 
 
-
-
     <div class="form-group">
         <label asp-for="Fodselsdato"> Birth date </label><span class="text-danger">*</span>
         <input asp-for="Fodselsdato" class="form-control" />
@@ -56,9 +25,9 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Adress"> Adress </label><span class="text-danger">*</span>
-        <input asp-for="Adress" class="form-control" />
-        <span asp-validation-for="Adress" class="text-danger"></span>
+        <label asp-for="Addresse"> Adress </label><span class="text-danger">*</span>
+        <input asp-for="Addresse" class="form-control" />
+        <span asp-validation-for="Addresse" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -69,6 +38,6 @@
 
 
     <button type="submit" class="btn btn-success">Update</button>
-    <a asp-action="Tabell" class="btn btn-secondary">Abort</a>
+    <a asp-action="Tabell" asp_route="@Model.Id" class="btn btn-secondary">Abort</a>
 
 </form>

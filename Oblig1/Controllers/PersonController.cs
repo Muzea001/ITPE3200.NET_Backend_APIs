@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
@@ -11,10 +10,10 @@ namespace Oblig1.Controllers
     {
    
             private readonly UserManager<Person> _userManager;
-            private readonly ILogger _Personlogger;
+            private readonly ILogger<PersonController> _Personlogger; 
             private readonly PersonInterface _personInterface;
 
-        public PersonController(UserManager<Person> userManager, ILogger personlogger, PersonInterface personInterface)
+        public PersonController(UserManager<Person> userManager, ILogger<PersonController> personlogger, PersonInterface personInterface)
         {
             _userManager = userManager;
             _Personlogger = personlogger;
@@ -47,47 +46,56 @@ namespace Oblig1.Controllers
                 return View(Person);
             }
 
+           
             [HttpPost]
-
-            public async Task<IActionResult> EndreBekreftet(Person person)
+        public async Task<IActionResult> EndreBekreftet(string id, Person updatedValues)
+        {
+            if (string.IsNullOrEmpty(id))
             {
-                if (ModelState.IsValid)
-                {
-                    bool OK = await _personInterface.endrePerson(person);   
-                    if (OK)
-                    {
-                        return RedirectToAction(nameof(Tabell));
-                    }
-                    else
-                    {
-                        _Personlogger.LogWarning("[OrdreKontroller] oppdatering av ordre failet", person);
-
-                        ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
-                    }
-
-                }
-                else
-                {
-                    _Personlogger.LogWarning("[OrdreKontroller] Invalid model state.", person);
-
-                    foreach (var modelStateKey in ViewData.ModelState.Keys)
-                    {
-                        var modelStateVal = ViewData.ModelState[modelStateKey];
-                        foreach (var error in modelStateVal.Errors)
-                        {
-
-                            _Personlogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                        }
-                    }
-                }
-
-
-                return RedirectToAction($"{nameof(Tabell)}");
-
-
-
-
+                return BadRequest("Id is required");
             }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Update the user properties with the new values
+            user.Navn = updatedValues.Navn;
+            user.Fodselsdato = updatedValues.Fodselsdato;
+            user.Addresse = updatedValues.Addresse;
+            user.TelefonNmr = updatedValues.TelefonNmr;
+
+            try
+            {
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction($"{nameof(Tabell)}"); ;
+                }
+
+                // Handle other potential errors from the update operation
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(errors);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                if (dbEx.InnerException is Microsoft.Data.Sqlite.SqliteException sqliteEx && sqliteEx.SqliteErrorCode == 19)
+                {
+                    return BadRequest("Person record utilized in another table, unable to update this record due to associations with other records.");
+                }
+                throw;  // If it's another exception type, rethrow it to handle it elsewhere
+            }
+        }
+
+
+                
+
+
+
+
+            
 
  
 
@@ -108,21 +116,38 @@ namespace Oblig1.Controllers
 
             }
 
-            [HttpPost]
+        [HttpPost]
 
-            public async Task<IActionResult> SlettBekreftet(string id )
+        public async Task<IActionResult> SlettBekreftet(string id)
+        {
+            var person = await _userManager.FindByIdAsync(id);
+            if (person == null)
             {
-                bool OK = await _personInterface.SlettPerson(id);
-                if (!OK)
-                {
-                    _Personlogger.LogError("[OrdreKontroller] sletting av bruker mislyktes for denne iden", id);
-                    return BadRequest("sletting av ordre failet");
-                }
-                return RedirectToAction(nameof(Tabell));
+                return NotFound("Bruker for denne id" + id + " ikke funnet");
             }
+            try
+            {
+                var sletting = await _userManager.DeleteAsync(person);
+                if (sletting.Succeeded)
+                {
+                    return RedirectToAction(nameof(Tabell));
+                }
 
-
+                var errors = sletting.Errors.Select(e => e.Description);
+                return BadRequest(errors);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                if(dbEx.InnerException is Microsoft.Data.Sqlite.SqliteException sqliteEx && sqliteEx.SqliteErrorCode == 19)
+                {
+                    return BadRequest("Person record utilized in another table, can only delete persons not associated with other records");
+                }
+                throw;
+            }
         }
+        
+
+    }
 
     }
 

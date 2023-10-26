@@ -31,7 +31,7 @@ builder.Services.AddDefaultIdentity<Person>()
 
 builder.Services.AddTransient<Oblig1.Services.Kvittering>();
 
-
+builder.Services.AddScoped<PersonInterface, PersonRepo>();
 builder.Services.AddScoped<HusInterface, HusRepo>();
 builder.Services.AddScoped<KundeInterface, KundeRepo>();
 builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
@@ -71,10 +71,11 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseSession();
-   
-app.UseAuthorization();
+
 
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapRazorPages();
  
