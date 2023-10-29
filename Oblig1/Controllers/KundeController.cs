@@ -19,7 +19,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet]
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Tabell()
         {
 
@@ -44,7 +44,8 @@ namespace Oblig1.Controllers
             }
             return View(kunde);
         }
-        
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Endre(int id)
         {
@@ -57,6 +58,9 @@ namespace Oblig1.Controllers
             return View(kunde);
         }
 
+
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EndreBekreftet(Kunde kunde)
         {
@@ -124,9 +128,9 @@ namespace Oblig1.Controllers
             return View(kunde);
         }
 
-        [HttpGet]
-        
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Slett(int id)
         {
             var kunde = await _kundeInterface.hentKundeMedId(id);
@@ -140,9 +144,8 @@ namespace Oblig1.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-       
-
         public async Task<IActionResult> SlettBekreftet(int id)
         {
             bool OK = await _kundeInterface.SlettKunde(id);

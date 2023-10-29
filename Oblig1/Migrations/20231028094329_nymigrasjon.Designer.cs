@@ -11,8 +11,8 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231025121252_ordrenødvendig")]
-    partial class ordrenødvendig
+    [Migration("20231028094329_nymigrasjon")]
+    partial class nymigrasjon
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,7 +166,7 @@ namespace Oblig1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("husId")
+                    b.Property<int>("husId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("bilderId");
@@ -267,6 +267,9 @@ namespace Oblig1.Migrations
 
                     b.Property<string>("betaltGjennom")
                         .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("fullPris")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("husId")
@@ -421,9 +424,13 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Bilder", b =>
                 {
-                    b.HasOne("Oblig1.Models.Hus", null)
+                    b.HasOne("Oblig1.Models.Hus", "Hus")
                         .WithMany("bildeListe")
-                        .HasForeignKey("husId");
+                        .HasForeignKey("husId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hus");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Eier", b =>

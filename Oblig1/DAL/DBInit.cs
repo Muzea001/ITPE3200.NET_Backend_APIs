@@ -76,15 +76,20 @@ namespace Oblig1.DAL
                 await userManager.CreateAsync(person, defaultPass);
 
                 var kunde = new Kunde
-                 {
-                    Person = person
+                {
+                    Person = person,
+                    husListe = new List<Hus>(),
+                    ordreListe = new List<Ordre>()
+                   
                
                 };
                 var eier = new Eier
                 {
                     Person = person,
                     kontoNummer = 11111111111,
-                    antallAnnonser = 0
+                    antallAnnonser = 0,
+                    husListe = new List<Hus>()
+                    
                 };
 
  
@@ -276,6 +281,7 @@ namespace Oblig1.DAL
 
             };
 
+                
               
 
 
@@ -304,7 +310,10 @@ namespace Oblig1.DAL
 
                 var kunde = new Kunde
                 {
-                    Person = person
+                    Person = person,
+                    ordreListe = new List<Ordre>(),
+                    husListe = new List<Hus>(),
+                    
                 };
 
                 context.Add(kunde);
@@ -345,7 +354,7 @@ namespace Oblig1.DAL
                     eier = eier
                 };
 
-
+                kunde.husListe.Add(hus);
                 context.Add(hus);
                 context.SaveChanges();
                 var ordre = new List<Ordre>
@@ -356,6 +365,7 @@ namespace Oblig1.DAL
                    betaltGjennom = "Kort",
                    startDato = new DateTime(2023,5,8),
                   sluttDato = new DateTime(2023,7,8),
+                  fullPris = 8700,
                     kunde = kunde,
                     hus = hus
 
@@ -366,13 +376,16 @@ namespace Oblig1.DAL
                    betaltGjennom = "Klarna",
                    startDato = new DateTime(2023,1,1),
                   sluttDato = new DateTime(2023,1,15),
+                  fullPris = 12000,
                    kunde=kunde,
                    hus = hus
 
                          }
                      };
+                kunde.ordreListe = ordre;
 
-
+                
+               
                 foreach (var o in ordre)
                 {
                     o.hus.husId = hus.husId;

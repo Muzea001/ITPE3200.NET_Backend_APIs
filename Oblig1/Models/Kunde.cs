@@ -16,9 +16,9 @@ namespace Oblig1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int kundeID { get; set; }    
 
-        public virtual List<Ordre?> ordreListe { get; set; }
+        public virtual List<Ordre> ordreListe { get; set; }
 
-        public virtual List<Hus?> husListe { get; set; }
+        public virtual List<Hus> husListe { get; set; }
 
 
 

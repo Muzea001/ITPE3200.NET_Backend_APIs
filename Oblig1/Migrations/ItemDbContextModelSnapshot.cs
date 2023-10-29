@@ -266,6 +266,9 @@ namespace Oblig1.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("fullPris")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("husId")
                         .HasColumnType("INTEGER");
 

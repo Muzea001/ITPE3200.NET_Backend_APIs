@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
@@ -19,8 +20,10 @@ namespace Oblig1.Controllers
         private readonly Kvittering _kvittering;
         private readonly HusInterface _husInterface;
         private readonly KundeInterface _kunderinterface;
+        private readonly ItemDbContext _db;
+        
 
-        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, KundeInterface kundeInterface, UserManager<Person> userManager)
+        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, ItemDbContext dbContext, KundeInterface kundeInterface, UserManager<Person> userManager)
         {
             _userManager = userManager;
             _ordreInterface = ordreinterface;
@@ -28,8 +31,10 @@ namespace Oblig1.Controllers
             _husInterface = husInterface; ;
             _kvittering = kvittering;
             _kunderinterface = kundeInterface;
+            _db = dbContext;
+            
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Tabell()
         {
 
@@ -43,6 +48,8 @@ namespace Oblig1.Controllers
             var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
             return View(ItemListViewModel);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         
         public async Task<IActionResult> Endre(int id)
@@ -56,8 +63,9 @@ namespace Oblig1.Controllers
             return View(Ordre);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-
+        
         public async Task<IActionResult> EndreBekreftet(Ordre ordre)
         {
             if (ModelState.IsValid)
@@ -98,6 +106,7 @@ namespace Oblig1.Controllers
 
         }
 
+        [Authorize(Roles = "Admin, Bruker")]
         [HttpGet]
         
         public async Task <IActionResult> lagOrdre(int id) {
@@ -122,17 +131,17 @@ namespace Oblig1.Controllers
 
         [HttpGet]
 
-        public async Task<bool> sjekkTilgjengelighet(int husId, DateTime startDato, DateTime sluttDato)
+        public async Task<IActionResult> sjekkTilgjengelighet(int husId, DateTime startDato, DateTime sluttDato)
         {
 
             bool OK = await _ordreInterface.sjekkTilgjengelighet(husId, startDato, sluttDato);
             if(OK) {
-                return true;
+                return Json(OK);
                     }
 
             else
             {
-                return false;
+                return Json(!OK);
             }
 
             
@@ -143,17 +152,18 @@ namespace Oblig1.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin, Bruker")]
         [HttpPost]
-        public async Task<IActionResult> Lag(DateTime startDato, DateTime sluttDato, string betaltGjennom, int husID)
+        public async Task<IActionResult> Lag(DateTime startDato, DateTime sluttDato, string betaltGjennom, int husID, decimal fullPrice)
         {
             try
             {
-                _Ordrelogger.LogInformation("Entering Lag method with parameters: startDato={startDato}, sluttDato={sluttDato}, betaltgjennom={betaltgjennom}, husID={husID}" ,
-                                             startDato, sluttDato, betaltGjennom, husID);
+                _Ordrelogger.LogInformation("Entering Lag method with parameters: startDato={startDato}, sluttDato={sluttDato}, betaltgjennom={betaltgjennom}, husID={husID} , fullPrice = {fullPrice}" ,
+                                             startDato, sluttDato, betaltGjennom, husID, fullPrice);
 
                 Ordre ordre = new Ordre
                 {
+                    fullPris = fullPrice,
                     startDato = startDato,
                     sluttDato = sluttDato,
                     betaltGjennom = betaltGjennom
@@ -176,22 +186,33 @@ namespace Oblig1.Controllers
                 var personID = _userManager.GetUserId(User);
                 var person = await _userManager.FindByIdAsync(personID);
                 var ordreHus = await _husInterface.hentHusMedId(husID);
-                var lagetBruker = new Kunde { Person = person, husListe = new List<Hus>(), ordreListe=new List<Ordre>() };
-                
-                
-                lagetBruker.kundeID = await _kunderinterface.Lag(lagetBruker);
-                
+                var existingKunde = await _db.Kunde.FirstOrDefaultAsync(k => k.Person.Id == personID);
+                Kunde kunde;
+
+                if (existingKunde != null)
+                {
+                    existingKunde.ordreListe = new List<Ordre>();
+                    existingKunde.husListe = new List<Hus>();
+                    kunde = existingKunde;
+                }
+                else
+                {
+                   
+                    kunde = new Kunde { Person = person, husListe = new List<Hus>(), ordreListe = new List<Ordre>() };
+                    _db.Kunde.Add(kunde); 
+                }
+
                 
                 ordre.hus = ordreHus;
-                ordre.kunde = lagetBruker;
+                ordre.kunde = kunde;
 
                     bool OK = await _ordreInterface.lagOrdre(ordre);
                     if (OK)
                     {
-                        lagetBruker.ordreListe.Add(ordre);
-                         lagetBruker.husListe.Add(ordreHus);
-                         ordreHus.ordreListe.Add(ordre);
-                            return View("Kvittering", ordre);
+                        ordre.kunde.ordreListe.Add(ordre);
+                        ordre.kunde.husListe.Add(ordreHus);
+                        ordre.hus.ordreListe.Add(ordre);
+                        return View("Kvittering", ordre);
                 }
                     else
                     {
@@ -210,7 +231,22 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-       
+        public async Task<JsonResult> regnFullPris(DateTime start, DateTime slutt, decimal Pris)
+        {
+            
+
+            decimal days = (slutt - start).Days;
+
+            decimal fullPris = Pris * days;
+
+            await Task.Delay(1);
+
+            return new JsonResult(fullPris);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Slett(int id)
         {
             var ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -224,6 +260,7 @@ namespace Oblig1.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         
         public async Task<IActionResult> SlettBekreftet(int id)

@@ -1,0 +1,33 @@
+﻿@model Oblig1.Models.Eier
+
+<h2>Update The Owner</h2>
+
+<form asp-action="EndreBekreftet" method="post">
+    <input type="hidden" asp-for="Person.Id" />
+  
+    <input type="hidden" asp-for="Person.TelefonNmr" />
+    <input type="hidden" asp-for="Person.Addresse" />
+    <input type="hidden" asp-for="Person.Email" />
+    <input type="hidden" asp-for="Person.Fodselsdato" />
+    <input type="hidden" asp-for="Person.Navn" />
+    <input type="hidden" asp-for="Person" />
+    
+    
+    <div class="form-group">
+        <label asp-for="kontoNummer"> Payment method </label><span class="text-danger">*</span>
+        <input asp-for="kontoNummer" class="form-control" />
+        <span asp-validation-for="kontoNummer" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="antallAnnonser"> Date </label><span class="text-danger">*</span>
+        <input asp-for="antallAnnonser" class="form-control" />
+        <span asp-validation-for="antallAnnonser" class="text-danger"></span>
+    </div>
+
+   
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Abort</a>
+
+</form>

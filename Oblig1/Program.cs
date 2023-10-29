@@ -9,6 +9,7 @@ using Oblig1.Services;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ItemDbContextConnection' was not found");
@@ -26,12 +27,13 @@ builder.Services.AddDefaultIdentity<Person>()
    .AddRoles<IdentityRole>()
    .AddEntityFrameworkStores<ItemDbContext>();
 
-
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 
 builder.Services.AddTransient<Oblig1.Services.Kvittering>();
-
 builder.Services.AddScoped<PersonInterface, PersonRepo>();
+builder.Services.AddScoped<eierInterface, EierRepo>();
 builder.Services.AddScoped<HusInterface, HusRepo>();
 builder.Services.AddScoped<KundeInterface, KundeRepo>();
 builder.Services.AddScoped<OrdreInterface, OrdreRepo>();

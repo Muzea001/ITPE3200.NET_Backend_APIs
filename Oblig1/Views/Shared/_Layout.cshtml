@@ -35,28 +35,36 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
+                    <style>
+                        .nav-item {
+                            font-size: 0.8rem; /* Adjust this value to your desired size */
+                            margin-right: 10px; /* Space between each item */
+                        }
+                    </style>
+
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Hus" asp-action="Create">Rent House</a>
+                            <a class="nav-link text-dark" asp-controller="Hus" asp-action="Create">List House</a>
                         </li>
-                 @if (User.IsInRole("Admin"))
-                {
-                    
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Hus" asp-action="Tabell">Houses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Ordre" asp-action="Tabell">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Kunde" asp-action="Tabell">Customers</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Hus" asp-action="Tabell">Houses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Ordre" asp-action="Tabell">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Kunde" asp-action="Tabell">Customers</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Person" asp-action="Tabell">Persons</a>
                             </li>
-                    
-                }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Eier" asp-action="Tabell">Owners</a>
+                            </li>
+                        }
                     </ul>
                 
                    

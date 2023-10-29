@@ -11,8 +11,8 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231022200536_initCreate")]
-    partial class initCreate
+    [Migration("20231029113900_nullableFjernet")]
+    partial class nullableFjernet
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,7 +166,7 @@ namespace Oblig1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("husId")
+                    b.Property<int>("husId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("bilderId");
@@ -269,7 +269,10 @@ namespace Oblig1.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("husId")
+                    b.Property<decimal>("fullPris")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("husId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("kundeID")
@@ -421,9 +424,13 @@ namespace Oblig1.Migrations
 
             modelBuilder.Entity("Oblig1.Models.Bilder", b =>
                 {
-                    b.HasOne("Oblig1.Models.Hus", null)
+                    b.HasOne("Oblig1.Models.Hus", "Hus")
                         .WithMany("bildeListe")
-                        .HasForeignKey("husId");
+                        .HasForeignKey("husId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hus");
                 });
 
             modelBuilder.Entity("Oblig1.Models.Eier", b =>
@@ -444,7 +451,7 @@ namespace Oblig1.Migrations
                         .IsRequired();
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
-                        .WithMany("husListe")
+                        .WithMany()
                         .HasForeignKey("kundeID");
 
                     b.Navigation("eier");
@@ -465,10 +472,12 @@ namespace Oblig1.Migrations
                 {
                     b.HasOne("Oblig1.Models.Hus", "hus")
                         .WithMany("ordreListe")
-                        .HasForeignKey("husId");
+                        .HasForeignKey("husId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Oblig1.Models.Kunde", "kunde")
-                        .WithMany("ordreListe")
+                        .WithMany()
                         .HasForeignKey("kundeID");
 
                     b.Navigation("hus");
@@ -484,13 +493,6 @@ namespace Oblig1.Migrations
             modelBuilder.Entity("Oblig1.Models.Hus", b =>
                 {
                     b.Navigation("bildeListe");
-
-                    b.Navigation("ordreListe");
-                });
-
-            modelBuilder.Entity("Oblig1.Models.Kunde", b =>
-                {
-                    b.Navigation("husListe");
 
                     b.Navigation("ordreListe");
                 });

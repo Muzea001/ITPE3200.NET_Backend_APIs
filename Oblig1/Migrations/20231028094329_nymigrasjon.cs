@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oblig1.Migrations
 {
     /// <inheritdoc />
-    public partial class initCreate : Migration
+    public partial class nymigrasjon : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -237,7 +237,7 @@ namespace Oblig1.Migrations
                     bilderId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     bilderUrl = table.Column<string>(type: "TEXT", nullable: false),
-                    husId = table.Column<int>(type: "INTEGER", nullable: true)
+                    husId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,7 +246,8 @@ namespace Oblig1.Migrations
                         name: "FK_Bilder_Hus_husId",
                         column: x => x.husId,
                         principalTable: "Hus",
-                        principalColumn: "husId");
+                        principalColumn: "husId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,8 +258,9 @@ namespace Oblig1.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     betaltGjennom = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
                     startDato = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    fullPris = table.Column<decimal>(type: "TEXT", nullable: false),
                     sluttDato = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    husId = table.Column<int>(type: "INTEGER", nullable: true),
+                    husId = table.Column<int>(type: "INTEGER", nullable: false),
                     kundeID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -268,7 +270,8 @@ namespace Oblig1.Migrations
                         name: "FK_Ordre_Hus_husId",
                         column: x => x.husId,
                         principalTable: "Hus",
-                        principalColumn: "husId");
+                        principalColumn: "husId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ordre_Kunde_kundeID",
                         column: x => x.kundeID,

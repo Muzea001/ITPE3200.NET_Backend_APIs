@@ -18,13 +18,17 @@ namespace Oblig1.Models
         [StringLength(200)]
         public string? betaltGjennom { get; set; }
 
-        public DateTime? startDato { get; set; } 
+        public DateTime? startDato { get; set; }
+
+        public decimal fullPris { get; set; }
 
         public DateTime? sluttDato { get; set; } 
 
         public virtual Hus hus { get; set; }
        
         public virtual Kunde kunde { get; set; }
+
+       
 
         
 

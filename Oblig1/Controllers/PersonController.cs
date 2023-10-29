@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Oblig1.Models;
 using Oblig1.Services;
@@ -20,6 +21,7 @@ namespace Oblig1.Controllers
             _personInterface = personInterface;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Tabell()
             {
 
@@ -33,7 +35,10 @@ namespace Oblig1.Controllers
                 var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
                 return View(ItemListViewModel);
             }
-            [HttpGet]
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 
             public async Task<IActionResult> Endre(string id)
             {
@@ -46,8 +51,8 @@ namespace Oblig1.Controllers
                 return View(Person);
             }
 
-           
-            [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public async Task<IActionResult> EndreBekreftet(string id, Person updatedValues)
         {
             if (string.IsNullOrEmpty(id))
@@ -61,7 +66,7 @@ namespace Oblig1.Controllers
                 return NotFound("User not found");
             }
 
-            // Update the user properties with the new values
+           
             user.Navn = updatedValues.Navn;
             user.Fodselsdato = updatedValues.Fodselsdato;
             user.Addresse = updatedValues.Addresse;
@@ -90,18 +95,18 @@ namespace Oblig1.Controllers
         }
 
 
-                
 
 
 
 
-            
 
- 
 
-          
 
-            [HttpGet]
+
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
 
             public async Task<IActionResult> Slett(string id)
             {
@@ -116,6 +121,7 @@ namespace Oblig1.Controllers
 
             }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
 
         public async Task<IActionResult> SlettBekreftet(string id)

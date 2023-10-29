@@ -8,6 +8,7 @@ using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
 using Oblig1.ViewModeller;
+using System;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -23,15 +24,18 @@ namespace Oblig1.Controllers
         private readonly HusInterface husInterface;
 
         private readonly UserManager<Person> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private readonly eierInterface _eierInterface;
 
-
-        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager, ItemDbContext itemDbContext)
+        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager, ItemDbContext itemDbContext, IWebHostEnvironment webHostEnvironment, eierInterface eierInterface)
         {
             husInterface = Interface;
             _HusLogger = logger;
-            _userManager= userManager;
+            _userManager = userManager;
             _db = itemDbContext;
+            _webHostEnvironment = webHostEnvironment;
+            _eierInterface = eierInterface;
         }
 
         public async Task<IActionResult> Tabell()
@@ -106,59 +110,69 @@ namespace Oblig1.Controllers
 
         }
 
+
+
+        [Authorize(Roles = "Admin, Bruker")]
         [HttpPost]
-        [ValidateAntiForgeryToken] // For security purposes
-        public async Task<IActionResult> Create(Hus hus, List<IFormFile> bildeListe)
+        public async Task<IActionResult> CreateHouseWithImages(HusOgBilderViewModell viewModel)
         {
-            if (ModelState.IsValid) // Check if the model's state is valid based on your annotations
+            using (var transaction = _db.Database.BeginTransaction())
             {
                 try
                 {
+                    var personID = _userManager.GetUserId(User);
+                    var person = await _userManager.FindByIdAsync(personID);
+                    var eier = await _db.Eier.FirstOrDefaultAsync(e => e.Person.Id == personID);
+                    if (eier == null)
+                    {
+                       
+                        eier = new Eier { Person = person, husListe = new List<Hus>(), antallAnnonser = 0 };
+                        _db.Eier.Add(eier); 
+                    }
+                    viewModel.hus.eier = eier;
                     
-                    var imageUrls = new List<string>();
-                    foreach (var image in bildeListe)
+                    
+                    bool OK = await husInterface.Lag(viewModel.hus);
+                    if (OK)
                     {
-                        var fileName = Path.GetFileName(image.FileName);
-                        var filePath = Path.Combine("wwwroot/Bilder", fileName); // Adjust this path as necessary
-                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        viewModel.hus.eier.husListe.Add(viewModel.hus);
+                        viewModel.hus.eier.antallAnnonser++;
+                    }
+                    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "Bilder");
+                    foreach (var file in viewModel.bilder)
+                    {
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+
+                        var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+                        // Save the file to the Bilder directory.
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
-                            await image.CopyToAsync(stream);
+                            await file.CopyToAsync(fileStream);
                         }
-                        imageUrls.Add("/Bilder/" + fileName); // Adjust this path as necessary
+
+                        // Create a new Bilder instance.
+                        var newBilde = new Bilder
+                        {
+                            bilderUrl = "/Bilder/" + uniqueFileName, 
+                            Hus = viewModel.hus 
+                        };
+
+                        _db.Bilder.Add(newBilde);
                     }
 
-                    // Assign the image URLs to the house object
-                    hus.bildeListe = imageUrls.Select(url => new Bilder { bilderUrl = url }).ToList();
+                    await _db.SaveChangesAsync();
+                    transaction.Commit();
 
-                    // Assuming your logged-in user's kontoNummer can be fetched this way
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var eier = _db.Eier.FirstOrDefault(e => e.Person.Id == userId); // Assuming you have a _dbContext with your EF context
-
-                    if (eier != null)
-                    {
-                        hus.eier = eier; // Set the house's owner to the current user
-
-                        // Now, save the house to the database using your interface
-                        await husInterface.Lag(hus);
-
-                        // If all goes well, redirect to the Kvittering view with the house object
-                        return RedirectToAction("Kvittering", hus);
-                    }
-                    else
-                    {
-                        // Handle the case where the current user is not an Eier or other issues
-                        ModelState.AddModelError("", "Current user is not a valid house owner.");
-                    }
+                    return RedirectToAction("Index","Home");
                 }
                 catch (Exception ex)
                 {
-                    // Handle the exception appropriately (log it, etc.)
-                    ModelState.AddModelError("", "An error occurred while processing your request.");
+                    transaction.Rollback();
+                    
+                    return View("ErrorView", ex);
                 }
             }
-
-            // If we get here, something went wrong. Display the error to the user.
-            return View("Error"); // You should have a view named "Error" with a proper message to the user.
         }
 
 
@@ -166,11 +180,11 @@ namespace Oblig1.Controllers
 
 
 
-
-
+        [Authorize(Roles = "Admin, Bruker")]
         public async Task<IActionResult> Kvittering(int id)
         {
-            var hus = await husInterface.hentHusMedId(id);
+            var hus = _db.Hus.Include(h => h.bildeListe).FirstOrDefault(h => h.husId == id);
+
             if (hus == null)
             {
                 return NotFound("The specified house could not be found.");
@@ -182,9 +196,8 @@ namespace Oblig1.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        
-
         public async Task<IActionResult> endreHus(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -197,6 +210,7 @@ namespace Oblig1.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> EndreBekreftet(Hus hus)
         {
@@ -240,7 +254,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet]
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Slett(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -254,7 +268,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpPost]
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SlettBekreftet(int id, int eierId)
         {
 
