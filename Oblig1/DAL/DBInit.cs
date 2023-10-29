@@ -144,22 +144,22 @@ namespace Oblig1.DAL
 
                 var bildeListe2 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic2.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic3.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic4.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic5.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg"}
 
 
 
                 };
                 var bildeListe3 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
                 new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl="/Bilder/Pic4.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic5.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic2.jpg"}
 
 
 
@@ -167,11 +167,11 @@ namespace Oblig1.DAL
 
                 var bildeListe4 = new List<Bilder>
                 {
+                new Bilder {bilderUrl= "/Bilder/Pic4.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic5.jpg"},
                 new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl="/Bilder/Pic2.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic3.jpg"}
 
 
 
@@ -179,11 +179,11 @@ namespace Oblig1.DAL
 
                 var bildeListe5 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic5.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic2.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic3.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic4.jpg"}
 
 
 
@@ -191,22 +191,22 @@ namespace Oblig1.DAL
 
                 var bildeListe6 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic7.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic2.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic3.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic4.jpg"}
 
 
 
                 };
                 var bildeListe7 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic6.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic7.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic8.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic9.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic10.jpg"}
 
 
 
@@ -214,11 +214,11 @@ namespace Oblig1.DAL
 
                 var bildeListe8 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic7.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic8.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic9.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic10.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg"}
 
 
 
@@ -226,11 +226,11 @@ namespace Oblig1.DAL
 
                 var bildeListe9 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg" },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic8.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic9.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic10.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic1.jpg" },
+                new Bilder {bilderUrl="/Bilder/Pic2.jpg"}
 
 
 
@@ -238,11 +238,11 @@ namespace Oblig1.DAL
 
                 var bildeListe10 = new List<Bilder>
                 {
-                new Bilder {bilderUrl= "/Bilder/Pic1.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic2.jpg"},
-                new Bilder {bilderUrl= "/Bilder/Pic3.jpg"},
-                new Bilder {bilderUrl="/Bilder/Pic4.jpg", },
-                new Bilder {bilderUrl="/Bilder/Pic5.jpg"}
+                new Bilder {bilderUrl= "/Bilder/Pic10.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic9.jpg"},
+                new Bilder {bilderUrl= "/Bilder/Pic8.jpg"},
+                new Bilder {bilderUrl="/Bilder/Pic7.jpg", },
+                new Bilder {bilderUrl="/Bilder/Pic6.jpg"}
 
 
 
