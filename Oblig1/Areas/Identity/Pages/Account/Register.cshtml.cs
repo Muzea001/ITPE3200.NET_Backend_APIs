@@ -117,13 +117,15 @@ namespace Oblig1.Areas.Identity.Pages.Account
             {
                 
                 var person = new Person
-                {
+                { 
                     Navn = Input.Navn,
                     UserName=Input.Email,
                     Email = Input.Email,
                     Fodselsdato = Input.Fodselsdato,
                     TelefonNmr = Input.Telefonnummer,
-                    Addresse = Input.Adresse
+                    Addresse = Input.Adresse,
+                    
+                    
                     
                 };
                 
@@ -133,6 +135,7 @@ namespace Oblig1.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(person, "Bruker");
                     await _itemDbContext.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
