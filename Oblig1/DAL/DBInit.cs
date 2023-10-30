@@ -37,12 +37,12 @@ namespace Oblig1.DAL
                     await roleManager.CreateAsync(new IdentityRole(role));
 
             }
-            string navn = "Muat";
+            string navn = "Admin";
             int telefonnummer = 40336208;
             string adresse = "Tokerudbekken 16";
             DateTime fodselsdato = DateTime.Now;
-            string email = "muat0072@gmail.com";
-            string passord = "Test1234,";
+            string email = "Admin@gmail.com";
+            string passord = "Admin123!";
             if (await userManager.FindByEmailAsync(email) == null)
             {
                 

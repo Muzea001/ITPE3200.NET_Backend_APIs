@@ -100,7 +100,8 @@ namespace Oblig1.Controllers
 
 
 
-        
+        [Authorize(Roles = "Admin, Bruker")]
+
         [HttpGet]
         public IActionResult Create()
         {
