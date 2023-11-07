@@ -12,6 +12,8 @@ using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
 {
+    [Route("api/Ordre")]
+    [ApiController]
     public class OrdreController : Controller
     {
         private readonly UserManager<Person> _userManager;    
@@ -35,6 +37,7 @@ namespace Oblig1.Controllers
             
         }
         [Authorize(Roles = "Admin")]
+        [HttpGet("Tabell")]
         public async Task<IActionResult> Tabell()
         {
 
@@ -50,7 +53,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Endre/{id}")]
         
         public async Task<IActionResult> Endre(int id)
         {
@@ -64,7 +67,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("EndreBekreftet")]
         
         public async Task<IActionResult> EndreBekreftet(Ordre ordre)
         {
@@ -107,7 +110,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin, Bruker")]
-        [HttpGet]
+        [HttpGet("lagOrdre/{id}")]
         
         public async Task <IActionResult> lagOrdre(int id) {
 
@@ -126,10 +129,10 @@ namespace Oblig1.Controllers
                 ordre = new Ordre { }
 
             };
-            return View(viewModell);
+            return Ok(viewModell);
         }
 
-        [HttpGet]
+        [HttpGet("SjekkTilgjengelighet")]
 
         public async Task<IActionResult> sjekkTilgjengelighet(int husId, DateTime startDato, DateTime sluttDato)
         {
@@ -153,7 +156,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin, Bruker")]
-        [HttpPost]
+        [HttpPost("Lag")]
         public async Task<IActionResult> Lag(DateTime startDato, DateTime sluttDato, string betaltGjennom, int husID, decimal fullPrice)
         {
             try
@@ -230,7 +233,7 @@ namespace Oblig1.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("regnFullPris")]
         public async Task<JsonResult> regnFullPris(DateTime start, DateTime slutt, decimal Pris)
         {
             
@@ -246,7 +249,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Slett/{id}")]
         public async Task<IActionResult> Slett(int id)
         {
             var ordre = await _ordreInterface.hentOrdreMedId(id);
@@ -261,7 +264,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("SlettBekreftet/{id}")]
         
         public async Task<IActionResult> SlettBekreftet(int id)
         {

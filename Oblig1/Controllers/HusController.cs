@@ -15,6 +15,9 @@ using System.Security.Claims;
 
 namespace Oblig1.Controllers
 {
+
+    [Route("api/Hus")]
+    [ApiController]
     public class HusController : Controller
     {
         private readonly ItemDbContext _db;
@@ -38,6 +41,7 @@ namespace Oblig1.Controllers
             _eierInterface = eierInterface;
         }
 
+        [HttpGet("Tabell")]
         public async Task<IActionResult> Tabell()
         {
             var liste = await husInterface.hentAlle();
@@ -50,40 +54,14 @@ namespace Oblig1.Controllers
 
 
             var itemListViewModel = new ItemListViewModel(liste, "Tabell");
-            return View(itemListViewModel);
+            return Ok(liste);
 
         }
 
-        public async Task<IActionResult> tilgjengeligHus()
-        {
-            var liste = await husInterface.hentAlle();
-            if (liste == null)
-            {
-                _HusLogger.LogError("[HusController] hus liste ikke funnet dersom hentAlle() ble kalt");
-                return NotFound("hus liste ikke funnet");
 
-            }
+        
 
-
-            var itemListViewModel = new ItemListViewModel(liste, "Grid");
-            return View(itemListViewModel);
-
-        }
-
-        public async Task<IActionResult> hentMedFilter(string by, int minstAreal, int maksAreal, int minPris, int maksPris, int minstRom, int maksRom)
-        {
-            var liste = await husInterface.hentAlleMedFilter(by, minstAreal, maksAreal, minPris, maksPris, minstRom, maksRom);
-            if (liste == null)
-            {
-                return NotFound("ingenting funnet");
-            }
-
-            var itemListViewModel = new ItemListViewModel(liste, "Tabell");
-            return View(itemListViewModel);
-
-        }
-
-        [HttpGet]
+        [HttpGet("Oversikt/{id}")]
         public async Task<IActionResult> Oversikt(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -93,7 +71,7 @@ namespace Oblig1.Controllers
                 return NotFound("hus var ikke funnet");
             }
 
-            return View(hus);
+            return Ok(hus);
 
 
         }
@@ -101,7 +79,7 @@ namespace Oblig1.Controllers
 
 
         
-        [HttpGet]
+        [HttpGet("Create")]
         public IActionResult Create()
         {
 
@@ -113,7 +91,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin, Bruker")]
-        [HttpPost]
+        [HttpPost("CreateHouseWithImages")]
         public async Task<IActionResult> CreateHouseWithImages(HusOgBilderViewModell viewModel)
         {
             using (var transaction = _db.Database.BeginTransaction())
@@ -181,6 +159,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin, Bruker")]
+        [HttpGet("Kvittering/{id}")]
         public async Task<IActionResult> Kvittering(int id)
         {
             var hus = _db.Hus.Include(h => h.bildeListe).FirstOrDefault(h => h.husId == id);
@@ -197,7 +176,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> endreHus(int id)
         {
             var hus = await husInterface.hentHusMedId(id);
@@ -211,7 +190,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("EndreBekreftet")]
         public async Task<IActionResult> EndreBekreftet(Hus hus)
         {
             if (ModelState.IsValid)
@@ -247,13 +226,12 @@ namespace Oblig1.Controllers
                 }
             }
 
-            // If you want to display the error on the same page, consider returning View with the model
-            // return View(hus);
+           
 
             return RedirectToAction(nameof(Tabell));
         }
 
-        [HttpGet]
+        [HttpGet("Slett/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Slett(int id)
         {
@@ -267,7 +245,7 @@ namespace Oblig1.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("SlettBekreftet")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SlettBekreftet(int id, int eierId)
         {

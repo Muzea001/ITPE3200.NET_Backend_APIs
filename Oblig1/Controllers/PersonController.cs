@@ -7,6 +7,8 @@ using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
 {
+    [Route("api/Person")]
+    [ApiController]
     public class PersonController : Controller
     {
    
@@ -22,6 +24,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("Tabell")]
         public async Task<IActionResult> Tabell()
             {
 
@@ -38,7 +41,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Endre/{id}")]
 
             public async Task<IActionResult> Endre(string id)
             {
@@ -52,7 +55,7 @@ namespace Oblig1.Controllers
             }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("EndreBekreftet{id}")]
         public async Task<IActionResult> EndreBekreftet(string id, Person updatedValues)
         {
             if (string.IsNullOrEmpty(id))
@@ -106,7 +109,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Slett/{id}")]
 
             public async Task<IActionResult> Slett(string id)
             {
@@ -122,7 +125,7 @@ namespace Oblig1.Controllers
             }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("SlettBekreftet")]
 
         public async Task<IActionResult> SlettBekreftet(string id)
         {

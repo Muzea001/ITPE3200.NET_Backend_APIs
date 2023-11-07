@@ -10,6 +10,8 @@ using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ItemDbContextConnection' was not found");
@@ -21,6 +23,10 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 builder.Services.AddDefaultIdentity<Person>()
     
@@ -41,6 +47,16 @@ builder.Services.AddScoped<OrdreInterface, OrdreRepo>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAllowSpecificOrigins", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") 
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
 
 
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
@@ -66,9 +82,19 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
     DBInit.Seed(app).Wait();
 }
+
+
+app.UseRouting();
+
+
+app.UseCors("MyAllowSpecificOrigins");
+
+
 
 app.UseStaticFiles();
 
@@ -79,11 +105,19 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
- 
-app.MapDefaultControllerRoute();
+app.UseEndpoints(endpoints =>
+    {
+
+        endpoints.MapControllers();
+        endpoints.MapRazorPages();
+
+        endpoints.MapDefaultControllerRoute();
+    });
+
+
 
 
 app.Run();
+
 
 

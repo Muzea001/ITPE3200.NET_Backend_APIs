@@ -8,6 +8,7 @@ using Oblig1.ViewModeller;
 namespace Oblig1.Controllers
 
 {
+    
     public class HomeController : Controller
         
     {

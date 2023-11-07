@@ -6,6 +6,8 @@ using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
 {
+    [Route("api/Kunde")]
+    [ApiController]
     public class KundeController : Controller
     {
         private readonly ILogger _Brukerlogger;
@@ -18,7 +20,7 @@ namespace Oblig1.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("Tabell")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Tabell()
         {
@@ -34,7 +36,7 @@ namespace Oblig1.Controllers
             return View(itemListViewModel);
         }
 
-        [HttpGet]
+        [HttpGet("hentMin/{id}")]
         public async Task<IActionResult> hentMin(int id) { 
         var kunde = await _kundeInterface.hentKundeMedId(id);
             if (kunde== null)
@@ -46,7 +48,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Endre/{id}")]
         public async Task<IActionResult> Endre(int id)
         {
             var kunde = await _kundeInterface.hentKundeMedId(id);
@@ -61,7 +63,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("EndreBekreftet")]
         public async Task<IActionResult> EndreBekreftet(Kunde kunde)
         {
 
@@ -100,7 +102,7 @@ namespace Oblig1.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("Lag")]
         
         public IActionResult Lag()
         {
@@ -111,7 +113,7 @@ namespace Oblig1.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Lag")]
        
         public async Task<IActionResult> Lag(Kunde kunde)
         {
@@ -130,7 +132,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Slett/{id}")]
         public async Task<IActionResult> Slett(int id)
         {
             var kunde = await _kundeInterface.hentKundeMedId(id);
@@ -145,7 +147,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("SlettBekreftet")]
         public async Task<IActionResult> SlettBekreftet(int id)
         {
             bool OK = await _kundeInterface.SlettKunde(id);

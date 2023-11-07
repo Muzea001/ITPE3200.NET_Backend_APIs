@@ -9,6 +9,8 @@ using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
 {
+    [Route("api/Eier")]
+    [ApiController]
 
     public class EierController : Controller
     {
@@ -24,6 +26,7 @@ namespace Oblig1.Controllers
             _eierInterface = eierInterface;
         }
 
+        [HttpGet("Tabell")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Tabell()
         {
@@ -40,7 +43,7 @@ namespace Oblig1.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Endre/{id}")]
 
         public async Task<IActionResult> Endre(long id)
         {
@@ -54,7 +57,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("EndreBekreftet")]
 
         public async Task<IActionResult> EndreBekreftet(Eier eier)
         {
@@ -91,7 +94,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("Slett/{id}")]
         public async Task<IActionResult> Slett(long id)
         {
             var eier = await _eierInterface.hentEierMedId(id);
@@ -106,7 +109,7 @@ namespace Oblig1.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("SlettBekreftet")]
 
         public async Task<IActionResult> SlettBekreftet(long id)
         {
