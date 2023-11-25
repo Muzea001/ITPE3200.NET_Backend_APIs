@@ -41,7 +41,9 @@ namespace Oblig1.DAL
 
             try
             {
-                return await _db.Person.FindAsync(id);
+                var person = await _db.Person
+            .FirstOrDefaultAsync(k => k.Email == id); 
+                return person;
 
             }
             catch (Exception ex)

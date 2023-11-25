@@ -1,0 +1,100 @@
+﻿@model Oblig1.Controllers.MyViewModel
+
+<h2>Create Order</h2>
+
+<form asp-controller="Ordre" asp-action="Lag" method="post">
+    <input type="hidden" name="husID" value="@Model.hus.husId" />
+    <div class="form-group">
+        <label for="betaltgjennom">Payment Method</label><span class="text-danger">*</span>
+        <input type="text" id="betaltgjennom" name="betaltgjennom" class="form-control" />
+        <span asp-validation-for="@Model.ordre.betaltGjennom" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="startDato">Start Date</label><span class="text-danger">*</span>
+        <input type="datetime-local" id="startDato" name="startDato" class="form-control" />
+        <span asp-validation-for="@Model.ordre.startDato" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="sluttDato">End Date</label><span class="text-danger">*</span>
+        <input type="datetime-local" id="sluttDato" name="sluttDato" class="form-control" />
+        <span asp-validation-for="@Model.ordre.sluttDato" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label id="availabilityLabel"></label>
+    </div>
+
+    <div class="form-group">
+        <label for="Pris">House Price</label>
+        <input type="text" id="Pris" value="@Model.hus.Pris" class="form-control" readonly />
+        <span asp-validation-for="@Model.ordre.hus.Pris" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="fullPrice">Full Price</label>
+        <input type="text" id="fullPrice" name="fullPrice" class="form-control" readonly />
+        <span asp-validation-for="@Model.ordre.fullPris" class="text-danger"></span>
+    </div>
+
+
+
+    <button onclick="submitFormIfAvailable()" class="btn btn-primary" id="submitButton" style="display: none;">Create</button>
+
+
+    <a asp-controller="Ordre"
+       asp-action="Tabell"
+       class="btn btn-secondary">
+        Back to Table View
+    </a>
+</form>
+
+
+
+@section Scripts {
+    <script>
+
+        function updateFullPrice() {
+            const startDato = document.getElementById('startDato').value;
+            const sluttDato = document.getElementById('sluttDato').value;
+            const housePrice = document.getElementById('Pris').value;
+
+            if (startDato && sluttDato) {
+                fetch(`/Ordre/regnFullPris?start=${startDato}&slutt=${sluttDato}&Pris=${housePrice}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('fullPrice').value = data;
+                    });
+
+
+            }
+        }
+
+        function checkAvailability() {
+            const startDato = document.getElementById('startDato').value;
+            const sluttDato = document.getElementById('sluttDato').value;
+            const husId = '@Model.hus.husId';
+
+            if (startDato && sluttDato) {
+                fetch(`/Ordre/sjekkTilgjengelighet?husId=${husId}&startDato=${startDato}&sluttDato=${sluttDato}`)
+                    .then(response => response.json())
+                    .then(isAvailable => {
+                        const availabilityLabel = document.getElementById('availabilityLabel');
+                        if (isAvailable) {
+                            availabilityLabel.textContent = "Date is available";
+                            document.getElementById('submitButton').style.display = "block";
+                        } else {
+                            availabilityLabel.textContent = "Date unavailable";
+                            document.getElementById('submitButton').style.display="none"
+                        }
+                    });
+            }
+        }
+        document.getElementById('startDato').addEventListener('change', checkAvailability);
+        document.getElementById('sluttDato').addEventListener('change', checkAvailability);
+        document.getElementById('startDato').addEventListener('change', updateFullPrice);
+        document.getElementById('sluttDato').addEventListener('change', updateFullPrice);
+
+
+
+    </script>
+}

@@ -1,0 +1,34 @@
+﻿@model Oblig1.Models.Hus
+
+
+
+<div class="col">
+    <div>
+       
+        <img src="@Model.bildeListe[0].bilderUrl" alt="Item Image" class=" = item-image" />
+        <div>
+            <div class="d-flex justify-content-between mt-2">
+                <h6 class="text-start">
+                    @Model.Addresse
+                    @Model.by
+                    @Model.Pris.ToString("0.00 NOK")
+                </h6>
+            </div>
+            <button type="button" class="btn btn-info">
+                <a asp-controller="Hus"
+                   asp-action="Oversikt"
+                   asp-route-id="@Model.husId">
+                    More
+                </a>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.item-image {
+    max-width: 300px;
+    max-height: 200px;
+}
+</style>

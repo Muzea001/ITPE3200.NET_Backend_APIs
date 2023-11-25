@@ -1,0 +1,30 @@
+﻿@model Oblig1.Models.Hus
+@{
+    ViewBag.Title = "Kvittering";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Receipt</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>House ID: </strong>@Model.husId</p>
+            <p><strong>Description: </strong>@Model.Beskrivelse</p>
+            <p><strong>Area: </strong>@Model.areal</p>
+            <p><strong>Price: </strong>@Model.Pris NOK</p>
+            <p><strong>City: </strong>@Model.by</p>
+            <p><strong>Address: </strong>@Model.Addresse</p>
+            <p><strong>Number of Rooms: </strong>@Model.romAntall</p>
+            <p><strong>Parking: </strong>@Model.harParkering</p>
+            <p><strong>Furnished: </strong>@Model.erMoblert</p>
+            <p><strong>Owner: </strong>@Model.eier.Person.Navn</p>
+            <p><strong>Acount number: </strong>@Model.eier.kontoNummer</p>
+            <p><strong>Images </strong>@Model.bildeListe[0]</p>
+           
+        </div>
+        <div class="card-footer">
+            Your house has been added. 
+        </div>
+    </div>
+</div>

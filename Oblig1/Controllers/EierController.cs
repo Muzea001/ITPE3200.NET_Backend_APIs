@@ -41,6 +41,19 @@ namespace Oblig1.Controllers
             return View(ItemListViewModel);
         }
 
+        [HttpGet("hentMin/{id}")]
+        public async Task<IActionResult> hentMin(string id)
+        {
+
+            var eier = await _eierInterface.hentEierMedPersonId(id);
+            if (eier == null)
+            {
+                _EierLogger.LogError("[EierKontroller] Eier ikke funnet for denne iden" + id);
+                return NotFound("Eier ikke funnet");
+            }
+            return View(eier);
+        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("Endre/{id}")]

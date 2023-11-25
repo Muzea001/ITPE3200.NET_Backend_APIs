@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Oblig1.DAL;
 using Oblig1.Models;
+using Oblig1.Services;
 using Oblig1.ViewModeller;
 
 namespace Oblig1.Controllers
@@ -12,9 +13,11 @@ namespace Oblig1.Controllers
     {
         private readonly ILogger _Brukerlogger;
         private readonly KundeInterface _kundeInterface;
+        private readonly PersonInterface _personInterface;
 
-        public KundeController(KundeInterface Interface, ILogger<KundeController> logger)
+        public KundeController(KundeInterface Interface, ILogger<KundeController> logger, PersonInterface personInterface)
         {
+            _personInterface = personInterface;
             _kundeInterface = Interface;
             _Brukerlogger = logger;
         }
@@ -37,8 +40,9 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet("hentMin/{id}")]
-        public async Task<IActionResult> hentMin(int id) { 
-        var kunde = await _kundeInterface.hentKundeMedId(id);
+        public async Task<IActionResult> hentMin(string id) { 
+        
+        var kunde = await _kundeInterface.hentKundeMedPersonId(id);
             if (kunde== null)
             {
                 _Brukerlogger.LogError("[KundeKontroller] Kunde ikke funnet for denne iden" + id);

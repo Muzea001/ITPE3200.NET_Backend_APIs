@@ -22,10 +22,11 @@ namespace Oblig1.Controllers
         private readonly Kvittering _kvittering;
         private readonly HusInterface _husInterface;
         private readonly KundeInterface _kunderinterface;
+        private readonly PersonInterface _personInterface;
         private readonly ItemDbContext _db;
         
 
-        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, Kvittering kvittering, ItemDbContext dbContext, KundeInterface kundeInterface, UserManager<Person> userManager)
+        public OrdreController(OrdreInterface ordreinterface, ILogger<OrdreController> logger, HusInterface husInterface, PersonInterface personInterface, Kvittering kvittering, ItemDbContext dbContext, KundeInterface kundeInterface, UserManager<Person> userManager)
         {
             _userManager = userManager;
             _ordreInterface = ordreinterface;
@@ -34,6 +35,7 @@ namespace Oblig1.Controllers
             _kvittering = kvittering;
             _kunderinterface = kundeInterface;
             _db = dbContext;
+            _personInterface = personInterface;
             
         }
         [Authorize(Roles = "Admin")]
@@ -51,6 +53,26 @@ namespace Oblig1.Controllers
             var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
             return View(ItemListViewModel);
         }
+
+
+       
+        [HttpGet("HentMine/{id}")]
+        public async Task <IActionResult> HentMine(string id)
+        {
+
+            var Ordre = await _ordreInterface.HentMine(id);
+            if (Ordre == null)
+            {
+                _Ordrelogger.LogError("[OrdreController] ordre liste ikke funnet for denne iden" + id);
+                return NotFound();
+            }
+
+            return Ok(Ordre);
+
+
+
+        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("Endre/{id}")]
@@ -112,24 +134,15 @@ namespace Oblig1.Controllers
         [Authorize(Roles = "Admin, Bruker")]
         [HttpGet("lagOrdre/{id}")]
         
-        public async Task <IActionResult> lagOrdre(int id) {
-
-            var brukerId = _userManager.GetUserId(User);
-            var bruker = await _userManager.FindByIdAsync(brukerId);
-            var kunde = await _kunderinterface.finnKundeId(brukerId);
+        public async Task <IActionResult> lagOrdre(int id, string brukerId) {
+            
+            var kunde = await _kunderinterface.hentKundeMedPersonId(brukerId);
             var hus = await _husInterface.hentHusMedId(id);
-            if (hus == null || bruker==null) {
+            if (hus == null || kunde==null) {
                 return RedirectToAction("Error");
           }
-            var viewModell = new MyViewModel
-            {
-                hus = hus,
-                kunde = kunde,
-                Person = bruker,
-                ordre = new Ordre { }
-
-            };
-            return Ok(viewModell);
+           
+            return Ok();
         }
 
         [HttpGet("SjekkTilgjengelighet")]

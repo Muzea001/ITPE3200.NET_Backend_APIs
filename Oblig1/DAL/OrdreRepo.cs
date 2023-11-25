@@ -32,13 +32,18 @@ namespace Oblig1.DAL
             }
 
         }
-        public async Task<IEnumerable<Ordre>?> HentMine(int kundeID)
+        public async Task<IEnumerable<Ordre>?> HentMine(string email)
         {
             try
+
             {
-                return await _db.Ordre
-                               
-                                .ToListAsync();
+                var person = await _db.Person.FirstOrDefaultAsync(k => k.Email == email);
+                var kunde = await _db.Kunde
+                    .Include(k => k.Person)
+                    .FirstOrDefaultAsync(k => k.Person.Id == person.Id);
+                var Liste = await _db.Ordre.Where(h => h.kunde.kundeID == kunde.kundeID).ToListAsync();
+
+                return Liste;
             }
             catch (Exception ex)
             {

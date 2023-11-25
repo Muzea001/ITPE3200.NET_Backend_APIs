@@ -48,11 +48,30 @@ namespace Oblig1.Controllers
                 var Person = await _personInterface.hentPersonMedId(id);
                 if (Person == null)
                 {
-                    _Personlogger.LogError("[OrdreKontroller] Ordre ikke funnet for denne iden" + id);
-                    return NotFound("Ordre ikke funnet");
+                    _Personlogger.LogError("[PersonController] Person ikke funnet for denne iden" + id);
+                    return NotFound("Person ikke funnet");
                 }
                 return View(Person);
             }
+
+
+        [Authorize(Roles ="Bruker")]
+        [HttpGet("Hent/{id}")]
+
+        public async Task<IActionResult> Hent(string id)
+        {
+
+            var Person = await _personInterface.hentPersonMedId(id);
+            if (Person == null)
+            {
+                _Personlogger.LogError("[PersonController] Person ikke funnet for denne iden" + id);
+                return NotFound("Person ikke funnet");
+            }
+            return Ok(Person);
+
+
+
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("EndreBekreftet{id}")]

@@ -1,0 +1,32 @@
+﻿@model Oblig1.Models.Ordre
+@{
+    ViewBag.Title = "Kvittering";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4>Receipt</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>House ID: </strong>@Model.hus.husId</p>
+            <p><strong>Description: </strong>@Model.hus.Beskrivelse</p>
+            <p><strong>Area: </strong>@Model.hus.areal</p>
+            <p><strong>Price: </strong>@Model.hus.Pris NOK</p>
+            <p><strong>City: </strong>@Model.hus.by</p>
+            <p><strong>Address: </strong>@Model.hus.Addresse</p>
+            <p><strong>Number of Rooms: </strong>@Model.hus.romAntall</p>
+            <p><strong>Parking: </strong>@Model.hus.harParkering</p>
+            <p><strong>Furnished: </strong>@Model.hus.erMoblert</p>
+            <p><strong>Owner: </strong>@Model.hus.eier.Person.Navn</p>
+            <p><strong>Acount number: </strong>@Model.hus.eier.kontoNummer</p>
+            <p><strong>Start date: </strong>@Model.startDato</p>
+            <p><strong>End Date: </strong>@Model.sluttDato</p>
+            <p><strong>Payment methode: </strong>@Model.betaltGjennom</p>
+            <p><strong>Sum Payed </strong>@Model.fullPris</p>
+        </div>
+        <div class="card-footer">
+            Thank you for your purchase!
+        </div>
+    </div>
+</div>

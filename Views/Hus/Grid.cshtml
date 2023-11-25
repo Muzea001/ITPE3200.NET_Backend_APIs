@@ -1,0 +1,11 @@
+﻿@model Oblig1.ViewModeller.ItemListViewModel
+
+<h1>Welcome</h1>
+<a href="/Item/Table">Table View</a>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model.Hus)
+    {
+        <partial name="_ItemCard" model="item" />
+    }
+</div>

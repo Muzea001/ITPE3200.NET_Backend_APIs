@@ -1,0 +1,63 @@
+﻿@model Oblig1.Models.Ordre
+
+<h2>Update The Order</h2>
+
+<form asp-action="EndreBekreftet" method="post">
+    <input type="hidden" asp-for="ordreId" />
+  
+    <input type="hidden" asp-for="kunde.Person.TelefonNmr" />
+    <input type="hidden" asp-for="kunde.Person.Addresse" />
+    <input type="hidden" asp-for="kunde.Person.Email" />
+    <input type="hidden" asp-for="kunde.Person.Fodselsdato" />
+    <input type="hidden" asp-for="kunde.Person.Navn" />
+    <input type="hidden" asp-for="kunde.Person" />
+    <input type="hidden" asp-for="hus.Addresse" />
+    <input type="hidden" asp-for="hus.areal" />
+    <input type="hidden" asp-for="hus.Beskrivelse" />
+    <input type="hidden" asp-for="hus.bildeListe" />
+    <input type="hidden" asp-for="hus.by" />
+    <input type="hidden" asp-for="hus.eier" />
+    <input type="hidden" asp-for="hus.erMoblert" />
+    <input type="hidden" asp-for="hus.harParkering" />
+    <input type="hidden" asp-for="hus.ordreListe" />
+    <input type="hidden" asp-for="hus.Pris" />
+    <input type="hidden" asp-for="hus.romAntall" />
+    <input type="hidden" asp-for="kunde.husListe" />
+    <input type="hidden" asp-for="kunde.ordreListe" />
+    <input type="hidden" asp-for="hus.eier.antallAnnonser" />
+    <input type="hidden" asp-for="hus.eier.husListe" />
+    <input type="hidden" asp-for="hus.eier.kontoNummer" />
+    <input type="hidden" asp-for="hus.eier.Person.Addresse" />
+    <input type="hidden" asp-for="hus.eier.Person.Email" />
+    <input type="hidden" asp-for="hus.eier.Person.Fodselsdato" />
+    <input type="hidden" asp-for="hus.eier.Person.Navn" />
+    <input type="hidden" asp-for="hus.eier.Person" />
+    <input type="hidden" asp-for="hus.eier.Person.TelefonNmr" />
+    
+
+
+
+
+
+    <div class="form-group">
+        <label asp-for="betaltGjennom"> Payment method </label><span class="text-danger">*</span>
+        <input asp-for="betaltGjennom" class="form-control" />
+        <span asp-validation-for="betaltGjennom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="startDato"> Date </label><span class="text-danger">*</span>
+        <input asp-for="startDato" class="form-control" />
+        <span asp-validation-for="startDato" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="sluttDato"> Date </label><span class="text-danger">*</span>
+        <input asp-for="sluttDato" class="form-control" />
+        <span asp-validation-for="sluttDato" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Abort</a>
+
+</form>

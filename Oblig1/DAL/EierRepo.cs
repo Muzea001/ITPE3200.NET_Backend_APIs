@@ -102,5 +102,15 @@ namespace Oblig1.DAL
 
         }
 
+        public async Task<Eier> hentEierMedPersonId(string personId)
+        {
+
+            var eier = await _db.Eier
+                .Include(k => k.Person)
+                .FirstOrDefaultAsync(k => k.Person.Id == personId);
+
+            return eier;
+        }
+
     }
 }

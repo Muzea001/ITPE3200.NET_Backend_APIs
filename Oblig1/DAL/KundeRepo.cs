@@ -127,11 +127,16 @@ namespace Oblig1.DAL
                 return -1;
             }
         }
-    
 
-    public async Task<Kunde> finnKundeId(string id)
+
+        public async Task<Kunde> hentKundeMedPersonId(string personId)
         {
-            return await _db.Kunde.FirstOrDefaultAsync(k => k.Person.Id == id);
+            
+            var kunde = await _db.Kunde
+                .Include(k => k.Person)
+                .FirstOrDefaultAsync(k => k.Person.Id == personId);
+
+            return kunde;
         }
     }
 }

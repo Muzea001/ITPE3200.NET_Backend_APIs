@@ -1,0 +1,72 @@
+﻿@model Oblig1.Controllers.HusOgBilderViewModell
+<h2>Add a New House</h2>
+
+<form asp-controller="Hus" asp-action="CreateHouseWithImages" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Beskrivelse">Description</label>
+        <input asp-for="hus.Beskrivelse" class="form-control"  class="form-control" required/>
+        <span asp-validation-for="hus.Beskrivelse" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="areal">Area</label>
+        <input asp-for="hus.areal" class="form-control" class="form-control" required/>
+        <span asp-validation-for="hus.areal" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Pris">Price</label>
+        <input asp-for="hus.Pris" class="form-control" class="form-control" required />
+        <span asp-validation-for="hus.Pris" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="by">City</label>
+        <input asp-for="hus.by" class="form-control" class="form-control" required/>
+        <span asp-validation-for="hus.by" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Addresse">Address</label>
+        <input asp-for="hus.Addresse" class="form-control" class="form-control" required />
+        <span asp-validation-for="hus.Addresse" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="romAntall">Number of Rooms</label>
+        <input asp-for="hus.romAntall" class="form-control" class="form-control" required >
+        <span asp-validation-for="hus.romAntall" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="harParkering">Has Parking</label>
+        <input asp-for="hus.harParkering" type="checkbox" />
+    </div>
+
+    <div class="form-group">
+        <label for="erMoblert">Is Furnished</label>
+        <input asp-for="hus.erMoblert" type="checkbox" />
+    </div>
+
+ 
+    <div class="form-group">
+        <label for="eier.kontoNummer">Owner Account Number </label>
+        <input asp-for="hus.eier.kontoNummer" class="form-control" class="form-control" required  />
+        <span asp-validation-for="hus.eier.kontoNummer" class="text-danger"></span>
+    </div>
+
+    <label for="Images">Select Images:</label>
+    <input type="file" asp-for="bilder" multiple /><br />
+    <label for="Images">Select Images:</label>
+    <input type="file" asp-for="bilder" multiple /><br />
+    <label for="Images">Select Images:</label>
+    <input type="file" asp-for="bilder" multiple /><br />
+    <label for="Images">Select Images:</label>
+    <input type="file" asp-for="bilder" multiple /><br />
+    <label for="Images">Select Images:</label>
+    <input type="file" asp-for="bilder" multiple /><br />
+
+
+
+    <button type="submit" class="btn btn-primary">Create House and Upload Images</button>
+</form>

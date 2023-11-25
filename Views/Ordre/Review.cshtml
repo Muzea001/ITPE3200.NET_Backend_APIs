@@ -1,0 +1,22 @@
+﻿@model Oblig1.Models.Ordre
+
+<h3>Order review</h3>
+<div class="d-flex gx-5">
+    <div class="item-card">
+        <img alt="@Model.hus.bildeListe[0].bilderUrl" src="@Model.hus.bildeListe[0].bilderUrl" class="img-fluid" style="max-width: 300px; max-height: 200px;" />
+        <div class="card-body">
+            <h5 class="card-title">House Details</h5>
+            <p class="card-text">Owner: <span class="text-muted">@Model.kunde.Person.Navn</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.Addresse</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.areal.</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.kunde.Person.Email</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.kunde.Person.Fodselsdato</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.kunde.Person.TelefonNmr</span></p>
+            <p class="card-text">Areal: <span class="text-muted">@Model.hus.Pris</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.by</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.eier.</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.erMoblert</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.harParkering</span></p>
+            <p class="card-text">City: <span class="text-muted">@Model.hus.romAntall</span></p>
+        </div>
+    </div>

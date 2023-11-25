@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Oblig1.Models.Eier>
+<h1>List of Owners</h1>
+
+@foreach (var eier in Model)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <div class="container">
+            <h5>Owner @eier.Person.Navn </h5>
+            <div>
+                <table class='table table-striped' style='max-width: 1200px;'>
+                    <tr class="table-header">
+                        <th>Person Id</th>
+                        <th>Name</th>
+                        <th>Account Number</th>
+                        <th>Amount of Listings : </th>
+                        <th>Houses : </th>
+
+                    </tr>
+                    <tr>
+                        <td>@eier.Person.Id</td>
+                        <td>@eier.Person.Navn</td>
+                        <td>@eier.kontoNummer</td>
+                        <td>@eier.antallAnnonser</td>
+                        <td>
+                            @if (eier.husListe != null && eier.husListe.Any())
+                            {
+                                @string.Join(", ", eier.husListe.Select(hus => $"Hus{hus.husId}"))
+                            }
+                            else
+                            {
+                                <text>Ingen Hus knyttet</text>
+                            }
+                        </td>
+
+                    </tr>
+                </table>
+                <span>
+                    <a class="btn btn-success" asp-controller="Eier" asp-action="Endre" asp-route-id="@eier.kontoNummer"> Update</a>
+                </span>
+                <span>
+                    <a class="btn btn-danger" asp-controller="Eier" asp-action="Slett" asp-route-id="@eier.kontoNummer">Delete</a>
+                </span>
+            </div>
+        </div>
+    </div>
+}

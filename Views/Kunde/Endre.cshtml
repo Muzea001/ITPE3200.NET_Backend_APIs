@@ -1,0 +1,46 @@
+﻿@model Oblig1.Models.Kunde
+
+
+
+<h2>Oppdater Kunde</h2>
+
+<form asp-action="EndreBekreftet">
+    <input type="hidden" asp-for="kundeID" />
+    <input type="hidden" asp-for="Person.TelefonNmr" />
+    <input type="hidden" asp-for="Person.Addresse" />
+    <input type="hidden" asp-for="Person.Email" />
+    <input type="hidden" asp-for="Person.Fodselsdato" />
+    <input type="hidden" asp-for="Person.Navn" />
+    <input type="hidden" asp-for="Person" />
+    <input type="hidden" asp-for="husListe" />
+    <input type="hidden" asp-for="ordreListe" />
+
+    <div class="form-group">
+        <label asp-for="Person.Navn"></label><span class="text-danger">*</span>
+        <input asp-for="Person.Navn" class="form-control" />
+        <span asp-validation-for="Person.Navn" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Person.Fodselsdato"></label><span class="text-danger">*</span>
+        <input asp-for="Person.Fodselsdato" class="form-control" />
+        <span asp-validation-for="Person.Fodselsdato" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Person.Addresse"></label>
+        <input asp-for="Person.Addresse" class="form-control" />
+        <span asp-validation-for="Person.Addresse" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Person.TelefonNmr"></label>
+        <input type="tel" asp-for="Person.TelefonNmr" class="form-control" />
+        <span asp-validation-for="Person.TelefonNmr" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Person.Email"></label>
+        <input type="email" asp-for="Person.Email" class="form-control" />
+        <span asp-validation-for="Person.Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lagre endringer</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+</form>

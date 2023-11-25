@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Oblig1.Models.Kunde>
+
+<div class="container">
+    <table class='table table-striped'>
+        <tr>
+            <th>kundeID</th>
+            <th>Ordre</th>
+            <th>Hus</th>
+            <th>Actions</th>
+
+        </tr>
+        @foreach (var kunde in @Model)
+        {
+            <tr>
+                <td>@kunde.kundeID</td>
+                <td>
+                    @if (kunde.ordreListe != null && kunde.ordreListe.Any())
+                    {
+                        @string.Join(", ", kunde.ordreListe.Select(ordre => $"Order{ordre.ordreId}"))
+                    }
+                    else
+                    {
+                        <text>Ingen Ordre knyttet</text>
+                    }
+                </td>
+                <td>
+                    @if (kunde.husListe != null && kunde.husListe.Any())
+                    {
+                        @string.Join(", ", kunde.husListe.Select(hus => $"Hus{hus.husId}"))
+                    }
+                    else
+                    {
+                        <text>Ingen Hus knyttet</text>
+                    }
+                </td>
+                
+                <td>
+                    <span>
+                        <a class="btn btn-danger" asp-controller="Kunde" asp-action="Slett" asp-route-id="@kunde.kundeID">Delete</a>
+                    </span>
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

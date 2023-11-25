@@ -23,6 +23,7 @@ using Oblig1.Models;
 
 namespace Oblig1.Areas.Identity.Pages.Account
 {
+
     public class RegisterModel : PageModel
     {
         private readonly ItemDbContext _itemDbContext;

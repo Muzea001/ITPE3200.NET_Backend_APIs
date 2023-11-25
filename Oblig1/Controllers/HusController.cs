@@ -53,13 +53,31 @@ namespace Oblig1.Controllers
             }
 
 
-            var itemListViewModel = new ItemListViewModel(liste, "Tabell");
+            
             return Ok(liste);
 
         }
 
+       
+        [HttpGet("HentMine/{email}")]
+        public async Task<IActionResult> HentMine(string email)
+        {
 
-        
+            var Hus = await husInterface.hentMine(email);
+            if (Hus == null)
+            {
+                _HusLogger.LogError("[OrdreController] ordre liste ikke funnet for denne iden" + email);
+                return NotFound();
+            }
+
+            return Ok(Hus);
+
+
+
+        }
+
+
+
 
         [HttpGet("Oversikt/{id}")]
         public async Task<IActionResult> Oversikt(int id)

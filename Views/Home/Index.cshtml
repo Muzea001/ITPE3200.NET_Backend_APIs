@@ -1,0 +1,13 @@
+﻿@model Oblig1.ViewModeller.ItemListViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model.Hus)
+    {
+        <partial name="_husKort" model="item" />
+    }
+</div>

@@ -1,0 +1,102 @@
+﻿@model Oblig1.Models.Hus
+
+<h2>Update The House</h2>
+
+
+<form asp-action="endreBekreftet" method="post">
+    <input type="hidden" asp-for="husId" />
+    <input type="hidden" asp-for="eier.Person.Id" />
+    <input type="hidden" asp-for="eier.kontoNummer" />
+    <input type="hidden" asp-for="eier.husListe" />
+    <input type="hidden" asp-for="eier.antallAnnonser" />
+    <input type="hidden" asp-for="ordreListe" />
+
+
+
+    <div class="form-group">
+        <label asp-for="eier.Person.TelefonNmr"> Owner Tel </label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.TelefonNmr" class="form-control" />
+        <span asp-validation-for="eier.Person.TelefonNmr" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Navn">Owner name</label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Navn" class="form-control" />
+        <span asp-validation-for="eier.Person.Navn" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Fodselsdato">Owner birthday</label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Fodselsdato" class="form-control" />
+        <span asp-validation-for="eier.Person.Fodselsdato" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Email">Owner e-mail</label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Email" class="form-control" />
+        <span asp-validation-for="eier.Person.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.Person.Addresse">Owner address</label><span class="text-danger">*</span>
+        <input asp-for="eier.Person.Addresse" class="form-control" />
+        <span asp-validation-for="eier.Person.Addresse" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Addresse">House address</label><span class="text-danger">*</span>
+        <input asp-for="Addresse" class="form-control" />
+        <span asp-validation-for="Addresse" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="eier.kontoNummer">Owner account No.</label><span class="text-danger">*</span>
+        <input asp-for="eier.kontoNummer" class="form-control" />
+        <span asp-validation-for="eier.kontoNummer" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="by">City</label><span class="text-danger">*</span>
+        <input asp-for="by" class="form-control" />
+        <span asp-validation-for="by" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="areal">Area</label>
+        <input asp-for="areal" class="form-control" />
+        <span asp-validation-for="areal" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Pris">Price</label>
+        <input asp-for="Pris" class="form-control" />
+        <span asp-validation-for="Pris" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="romAntall">Room No.</label>
+        <input asp-for="romAntall" class="form-control" />
+        <span asp-validation-for="romAntall" class="text-danger"></span>
+    </div>
+    <label for="harparkering">Parking:</label>
+    <select class="form-control" asp-for="harParkering">
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+    </select>
+    <label for="erMoblert">furniture:</label>
+    <select class="form-control" asp-for="erMoblert">
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+    </select>
+    <div class="form-group">
+        <label for="Beskrivelse">House describtion:</label>
+        <textarea class="form-control" asp-for="Beskrivelse" rows="5" required></textarea>
+    </div>
+
+    @for (int i = 0; i < Model.bildeListe.Count; i++)
+    {
+        <input type="text" name="bildeListe[@i].bildeUrl" class="form-control" value="@Model.bildeListe[i].bilderUrl" />
+
+    }
+    <button type="submit" class="btn btn-success">Update</button>
+    <a asp-action="Tabell" class="btn btn-secondary">Cancel</a>
+</form>
+
+

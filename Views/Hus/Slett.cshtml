@@ -1,0 +1,50 @@
+﻿@model Oblig1.Models.Hus
+<h3>Are you sure you want to delet this house!</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Hus Id</dt>
+        <dd class="col-sm-10">@Model.husId</dd>
+
+        <dt class="col-sm-2">Adress</dt>
+        <dd class="col-sm-10">@Model.Addresse</dd>
+
+        <dt class="col-sm-2">City</dt>
+        <dd class="col-sm-10">@Model.by</dd>
+
+        <dt class="col-sm-2">Areal</dt>
+        <dd class="col-sm-10">@Model.areal</dd>
+
+        <dt class="col-sm-2">Price</dt>
+        <dd class="col-sm-10">@Model.Pris</dd>
+
+        <dt class="col-sm-2">Eier Kontonummer</dt>
+        <dd class="col-sm-10">@Model.eier.kontoNummer</dd>
+
+        <dt class="col-sm-2">Number of Rooms</dt>
+        <dd class="col-sm-10">@Model.romAntall</dd>
+
+        <dt class="col-sm-2">Parking:</dt>
+        <dd class="col-sm-10">@Model.harParkering</dd>
+
+        <dt class="col-sm-2">furnished:</dt>
+        <dd class="col-sm-10">@Model.erMoblert</dd>
+
+        <dt class="col-sm-2">Discription</dt>
+        <dd class="col-sm-10">@Model.Beskrivelse</dd>
+
+        <dt class="col-sm-2">Bilder </dt>
+        <dd>@foreach (var bilde in Model.bildeListe)
+        {
+            <img src="@bilde.bilderUrl" alt="Hus bilder" class="img-fluid" style="max-width: 300px; max-height: 200px;" />
+        }
+        </dd>
+
+
+    </dl>
+
+    <form asp-action="SlettBekreftet" asp-route-id="@Model.husId" asp-route-eierId="@Model.eier.kontoNummer" method="post">
+        <button type="submit" class="btn btn-danger">Slett</button>
+        <a asp-controller="Hus" asp-action="Tabell" class="btn btn-secondary">Avbryt</a>
+    </form>
+</div>

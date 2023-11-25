@@ -13,6 +13,7 @@ namespace Oblig1.Services
 
          Task<bool> SlettEier(long id);
 
+        Task<Eier> hentEierMedPersonId(string personId);
 
     }
 }

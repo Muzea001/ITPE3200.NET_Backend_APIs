@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Oblig1.Models.Hus>
+
+<div class="container">
+    <table class='table table-striped'>
+        <tr>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Pris.ToString("0.00 NOK")</td>
+                <td>@item.Beskrivelse</td>
+                <td>
+                    <img src="@item.bildeListe[0].bilderUrl" alt="Item Image" style="max-width: 80px; max-height: 80px;" />
+                </td>
+                <td>
+
+                    <span>
+                        <a class="btn btn-success" asp-controller="Hus" asp-action="endreHus" asp-route-id="@item.husId"> Update</a>
+                    </span>
+                    <span>
+                        <a class="btn btn-danger" asp-controller="Hus" asp-action="Slett" asp-route-id="@item.husId">Delete</a>
+                    </span>
+                 </td>
+            </tr>
+        }
+    </table>
+    <p>
+        <a class="btn btn-secondary"
+           asp-controller="Hus"
+           asp-action="Create">Create new house</a>
+    </p>
+</div>
