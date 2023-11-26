@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Oblig1.Models;
+using System;
 
 namespace Oblig1.DAL
 {
@@ -136,6 +137,20 @@ namespace Oblig1.DAL
                 .Include(k => k.Person)
                 .FirstOrDefaultAsync(k => k.Person.Id == personId);
 
+            return kunde;
+        }
+
+        public async Task<Kunde> hentKundeId(string personId)
+        {
+            var person = await _db.Person.FindAsync(personId);
+            var kunde = await _db.Kunde
+             .Include(k => k.Person)
+             .FirstOrDefaultAsync(k => k.Person.Id == personId);
+            if (kunde == null)
+            {
+                kunde = new Kunde { husListe = new List<Hus>(), Person = person, ordreListe = new List<Ordre>() };
+            }
+        
             return kunde;
         }
     }

@@ -20,8 +20,10 @@ var connectionString = builder.Configuration.GetConnectionString("ItemDbContextC
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ItemDbContext>(options => {
+
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
+        
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

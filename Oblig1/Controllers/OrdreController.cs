@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -73,6 +74,18 @@ namespace Oblig1.Controllers
 
         }
 
+        [HttpGet("HentOrdreMedId/{id}")]
+        public async Task<IActionResult> hentOrdreMedId(int id)
+        {
+            var Ordre = await _ordreInterface.hentOrdreMedId(id);
+            if(Ordre == null){
+                _Ordrelogger.LogError("[OrdreController] ordre ikke funnet for denne iden" + id);
+                return NotFound();
+            }
+
+            return Ok(Ordre);   
+        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpGet("Endre/{id}")]
@@ -131,21 +144,61 @@ namespace Oblig1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin, Bruker")]
-        [HttpGet("lagOrdre/{id}")]
-        
-        public async Task <IActionResult> lagOrdre(int id, string brukerId) {
-            
-            var kunde = await _kunderinterface.hentKundeMedPersonId(brukerId);
-            var hus = await _husInterface.hentHusMedId(id);
-            if (hus == null || kunde==null) {
-                return RedirectToAction("Error");
-          }
-           
-            return Ok();
+       
+        [HttpPost("lagOrdre/{id}")]
+
+        public async Task<IActionResult> lagOrdre([FromForm] Ordre ordre, int id, string email)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var person = await _personInterface.hentPersonMedEmail(email);
+                if (person == null)
+                {
+                    return NotFound();
+                }
+                string personId = person.Id;
+                var kunde = await _kunderinterface.hentKundeId(personId);
+
+
+                Hus hus = await _husInterface.hentHusMedId(id);
+                if (hus == null)
+                {
+                    return NotFound();
+                }
+
+
+                
+                ordre.kunde = kunde;
+                ordre.hus = hus;
+
+                bool OK = await _ordreInterface.lagOrdre(ordre);
+                if (OK)
+                {
+                    if (hus.ordreListe == null) hus.ordreListe = new List<Ordre>();
+                    if (kunde.ordreListe == null) kunde.ordreListe = new List<Ordre>();
+                }
+                await _db.SaveChangesAsync();
+
+                return Ok(new { message = "Order created successfully", ordreId = ordre.ordreId });
+            }
+
+
+            catch (Exception ex)
+            {
+                
+                _Ordrelogger.LogError(ex, "Error occurred in LagOrdre");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred: " + ex.ToString() });
+            }
         }
 
-        [HttpGet("SjekkTilgjengelighet")]
+            [HttpGet("SjekkTilgjengelighet")]
 
         public async Task<IActionResult> sjekkTilgjengelighet(int husId, DateTime startDato, DateTime sluttDato)
         {

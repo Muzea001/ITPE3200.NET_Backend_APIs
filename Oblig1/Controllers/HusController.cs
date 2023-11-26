@@ -112,7 +112,7 @@ namespace Oblig1.Controllers
 
 
         [HttpPost("CreateHouseWithImages")]
-        public async Task<IActionResult> CreateHouseWithImages([FromForm] IEnumerable<IFormFile> bilder, [FromForm] Hus hus, [FromQuery] string email)
+        public async Task<IActionResult> CreateHouseWithImages([FromForm] IEnumerable<IFormFile> bilder, [FromForm] Hus hus,[FromForm] long kontonummer, [FromQuery] string email)
         {
             using (var transaction = _db.Database.BeginTransaction())
             {
@@ -131,22 +131,18 @@ namespace Oblig1.Controllers
                     }
 
 
-                    var eier = await _db.Eier.FirstOrDefaultAsync(e => e.kontoNummer == hus.eier.kontoNummer);
+
+                    Eier eier = await _eierInterface.hentEierMedId(kontonummer);
                     if (eier == null)
                     {
-
-                        eier = new Eier { Person = person, husListe = new List<Hus>(), antallAnnonser = 0 };
-                        _db.Eier.Add(eier);
+                        eier = new Eier { Person = person, kontoNummer = kontonummer, antallAnnonser = 0 };
                     }
+                        
 
-                   
 
-                    bool OK = await husInterface.Lag(hus);
-                    if (OK)
-                    {
-                        eier.husListe.Add(hus);
-                        eier.antallAnnonser++;
-                    }
+                    hus.bildeListe = new List<Bilder>();
+                    hus.eier = eier;
+               
                     string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "Bilder");
                     foreach (var file in bilder)
                     {
@@ -166,10 +162,15 @@ namespace Oblig1.Controllers
                             bilderUrl = "/Bilder/" + uniqueFileName,
                             Hus = hus
                         };
-
+                        hus.bildeListe.Add(newBilde);
                         _db.Bilder.Add(newBilde);
                     }
-
+                    bool OK = await husInterface.Lag(hus);
+                    if (OK)
+                    {
+                        eier.husListe.Add(hus);
+                        eier.antallAnnonser++;
+                    }
                     await _db.SaveChangesAsync();
                     transaction.Commit();
 
@@ -180,8 +181,8 @@ namespace Oblig1.Controllers
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-
-                    return View("ErrorView", ex);
+                    _HusLogger.LogError(ex, "Error occurred in CreateHouseWithImages");
+                    return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred: " + ex.ToString() });
                 }
             }
         }

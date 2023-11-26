@@ -198,6 +198,24 @@ namespace Oblig1.Controllers
 
         }
 
+
+        [HttpPost("LoggUt")]
+        public async Task<IActionResult> OnPost(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                // This needs to be a redirect so that the browser performs a new
+                // request and the identity for the user gets updated.
+                return Ok(new {message = "Logged Out Successfully" ! });
+            }
+        }
+
         [HttpPost("LoggInn")]
 
         public async Task<IActionResult> LogInn([FromBody] LogInnModel loginModel)
@@ -231,6 +249,9 @@ namespace Oblig1.Controllers
            
             return BadRequest(ModelState);
         }
+
+
+
 
 
 
