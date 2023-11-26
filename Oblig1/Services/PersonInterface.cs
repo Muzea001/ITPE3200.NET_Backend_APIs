@@ -10,6 +10,8 @@ namespace Oblig1.Services
         Task<IEnumerable<Person>?> HentAlle();
         Task<Person> hentPersonMedId(string id);
         Task<string> Lag(Person person);
+
+        Task<Person> hentPersonMedEmail(string email);
         Task<bool> SlettPerson(string id);
     }
 }

@@ -28,10 +28,11 @@ namespace Oblig1.Controllers
 
         private readonly UserManager<Person> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        private readonly PersonInterface _personInterface;
         private readonly eierInterface _eierInterface;
 
-        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager, ItemDbContext itemDbContext, IWebHostEnvironment webHostEnvironment, eierInterface eierInterface)
+        public HusController(HusInterface Interface, ILogger<HusController> logger, UserManager<Person> userManager,
+            ItemDbContext itemDbContext, IWebHostEnvironment webHostEnvironment, PersonInterface personInterface, eierInterface eierInterface)
         {
             husInterface = Interface;
             _HusLogger = logger;
@@ -39,6 +40,7 @@ namespace Oblig1.Controllers
             _db = itemDbContext;
             _webHostEnvironment = webHostEnvironment;
             _eierInterface = eierInterface;
+            _personInterface = personInterface;
         }
 
         [HttpGet("Tabell")]
@@ -53,12 +55,12 @@ namespace Oblig1.Controllers
             }
 
 
-            
+
             return Ok(liste);
 
         }
 
-       
+
         [HttpGet("HentMine/{email}")]
         public async Task<IActionResult> HentMine(string email)
         {
@@ -96,7 +98,7 @@ namespace Oblig1.Controllers
 
 
 
-        
+
         [HttpGet("Create")]
         public IActionResult Create()
         {
@@ -108,34 +110,45 @@ namespace Oblig1.Controllers
 
 
 
-        [Authorize(Roles = "Admin, Bruker")]
+
         [HttpPost("CreateHouseWithImages")]
-        public async Task<IActionResult> CreateHouseWithImages(HusOgBilderViewModell viewModel)
+        public async Task<IActionResult> CreateHouseWithImages([FromForm] IEnumerable<IFormFile> bilder, [FromForm] Hus hus, [FromQuery] string email)
         {
             using (var transaction = _db.Database.BeginTransaction())
             {
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 try
                 {
-                    var personID = _userManager.GetUserId(User);
-                    var person = await _userManager.FindByIdAsync(personID);
-                    var eier = await _db.Eier.FirstOrDefaultAsync(e => e.Person.Id == personID);
+                    var person = await _personInterface.hentPersonMedEmail(email);
+                    if (person == null)
+                    {
+                        return NotFound();
+                    }
+
+
+                    var eier = await _db.Eier.FirstOrDefaultAsync(e => e.kontoNummer == hus.eier.kontoNummer);
                     if (eier == null)
                     {
-                       
+
                         eier = new Eier { Person = person, husListe = new List<Hus>(), antallAnnonser = 0 };
-                        _db.Eier.Add(eier); 
+                        _db.Eier.Add(eier);
                     }
-                    viewModel.hus.eier = eier;
-                    
-                    
-                    bool OK = await husInterface.Lag(viewModel.hus);
+
+                   
+
+                    bool OK = await husInterface.Lag(hus);
                     if (OK)
                     {
-                        viewModel.hus.eier.husListe.Add(viewModel.hus);
-                        viewModel.hus.eier.antallAnnonser++;
+                        eier.husListe.Add(hus);
+                        eier.antallAnnonser++;
                     }
                     string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "Bilder");
-                    foreach (var file in viewModel.bilder)
+                    foreach (var file in bilder)
                     {
                         var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
 
@@ -147,11 +160,11 @@ namespace Oblig1.Controllers
                             await file.CopyToAsync(fileStream);
                         }
 
-                        // Create a new Bilder instance.
+
                         var newBilde = new Bilder
                         {
-                            bilderUrl = "/Bilder/" + uniqueFileName, 
-                            Hus = viewModel.hus 
+                            bilderUrl = "/Bilder/" + uniqueFileName,
+                            Hus = hus
                         };
 
                         _db.Bilder.Add(newBilde);
@@ -160,16 +173,21 @@ namespace Oblig1.Controllers
                     await _db.SaveChangesAsync();
                     transaction.Commit();
 
-                    return RedirectToAction("Index","Home");
+                    return Ok(new { message = "House created successfully", houseId = hus.husId });
                 }
+
+
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    
+
                     return View("ErrorView", ex);
                 }
             }
         }
+    
+            
+        
 
 
 

@@ -56,6 +56,21 @@ namespace Oblig1.DAL
 
         }
 
+        public async Task<Person> hentPersonMedEmail(string email){
+
+            try
+            {
+                var person = await _db.Person.FirstOrDefaultAsync(k => k.Email == email);
+                return person;
+            }
+            catch
+            {
+                _PersonLogger.LogError("Denne personene finnes ikke");
+                return null;
+            }
+
+        }
+
 
         public async Task<bool> endrePerson(Person person)
         {
