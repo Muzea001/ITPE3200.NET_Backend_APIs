@@ -23,7 +23,7 @@ namespace Oblig1.Controllers
             _personInterface = personInterface;
         }
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpGet("Tabell")]
         public async Task<IActionResult> Tabell()
             {
@@ -36,7 +36,7 @@ namespace Oblig1.Controllers
                 }
 
                 var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
-                return View(ItemListViewModel);
+                return Ok(liste);
             }
 
 
@@ -143,9 +143,8 @@ namespace Oblig1.Controllers
 
             }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("SlettBekreftet")]
-
+       
+        [HttpDelete("SlettBekreftet")]
         public async Task<IActionResult> SlettBekreftet(string id)
         {
             var person = await _userManager.FindByIdAsync(id);

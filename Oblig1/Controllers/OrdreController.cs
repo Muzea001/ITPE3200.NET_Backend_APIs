@@ -39,7 +39,7 @@ namespace Oblig1.Controllers
             _personInterface = personInterface;
             
         }
-        [Authorize(Roles = "Admin")]
+        
         [HttpGet("Tabell")]
         public async Task<IActionResult> Tabell()
         {
@@ -52,7 +52,7 @@ namespace Oblig1.Controllers
             }
 
             var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
-            return View(ItemListViewModel);
+            return Ok(liste);
         }
 
 
@@ -329,8 +329,8 @@ namespace Oblig1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("SlettBekreftet/{id}")]
+        
+        [HttpDelete("SlettBekreftet")]
         
         public async Task<IActionResult> SlettBekreftet(int id)
         {
@@ -340,7 +340,7 @@ namespace Oblig1.Controllers
                 _Ordrelogger.LogError("[OrdreKontroller] sletting av bruker mislyktes for denne iden", id);
                 return BadRequest("sletting av ordre failet");
             }
-            return RedirectToAction(nameof(Tabell));
+            return Ok();
         }
 
 

@@ -27,7 +27,7 @@ namespace Oblig1.Controllers
         }
 
         [HttpGet("Tabell")]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Tabell()
         {
             var liste = await _eierInterface.HentAlle();
@@ -38,7 +38,7 @@ namespace Oblig1.Controllers
             }
 
             var ItemListViewModel = new ItemListViewModel(liste, "Tabell");
-            return View(ItemListViewModel);
+            return Ok(liste);
         }
 
         [HttpGet("hentMin/{id}")]
@@ -121,8 +121,8 @@ namespace Oblig1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("SlettBekreftet")]
+        
+        [HttpDelete("SlettBekreftet")]
 
         public async Task<IActionResult> SlettBekreftet(long id)
         {
@@ -132,7 +132,7 @@ namespace Oblig1.Controllers
                 _EierLogger.LogError("[EierController] sletting av bruker mislyktes for denne iden", id);
                 return BadRequest("sletting av eier failet");
             }
-            return RedirectToAction(nameof(Tabell));
+            return Ok();
         }
 
 

@@ -24,7 +24,7 @@ namespace Oblig1.Controllers
 
 
         [HttpGet("Tabell")]
-        [Authorize(Roles = "Admin")]
+        
         public async Task<IActionResult> Tabell()
         {
 
@@ -36,7 +36,7 @@ namespace Oblig1.Controllers
             }
 
             var itemListViewModel = new ItemListViewModel(liste, "Tabell");
-            return View(itemListViewModel);
+            return Ok(liste);
         }
 
         [HttpGet("hentMin/{id}")]
@@ -150,8 +150,8 @@ namespace Oblig1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("SlettBekreftet")]
+        
+        [HttpDelete("SlettBekreftet")]
         public async Task<IActionResult> SlettBekreftet(int id)
         {
             bool OK = await _kundeInterface.SlettKunde(id);
@@ -160,7 +160,7 @@ namespace Oblig1.Controllers
                 _Brukerlogger.LogError("[BrukerController] sletting av bruker mislyktes for denne iden", id);
                 return BadRequest("sletting av kunde failet");
             }
-            return RedirectToAction(nameof(Tabell));
+            return Ok();
         }
     }
 

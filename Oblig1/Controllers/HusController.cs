@@ -282,20 +282,20 @@ namespace Oblig1.Controllers
 
         }
 
-        [HttpPost("SlettBekreftet")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SlettBekreftet(int id, int eierId)
+        [HttpDelete("SlettBekreftet")]
+        
+        public async Task<IActionResult> SlettBekreftet(int id)
         {
 
 
             bool OK = await husInterface.Slett(id);
-            bool OKEier = await husInterface.SlettEier(eierId);
+           
             if (!OK)
             {
                 _HusLogger.LogWarning("[HusController] sletting av bruker failet" + id);
                 return BadRequest("Sletting av hus mislyktes");
             }
-            return RedirectToAction($"{nameof(Tabell)}");
+            return Ok();
 
         }
 
