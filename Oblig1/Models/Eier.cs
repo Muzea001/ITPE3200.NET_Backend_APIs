@@ -14,7 +14,7 @@ namespace Oblig1.Models
         [Key]
         public long kontoNummer { get; set; }
 
-        public virtual List<Hus> husListe { get; set; }
+        public virtual List<Hus>? husListe { get; set; }
 
 
         [NotNull]

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oblig1.DAL;
 
@@ -10,9 +11,11 @@ using Oblig1.DAL;
 namespace Oblig1.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    partial class ItemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128113049_nullableLists")]
+    partial class nullableLists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,7 +166,7 @@ namespace Oblig1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("husId")
+                    b.Property<int>("husId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("bilderId");
@@ -423,7 +426,9 @@ namespace Oblig1.Migrations
                 {
                     b.HasOne("Oblig1.Models.Hus", "Hus")
                         .WithMany("bildeListe")
-                        .HasForeignKey("husId");
+                        .HasForeignKey("husId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Hus");
                 });

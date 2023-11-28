@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Oblig1.DAL;
 using Oblig1.Models;
 using Oblig1.Services;
@@ -226,47 +227,78 @@ namespace Oblig1.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+
         [HttpPost("EndreBekreftet")]
-        public async Task<IActionResult> EndreBekreftet(Hus hus)
+        public async Task<IActionResult> EndreBekreftet([FromForm] string husData, [FromForm] IEnumerable<IFormFile> bilder)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                // Deserialize the JSON string back into a Hus object
+                var hus = JsonConvert.DeserializeObject<Hus>(husData);
+
+                // Rest of your logic to fetch and update the existing Hus
+                var existingHus = await husInterface.hentHusMedId(hus.husId);
+                if (existingHus == null)
                 {
-                    bool OK = await husInterface.Endre(hus);
-                    if (OK)
+                    return NotFound();
+                }
+
+                existingHus.Pris = hus.Pris;
+                existingHus.Beskrivelse = hus.Beskrivelse;
+                existingHus.romAntall = hus.romAntall;
+                existingHus.Addresse = hus.Addresse;
+                existingHus.by = hus.by;
+                existingHus.erMoblert = hus.erMoblert;
+                existingHus.harParkering = hus.harParkering;
+                existingHus.areal = hus.areal;
+
+                
+                existingHus.bildeListe.Clear();
+
+                
+                string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "Bilder");
+                foreach (var file in bilder)
+                {
+                    if (file.Length > 0)
                     {
-                        return RedirectToAction(nameof(Tabell));
-                    }
-                    else
-                    {
-                        _HusLogger.LogWarning("[HusController] Failed to modify the house. House ID: {houseId}", hus.husId);
-                        ModelState.AddModelError(string.Empty, "Failed to modify the house. Please try again.");
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        var filePath = Path.Combine(uploadPath, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var newBilde = new Bilder
+                        {
+                            bilderUrl = "/Bilder/" + uniqueFileName,
+                            Hus = existingHus
+                        };
+
+                        existingHus.bildeListe.Add(newBilde);
+                        _db.Bilder.Add(newBilde);
                     }
                 }
-                catch (Exception ex)
+
+                bool OK = await husInterface.Endre(existingHus);
+                if (OK)
                 {
-                    _HusLogger.LogError(ex, "[HusController] Exception occurred while modifying the house. House ID: {houseId}", hus.husId);
+                    return Ok(new { message = "House updated successfully" });
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to update the house. Please try again.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _HusLogger.LogWarning("[HusController] Invalid model state for House ID: {houseId}. Errors:", hus.husId);
-                foreach (var modelStateKey in ViewData.ModelState.Keys)
-                {
-                    var modelStateVal = ViewData.ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        _HusLogger.LogWarning("Key: {key}, Error: {error}", modelStateKey, error.ErrorMessage);
-                    }
-                }
+                _HusLogger.LogError(ex, "Error occurred in EndreBekreftet");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred: " + ex.ToString() });
             }
 
-           
-
-            return RedirectToAction(nameof(Tabell));
+            return BadRequest();
         }
+
 
         [HttpGet("Slett/{id}")]
         [Authorize(Roles = "Admin")]

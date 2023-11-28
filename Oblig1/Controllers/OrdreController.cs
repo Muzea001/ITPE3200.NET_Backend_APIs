@@ -101,17 +101,16 @@ namespace Oblig1.Controllers
             return View(Ordre);
         }
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost("EndreBekreftet")]
         
-        public async Task<IActionResult> EndreBekreftet(Ordre ordre)
+        public async Task<IActionResult> EndreBekreftet([FromBody] Ordre ordre)
         {
-            if (ModelState.IsValid)
-            {
+           
                 bool OK = await _ordreInterface.endreOrdre(ordre);
                 if (OK)
                 {
-                    return RedirectToAction(nameof(Tabell));
+                    return Ok();
                 }
                 else
                 {
@@ -120,27 +119,7 @@ namespace Oblig1.Controllers
                     ModelState.AddModelError(string.Empty, "Failed to modify the Order. Please try again.");
                 }
 
-            }
-            else
-            {
-                _Ordrelogger.LogWarning("[OrdreKontroller] Invalid model state.", ordre);
-
-                foreach (var modelStateKey in ViewData.ModelState.Keys)
-                {
-                    var modelStateVal = ViewData.ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-
-                        _Ordrelogger.LogWarning($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
-                    }
-                }
-            }
-
-
-            return RedirectToAction($"{nameof(Tabell)}");
-
-
-
+            return BadRequest(); 
 
         }
 
